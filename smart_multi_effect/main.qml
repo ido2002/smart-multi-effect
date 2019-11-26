@@ -8,29 +8,6 @@ ApplicationWindow {
     height: 600
     title: qsTr("Smart Multi Effect")
 
-    header: ToolBar {
-//        contentHeight: toolButton.implicitHeight
-        contentHeight: 50
-
-        ToolButton {
-            id: toolButton
-            text: stackView.depth > 1 ? "\u25C0" : "\u2630"
-            font.pixelSize: Qt.application.font.pixelSize * 1.6
-            onClicked: {
-                if (stackView.depth > 1) {
-                    stackView.pop()
-                } else {
-                    drawer.open()
-                }
-            }
-        }
-
-        Label {
-            text: stackView.currentItem.title
-            anchors.centerIn: parent
-        }
-    }
-
     Drawer {
         id: drawer
         width: window.width * 0.25
@@ -40,18 +17,18 @@ ApplicationWindow {
             anchors.fill: parent
 
             ItemDelegate {
-                text: qsTr("Page 1")
+                text: qsTr("Edit Mode")
                 width: parent.width
                 onClicked: {
-                    stackView.push("Page1Form.ui.qml")
+                    stackView.push("EditingForm.ui.qml")
                     drawer.close()
                 }
             }
             ItemDelegate {
-                text: qsTr("Page 2")
+                text: qsTr("Settings")
                 width: parent.width
                 onClicked: {
-                    stackView.push("Page2Form.ui.qml")
+                    stackView.push("SettingsForm.ui.qml")
                     drawer.close()
                 }
             }
@@ -62,5 +39,28 @@ ApplicationWindow {
         id: stackView
         initialItem: "HomeForm.ui.qml"
         anchors.fill: parent
+    }
+
+    Button {
+        id: toolButton
+        text: stackView.depth > 1 ? "\u25C0" : "\u2630"
+
+        width: 40
+        height: 40
+
+        anchors.left: parent.left
+        anchors.leftMargin: 0
+        anchors.top: parent.top
+        anchors.topMargin: 0
+
+        font.pixelSize: Qt.application.font.pixelSize * 1.6
+
+        onClicked: {
+            if (stackView.depth > 1) {
+                stackView.pop()
+            } else {
+                drawer.open()
+            }
+        }
     }
 }

@@ -3,12 +3,13 @@ import QtQuick.Controls 2.5
 
 Page {
     width: 1024
-    height: 550
+    height: 600
 
-    title: qsTr("Home")
+    title: qsTr("Play Mode")
 
-    Label {
-        text: qsTr("You are on the home page.")
-        anchors.centerIn: parent
+    Dial {
+        id: dial
+        x: 151
+        y: 155
     }
 }

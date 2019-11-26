@@ -14,6 +14,16 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+        EffectController/effect.cpp \
+        EffectController/effectcontroller.cpp \
+        EffectController/gpiocontrol.cpp \
+        EffectController/potentiometer.cpp \
+        EffectController/relay.cpp \
+        RiffRecognition/riff.cpp \
+        SoundProcessing/neuralnetwork.cpp \
+        SoundProcessing/soundcard.cpp \
+        SoundProcessing/soundprocessor.cpp \
+        SoundProcessing/stroke.cpp \
         main.cpp
 
 RESOURCES += qml.qrc
@@ -25,6 +35,21 @@ QML_IMPORT_PATH =
 QML_DESIGNER_IMPORT_PATH =
 
 # Default rules for deployment.
-qnx: target.path = /tmp/$${TARGET}/bin
-else: unix:!android: target.path = /opt/$${TARGET}/bin
-!isEmpty(target.path): INSTALLS += target
+#qnx: target.path = /tmp/$${TARGET}/bin
+#else: unix:!android: target.path = /opt/$${TARGET}/bin
+#!isEmpty(target.path): INSTALLS += target
+
+target.path = smart_multi_effect_App
+INSTALLS += target
+
+HEADERS += \
+    EffectController/effect.h \
+    EffectController/effectcontroller.h \
+    EffectController/gpiocontrol.h \
+    EffectController/potentiometer.h \
+    EffectController/relay.h \
+    RiffRecognition/riff.h \
+    SoundProcessing/neuralnetwork.h \
+    SoundProcessing/soundcard.h \
+    SoundProcessing/soundprocessor.h \
+    SoundProcessing/stroke.h

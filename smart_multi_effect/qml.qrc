@@ -2,8 +2,12 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>HomeForm.ui.qml</file>
-        <file>Page1Form.ui.qml</file>
-        <file>Page2Form.ui.qml</file>
+        <file>SettingsForm.ui.qml</file>
+        <file>EditingForm.ui.qml</file>
         <file>qtquickcontrols2.conf</file>
+        <file>EffectEdit.qml</file>
+        <file>EffectEditForm.ui.qml</file>
+        <file>EffectDial.qml</file>
+        <file>EffectDialForm.ui.qml</file>
     </qresource>
 </RCC>
