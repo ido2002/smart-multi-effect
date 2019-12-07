@@ -1,28 +1,24 @@
 #ifndef GPIOCONTROL_H
 #define GPIOCONTROL_H
 
-#include <QObject>
-#include <QString>
-#include <QDir>
-#include <QFile>
+#include <stdlib.h>
 
-class GpioControl : public QObject
+class GpioControl
 {
-    Q_OBJECT
 public:
-    explicit GpioControl(uint ioPin, bool negativeLogic = false, QObject *parent = nullptr);
+    GpioControl(int ioPin, bool negativeLogic = false);
     ~GpioControl();
 
-    void On();
-    void Off();
-
-signals:
-
-public slots:
+    void Write(bool on_off);
+    bool Read();
+    void Tick(uint time_usec, bool tickOn = true);
+    static void sleep_micro_sec(uint usec);
 
 private:
-    QFile* m_file = nullptr;
     bool m_negativeLogic = false;
+    int m_ioPin = 0;
+    int m_fd = 0;
+    bool m_lastValue;
 };
 
 #endif // GPIOCONTROL_H

@@ -18,7 +18,6 @@ SOURCES += \
         EffectController/effectcontroller.cpp \
         EffectController/gpiocontrol.cpp \
         EffectController/potentiometer.cpp \
-        EffectController/relay.cpp \
         RiffRecognition/riff.cpp \
         SoundProcessing/neuralnetwork.cpp \
         SoundProcessing/soundcard.cpp \
@@ -47,9 +46,45 @@ HEADERS += \
     EffectController/effectcontroller.h \
     EffectController/gpiocontrol.h \
     EffectController/potentiometer.h \
-    EffectController/relay.h \
     RiffRecognition/riff.h \
     SoundProcessing/neuralnetwork.h \
     SoundProcessing/soundcard.h \
     SoundProcessing/soundprocessor.h \
     SoundProcessing/stroke.h
+
+DISTFILES += \
+    EffectController/WiringPi-master/COPYING.LESSER \
+    EffectController/WiringPi-master/INSTALL \
+    EffectController/WiringPi-master/People \
+    EffectController/WiringPi-master/README.TXT \
+    EffectController/WiringPi-master/VERSION \
+    EffectController/WiringPi-master/build \
+    EffectController/WiringPi-master/debian-template/wiringPi/DEBIAN/control \
+    EffectController/WiringPi-master/debian-template/wiringPi/DEBIAN/postinst \
+    EffectController/WiringPi-master/debian-template/wiringPi/DEBIAN/postrm \
+    EffectController/WiringPi-master/debian/changelog \
+    EffectController/WiringPi-master/debian/compat \
+    EffectController/WiringPi-master/debian/control \
+    EffectController/WiringPi-master/debian/copyright \
+    EffectController/WiringPi-master/debian/libwiringpi-dev.dirs \
+    EffectController/WiringPi-master/debian/libwiringpi-dev.install \
+    EffectController/WiringPi-master/debian/libwiringpi2.install \
+    EffectController/WiringPi-master/debian/libwiringpi2.shlibs \
+    EffectController/WiringPi-master/debian/rules \
+    EffectController/WiringPi-master/debian/wiringpi.dirs \
+    EffectController/WiringPi-master/debian/wiringpi.install \
+    EffectController/WiringPi-master/examples/COPYING.LESSER \
+    EffectController/WiringPi-master/examples/README.TXT \
+    EffectController/WiringPi-master/examples/blink.rtb \
+    EffectController/WiringPi-master/examples/blink.sh \
+    EffectController/WiringPi-master/examples/q2w/blink.sh \
+    EffectController/WiringPi-master/gpio/COPYING.LESSER \
+    EffectController/WiringPi-master/gpio/gpio.1 \
+    EffectController/WiringPi-master/gpio/pintest \
+    EffectController/WiringPi-master/gpio/test.sh \
+    EffectController/WiringPi-master/newVersion \
+    EffectController/WiringPi-master/pins/pins.pdf \
+    EffectController/WiringPi-master/pins/pins.tex \
+    EffectController/WiringPi-master/update \
+    EffectController/WiringPi-master/wiringPi/COPYING.LESSER \
+    EffectController/WiringPi-master/wiringPi/noMoreStatic

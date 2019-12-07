@@ -1,48 +1,61 @@
 #include "gpiocontrol.h"
 
-const QString PATH_BASE = "/sys/class/gpio/gpio";
-const QString PATH_DIRECTION_END = "/direction";
-const QString PATH_VALUE_END = "/value";
-const QString PATH_EXPORT = "/sys/class/gpio/export";
-const QString OUT_MOD = "out";
-const QString ON = "1";
-const QString OFF = "0";
+#include <iostream>
+#include <unistd.h>
+#include <fcntl.h>
+#include <chrono>
+#include <string>
 
-GpioControl::GpioControl(uint ioPin, bool negativeLogic, QObject *parent) : QObject(parent)
+using namespace std;
+
+GpioControl::GpioControl(int ioPin, bool negativeLogic)
 {
     m_negativeLogic = negativeLogic;
-
-    QString ioPinS = QString::number(ioPin);
-    m_file = new QFile(PATH_EXPORT);
-    m_file->open(QFile::WriteOnly);
-    m_file->write(reinterpret_cast<char*>(ioPinS.data()), ioPinS.length());
-    m_file->close();
-    delete m_file;
-
-    m_file = new QFile(PATH_BASE + QString::number(ioPin) + PATH_DIRECTION_END);
-    m_file->open(QFile::WriteOnly);
-    m_file->write(reinterpret_cast<const char*>(OUT_MOD.data()), OUT_MOD.length());
-    m_file->close();
-    delete m_file;
-
-    m_file = new QFile(PATH_BASE + QString::number(ioPin) + PATH_VALUE_END);
-    m_file->open(QFile::WriteOnly);
+    m_ioPin = ioPin;
+    char path[32];
+    sprintf(path, "/sys/class/gpio/gpio%d/value", ioPin);
+    m_fd = open(path, O_RDWR);
+    std::cout << path << ":" << m_fd << std::endl;
 }
 
 GpioControl::~GpioControl()
 {
-    m_file->close();
-    delete m_file;
+    close(m_fd);
 }
 
-void GpioControl::On()
+void GpioControl::Write(bool on_off)
 {
-    m_file->write(reinterpret_cast<const char*>((m_negativeLogic ? OFF : ON).data()),
-                  (m_negativeLogic ? OFF : ON).length());
+    if(m_negativeLogic)
+        on_off = !on_off;
+    std::string str = on_off ? "1\n" : "0\n";
+    write(m_fd, &str[0], 2);
+    std::cout << "write: " << str << ", to: " << m_fd << std::endl;
 }
 
-void GpioControl::Off()
+bool GpioControl::Read()
 {
-    m_file->write(reinterpret_cast<const char*>((!m_negativeLogic ? OFF : ON).data()),
-                  (!m_negativeLogic ? OFF : ON).length());
+    char c_val;
+    read(m_fd, &c_val, 1);
+    bool value = (c_val == '1');
+    if(m_negativeLogic)
+        value = !value;
+    return value;
+}
+
+void GpioControl::Tick(uint time_usec, bool tickOn)
+{
+    Write(!tickOn);
+    sleep_micro_sec(time_usec);
+    Write(tickOn);
+    sleep_micro_sec(time_usec);
+    Write(!tickOn);
+}
+
+void GpioControl::sleep_micro_sec(uint usec)
+{
+    auto start = chrono::steady_clock::now();
+    auto end = chrono::steady_clock::now();
+
+    while(chrono::duration_cast<chrono::microseconds>(end - start).count() < usec)
+        end = chrono::steady_clock::now();
 }

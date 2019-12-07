@@ -6,10 +6,4 @@ Page {
     height: 600
 
     title: qsTr("Play Mode")
-
-    Dial {
-        id: dial
-        x: 151
-        y: 155
-    }
 }

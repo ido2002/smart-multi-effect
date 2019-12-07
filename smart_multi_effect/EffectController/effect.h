@@ -1,17 +1,42 @@
 #ifndef EFFECT_H
 #define EFFECT_H
 
-#include <QObject>
+#include "potentiometer.h"
+#include "gpiocontrol.h"
+#include <map>
 
-class Effect : public QObject
+class Effect
 {
-    Q_OBJECT
 public:
-    explicit Effect(QObject *parent = nullptr);
+    enum EffectType {booster = 10, compressor, overdrive, distortion,
+                     eq=20, noisegate,
+                     delay=30, reverb,
+                     chorus=40, phazer, flanger, tremolo,
+                     other=1, null = 0};
+    enum EffectControlLayoutEllements { Gain = 1, Drive = 1,
+                                        Tone = 2, Low = 4, Mid = 8, High = 16,
+                                        Mix = 32, Volume = 64,
+                                        Delay = 128, Rate = 128, Speed = 128,
+                                        Repeat = 256, Regen = 256, Depth = 256,
+                                        Width = 512, Manual = 1024,
+                                        Other1 = 2048, Other2 = 4096, Other3 = 8192, Other4 = 16384, Other5 = 32768, Other6 = 65536,
+                                        Non = 0};
+public:
+    Effect(int ioPin, EffectType effectType, uint64_t layoutElements);
+    ~Effect();
 
-signals:
+    bool SetPotentiometer(EffectControlLayoutEllements element, int ioPin);
+    Potentiometer* GetPotentiometer(EffectControlLayoutEllements element);
 
-public slots:
+    void On();
+    void Off();
+
+private:
+    GpioControl* m_relay = nullptr;
+    EffectType m_effectType;
+    uint64_t m_layoutElements;
+public:
+    std::map<EffectControlLayoutEllements, Potentiometer*> m_potentiometers;
 };
 
 #endif // EFFECT_H
