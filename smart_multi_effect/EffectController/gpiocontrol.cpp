@@ -29,17 +29,6 @@ void GpioControl::Write(bool on_off)
         on_off = !on_off;
     std::string str = on_off ? "1\n" : "0\n";
     write(m_fd, &str[0], 2);
-    std::cout << "write: " << str << ", to: " << m_fd << std::endl;
-}
-
-bool GpioControl::Read()
-{
-    char c_val;
-    read(m_fd, &c_val, 1);
-    bool value = (c_val == '1');
-    if(m_negativeLogic)
-        value = !value;
-    return value;
 }
 
 void GpioControl::Tick(uint time_usec, bool tickOn)

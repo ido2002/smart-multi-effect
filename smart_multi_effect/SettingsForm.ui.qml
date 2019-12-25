@@ -8,4 +8,10 @@ Page {
     scale: 1
 
     title: qsTr("Settings")
+
+    EffectEdit {
+        id: effectEdit
+        x: 127
+        y: 0
+    }
 }

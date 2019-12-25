@@ -10,11 +10,10 @@ public:
     ~GpioControl();
 
     void Write(bool on_off);
-    bool Read();
     void Tick(uint time_usec, bool tickOn = true);
     static void sleep_micro_sec(uint usec);
 
-private:
+public:
     bool m_negativeLogic = false;
     int m_ioPin = 0;
     int m_fd = 0;

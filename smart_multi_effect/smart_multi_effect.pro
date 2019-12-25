@@ -1,5 +1,7 @@
 QT += quick
 
+QT += multimedia
+
 CONFIG += c++11
 
 # The following define makes your compiler emit warnings if you use
@@ -17,10 +19,13 @@ SOURCES += \
         EffectController/effect.cpp \
         EffectController/effectcontroller.cpp \
         EffectController/gpiocontrol.cpp \
+        EffectController/gpioread.cpp \
         EffectController/potentiometer.cpp \
+        EffectController/preset.cpp \
         RiffRecognition/riff.cpp \
         SoundProcessing/neuralnetwork.cpp \
         SoundProcessing/soundcard.cpp \
+        SoundProcessing/soundcardstream.cpp \
         SoundProcessing/soundprocessor.cpp \
         SoundProcessing/stroke.cpp \
         main.cpp
@@ -45,10 +50,13 @@ HEADERS += \
     EffectController/effect.h \
     EffectController/effectcontroller.h \
     EffectController/gpiocontrol.h \
+    EffectController/gpioread.h \
     EffectController/potentiometer.h \
+    EffectController/preset.h \
     RiffRecognition/riff.h \
     SoundProcessing/neuralnetwork.h \
     SoundProcessing/soundcard.h \
+    SoundProcessing/soundcardstream.h \
     SoundProcessing/soundprocessor.h \
     SoundProcessing/stroke.h
 

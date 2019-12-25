@@ -1,17 +1,27 @@
 #ifndef NEURALNETWORK_H
 #define NEURALNETWORK_H
 
-#include <QObject>
+#include <vector>
 
-class NeuralNetwork : public QObject
+namespace neural_network {
+using namespace std;
+
+struct node
 {
-    Q_OBJECT
-public:
-    explicit NeuralNetwork(QObject *parent = nullptr);
-
-signals:
-
-public slots:
+    float value;
+    vector< pair<node*, float/*weight*/> > connections;
 };
+
+struct layer
+{
+    vector<node*> nodes;
+};
+
+struct net
+{
+    vector<float> inputLayer;
+};
+
+}
 
 #endif // NEURALNETWORK_H
