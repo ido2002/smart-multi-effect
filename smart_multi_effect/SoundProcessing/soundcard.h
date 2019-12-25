@@ -1,7 +1,8 @@
 #ifndef SOUNDCARD_H
 #define SOUNDCARD_H
 
-#include "soundcardstream.h"
+//done!
+
 #include <QAudioDeviceInfo>
 #include <QAudioInput>
 #include <thread>

@@ -25,7 +25,6 @@ SOURCES += \
         RiffRecognition/riff.cpp \
         SoundProcessing/neuralnetwork.cpp \
         SoundProcessing/soundcard.cpp \
-        SoundProcessing/soundcardstream.cpp \
         SoundProcessing/soundprocessor.cpp \
         SoundProcessing/stroke.cpp \
         main.cpp
@@ -56,9 +55,9 @@ HEADERS += \
     RiffRecognition/riff.h \
     SoundProcessing/neuralnetwork.h \
     SoundProcessing/soundcard.h \
-    SoundProcessing/soundcardstream.h \
     SoundProcessing/soundprocessor.h \
-    SoundProcessing/stroke.h
+    SoundProcessing/stroke.h \
+    conf.h
 
 DISTFILES += \
     EffectController/WiringPi-master/COPYING.LESSER \

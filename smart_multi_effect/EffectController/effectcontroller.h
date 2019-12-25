@@ -1,6 +1,8 @@
 #ifndef EFFECTCONTROLLER_H
 #define EFFECTCONTROLLER_H
 
+// todo: integration with preset
+
 #include <vector>
 #include <map>
 #include "potentiometer.h"

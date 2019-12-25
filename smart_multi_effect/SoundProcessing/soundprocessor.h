@@ -1,17 +1,11 @@
 #ifndef SOUNDPROCESSOR_H
 #define SOUNDPROCESSOR_H
 
-#include <QObject>
 
-class SoundProcessor : public QObject
+class SoundProcessor
 {
-    Q_OBJECT
 public:
-    explicit SoundProcessor(QObject *parent = nullptr);
-
-signals:
-
-public slots:
+    SoundProcessor();
 };
 
 #endif // SOUNDPROCESSOR_H
