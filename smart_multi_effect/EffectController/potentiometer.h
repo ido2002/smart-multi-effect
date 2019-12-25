@@ -1,6 +1,8 @@
 #ifndef POTENTIOMETER_H
 #define POTENTIOMETER_H
 
+//done!
+
 #include "gpiocontrol.h"
 
 class Potentiometer

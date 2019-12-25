@@ -50,6 +50,7 @@ void SoundCard::SetOnBufferFill(std::function<void (int16_t *, size_t)> onBuffer
 
 void SoundCard::Start()
 {
+    running = true;
     if(m_readThread != nullptr) {
         return;
     }
@@ -109,6 +110,12 @@ void SoundCard::Start()
 
 void SoundCard::Stop()
 {
+    running = false;
     delete m_readThread;
     m_readThread = nullptr;
+}
+
+bool SoundCard::IsRunning()
+{
+    return running;
 }

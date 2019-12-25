@@ -53,6 +53,7 @@ HEADERS += \
     EffectController/potentiometer.h \
     EffectController/preset.h \
     RiffRecognition/riff.h \
+    SoundProcessing/FFT.h \
     SoundProcessing/neuralnetwork.h \
     SoundProcessing/soundcard.h \
     SoundProcessing/soundprocessor.h \

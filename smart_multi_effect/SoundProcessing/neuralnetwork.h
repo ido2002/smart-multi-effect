@@ -1,14 +1,14 @@
 #ifndef NEURALNETWORK_H
 #define NEURALNETWORK_H
 
-//done!
+// todo: save weights(Gabi), load samples from file(Gabi)
 
 #include <vector>
 #include <list>
 #include <map>
 
 namespace neural_network_tools {
-const float learningRate = 0.03f;
+const float learningRate = 0.003f;
 
 using namespace std;
 
@@ -94,6 +94,7 @@ public:
 
     void AddData(NetworkDataSet data);
     void AddData(std::string category, NetworkDataSet data);
+    void LoadData(std::string path);
 
     void ClearData();
     void ClearData(std::string category);

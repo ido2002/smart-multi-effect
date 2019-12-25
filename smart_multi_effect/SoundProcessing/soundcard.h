@@ -21,8 +21,11 @@ public:
     void Start();
     void Stop();
 
+    bool IsRunning();
 
 private:
+    bool running = false;
+
     QIODevice* m_iodevice = nullptr;
     QAudioInput* m_audioInput = nullptr;
     QAudioFormat m_audioFormat;

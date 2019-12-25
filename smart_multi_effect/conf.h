@@ -3,42 +3,51 @@
 
 #include <stdlib.h>
 #include <stdint.h>
+#include <vector>
+#include <QAudioFormat>
 
-#define DEF_INC_PIN 17
-#define DEF_UD_PIN 27
-#define DEF_P1_PIN 4
-#define DEF_P2_PIN 23
-#define DEF_P3_PIN 18
-#define DEF_P4_PIN 12
-#define DEF_P5_PIN 22
-#define DEF_P6_PIN 24
-#define DEF_RELAY_1 20
-#define DEF_RELAY_2 21
-#define DEF_RELAY_3 16
-#define DEF_BUTTON1 5
-#define DEF_BUTTON2 6
-#define DEF_BUTTON3 13
-#define DEF_BUTTON4 19
-#define DEF_BUTTON5 26
-
-struct Conf
+namespace CONF
 {
-    uint8_t INC_PIN = 17;
-    uint8_t UD_PIN  = 27;
-    uint8_t P1_PIN  = 4 ;
-    uint8_t P2_PIN  = 23;
-    uint8_t P3_PIN  = 18;
-    uint8_t P4_PIN  = 12;
-    uint8_t P5_PIN  = 22;
-    uint8_t P6_PIN  = 24;
-    uint8_t RELAY_1 = 20;
-    uint8_t RELAY_2 = 21;
-    uint8_t RELAY_3 = 16;
-    uint8_t BUTTON1 = 5 ;
-    uint8_t BUTTON2 = 6 ;
-    uint8_t BUTTON3 = 13;
-    uint8_t BUTTON4 = 19;
-    uint8_t BUTTON5 = 26;
+namespace HARDWARE {
+    const uint8_t INC_PIN = 17;
+    const uint8_t UD_PIN  = 27;
+
+    const uint8_t P1_PIN  = 4 ;
+    const uint8_t P2_PIN  = 23;
+    const uint8_t P3_PIN  = 18;
+    const uint8_t P4_PIN  = 12;
+    const uint8_t P5_PIN  = 22;
+    const uint8_t P6_PIN  = 24;
+
+    const uint8_t RELAY_1 = 20;
+    const uint8_t RELAY_2 = 21;
+    const uint8_t RELAY_3 = 16;
+
+    const uint8_t BUTTON1 = 5 ;
+    const uint8_t BUTTON2 = 6 ;
+    const uint8_t BUTTON3 = 13;
+    const uint8_t BUTTON4 = 19;
+    const uint8_t BUTTON5 = 26;
+}
+
+namespace SOUND_CARD {
+    const size_t BUFFER_SIZE = 256;
+    const auto SAMPLE_BYTE_ORDER = QAudioFormat::LittleEndian;
+    const int CHANNEL_COUNT = 2;
+    const QString CODEC = "";
+    const int SAMPLE_RATE = 8000;
+    const int SAMPLE_SIZE = 16;
+    const auto SAMPLE_FORMAT = QAudioFormat::SignedInt;
+}
+
+namespace SOUNF_PROCCESSING {
+    const size_t BUFFER_FILL_SIZE = SOUND_CARD::BUFFER_SIZE; // editable
+    const size_t POSSIBLE_NOTES_COUNT = 6;
+    const size_t FFT_COUNT = SOUND_CARD::BUFFER_SIZE / 2;
+    const std::vector<size_t> NEURAL_NETWORK_STRUCTURE = {FFT_COUNT, FFT_COUNT*2, POSSIBLE_NOTES_COUNT*2, POSSIBLE_NOTES_COUNT};
+    const uint RECORDING_WAIT_TIME_MILLISECONDS = 100;
+}
+
 };
 
 #endif // CONF_H

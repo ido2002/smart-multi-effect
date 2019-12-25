@@ -1,6 +1,8 @@
 #ifndef EFFECT_H
 #define EFFECT_H
 
+//done!
+
 #include "potentiometer.h"
 #include "gpiocontrol.h"
 #include <map>

@@ -256,3 +256,17 @@ void NeuralNetwork::ClearData(std::string category)
         m_datasetMap[category].clear();
     }
 }
+
+#include <QString>
+#include <QDir>
+#include <QUrl>
+#include <QFile>
+#include <QJsonObject>
+#include <QVariant>
+#include <QVariantMap>
+#include <QVariantList>
+
+void NeuralNetwork::LoadData(std::string path) //For Gabi
+{
+
+}
