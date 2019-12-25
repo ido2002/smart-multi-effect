@@ -1,7 +1,7 @@
 #ifndef EFFECTCONTROLLER_H
 #define EFFECTCONTROLLER_H
 
-// todo: integration with preset
+// todo: work with preset
 
 #include <vector>
 #include <map>
