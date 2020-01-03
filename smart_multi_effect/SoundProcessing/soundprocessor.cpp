@@ -2,6 +2,8 @@
 #include "conf.h"
 #include "FFT.h"
 #include <iostream>
+#include "fix_fft.h"
+#include <cmath>
 
 using namespace CONF::SOUNF_PROCCESSING;
 
@@ -86,6 +88,13 @@ void SoundProcessor::InvokeOnBufferFill(int16_t *buffer, size_t bufferSize)
 
 void SoundProcessor::FFT(int16_t *buffer, size_t bufferSize)
 {
+#if 1
+    int16_t* real = new int16_t[bufferSize];
+    for(size_t i = 0; i < bufferSize; i++) {
+        real[i] = buffer[i];
+    }
+    fix_fftr(real, std::log2(bufferSize), 1);
+#else
     double* real = new double[bufferSize];
     double* imgn = new double[bufferSize];
 
@@ -96,11 +105,13 @@ void SoundProcessor::FFT(int16_t *buffer, size_t bufferSize)
 
     _FFT(1, static_cast<int>(std::log2(FFT_COUNT)), real, imgn);
 
+#endif
+
     if(m_FFT_output_realTime.size() != FFT_COUNT) {
         m_FFT_output_realTime.resize(FFT_COUNT);
     }
 
     for(size_t i = 0; i < FFT_COUNT; i++) {
-        m_FFT_output_realTime[i] = static_cast<float>(real[i]) * 0.01f; // ?
+        m_FFT_output_realTime[i] = static_cast<float>(real[i]) / 0x10000; // ?
     }
 }

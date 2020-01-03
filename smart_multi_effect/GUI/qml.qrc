@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>qtquickcontrols2.conf</file>
+        <file>HomeForm.ui.qml</file>
+        <file>SettingsForm.ui.qml</file>
+        <file>EditingForm.ui.qml</file>
+        <file>EffectEdit/EffectDial.qml</file>
+        <file>EffectEdit/EffectDialForm.ui.qml</file>
+        <file>EffectEdit/EffectEdit.qml</file>
+        <file>EffectEdit/EffectEditForm.ui.qml</file>
+    </qresource>
+</RCC>

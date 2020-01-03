@@ -31,7 +31,7 @@ namespace HARDWARE {
 }
 
 namespace SOUND_CARD {
-    const size_t BUFFER_SIZE = 256;
+    const size_t BUFFER_SIZE = 1024;
     const auto SAMPLE_BYTE_ORDER = QAudioFormat::LittleEndian;
     const int CHANNEL_COUNT = 2;
     const QString CODEC = "";
