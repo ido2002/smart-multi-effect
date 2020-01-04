@@ -34,6 +34,9 @@ private:
     std::vector<float> m_FFT_output_realTime;
     std::vector<float> m_notes_output_realTime;
 
+    std::vector<double> m_FFT_re;
+    std::vector<double> m_FFT_im;
+
     std::list<std::function<void(
             std::vector<float> fft, std::vector<float> notes)>> m_functionsOnBufferFill;
 };

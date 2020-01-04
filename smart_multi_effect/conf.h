@@ -31,7 +31,7 @@ namespace HARDWARE {
 }
 
 namespace SOUND_CARD {
-    const size_t BUFFER_SIZE = 1024;
+    const size_t BUFFER_SIZE = 1024 * 1;
     const auto SAMPLE_BYTE_ORDER = QAudioFormat::LittleEndian;
     const int CHANNEL_COUNT = 2;
     const QString CODEC = "";
@@ -40,11 +40,11 @@ namespace SOUND_CARD {
     const auto SAMPLE_FORMAT = QAudioFormat::SignedInt;
 }
 
-namespace SOUNF_PROCCESSING {
-    const size_t BUFFER_FILL_SIZE = SOUND_CARD::BUFFER_SIZE; // editable
-    const size_t POSSIBLE_NOTES_COUNT = 6;
+namespace SOUND_PROCCESSING {
+    const size_t BUFFER_FILL_SIZE = SOUND_CARD::BUFFER_SIZE * 1; // editable
+    const size_t POSSIBLE_NOTES_COUNT = 88;
     const size_t FFT_COUNT = SOUND_CARD::BUFFER_SIZE / 2;
-    const std::vector<size_t> NEURAL_NETWORK_STRUCTURE = {FFT_COUNT, FFT_COUNT*2, POSSIBLE_NOTES_COUNT*2, POSSIBLE_NOTES_COUNT};
+    const std::vector<size_t> NEURAL_NETWORK_STRUCTURE = {FFT_COUNT, /*FFT_COUNT*2, POSSIBLE_NOTES_COUNT*2, */POSSIBLE_NOTES_COUNT};
     const uint RECORDING_WAIT_TIME_MILLISECONDS = 100;
 }
 

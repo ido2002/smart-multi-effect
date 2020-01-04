@@ -2,10 +2,11 @@
 #include "conf.h"
 #include "FFT.h"
 #include <iostream>
-#include "fix_fft.h"
 #include <cmath>
 
-using namespace CONF::SOUNF_PROCCESSING;
+const float SHORT_K_f = (100.0f / ((long)1 << 30));
+
+using namespace CONF::SOUND_PROCCESSING;
 
 SoundProcessor::SoundProcessor()
 {
@@ -16,6 +17,10 @@ SoundProcessor::SoundProcessor()
     m_soundCard->SetOnBufferFill([&](int16_t* buffer, size_t bufferSize){
         InvokeOnBufferFill(buffer, bufferSize);
     }, BUFFER_FILL_SIZE);
+
+    m_FFT_output_realTime.resize(FFT_COUNT);
+    m_FFT_re.resize(BUFFER_SIZE);
+    m_FFT_im.resize(BUFFER_SIZE);
 }
 
 void SoundProcessor::Start()
@@ -67,8 +72,7 @@ void SoundProcessor::RecordSample(std::list<Stroke::Note> notes)
 
 void SoundProcessor::Learn()
 {
-    m_neuralNetwork->Learn(1000);
-    //std::cout << "learning times: 5000 + " << m_neuralNetwork->LearnUntilWork(2, 50000) << std::endl;
+    std::cout << "learning times[1, 50000, 5000]: " << m_neuralNetwork->LearnUntilWork(1, 50000, 5000) << std::endl;
 }
 
 void SoundProcessor::LoadNetwork()
@@ -80,6 +84,7 @@ void SoundProcessor::InvokeOnBufferFill(int16_t *buffer, size_t bufferSize)
 {
     FFT(buffer, bufferSize);
     m_notes_output_realTime = m_neuralNetwork->FeedForword(m_FFT_output_realTime);
+
     // notes to stroke...
     for(auto func : m_functionsOnBufferFill) {
         func(m_FFT_output_realTime, m_notes_output_realTime);
@@ -88,30 +93,26 @@ void SoundProcessor::InvokeOnBufferFill(int16_t *buffer, size_t bufferSize)
 
 void SoundProcessor::FFT(int16_t *buffer, size_t bufferSize)
 {
-#if 1
-    int16_t* real = new int16_t[bufferSize];
-    for(size_t i = 0; i < bufferSize; i++) {
-        real[i] = buffer[i];
-    }
-    fix_fftr(real, std::log2(bufferSize), 1);
-#else
-    double* real = new double[bufferSize];
-    double* imgn = new double[bufferSize];
-
-    for(size_t i = 0; i < bufferSize; i++) {
-        real[i] = buffer[i];
-        imgn[i] = 0.0;
+    using namespace CONF::SOUND_CARD;
+    // check buffer size
+    if(bufferSize < BUFFER_SIZE) {
+        std::cout << "error" << std::endl;
+        return;
     }
 
-    _FFT(1, static_cast<int>(std::log2(FFT_COUNT)), real, imgn);
-
-#endif
-
-    if(m_FFT_output_realTime.size() != FFT_COUNT) {
-        m_FFT_output_realTime.resize(FFT_COUNT);
+    // set up re and im
+    for(size_t i = 0; i < BUFFER_SIZE; i++) {
+        m_FFT_re[i] = buffer[i];
+        m_FFT_im[i] = 0.0;
     }
 
+    // performing FFT
+    _FFT(1, static_cast<int>(log2(FFT_COUNT)), &m_FFT_re[0], &m_FFT_im[0]);
+
+    // calculating results
     for(size_t i = 0; i < FFT_COUNT; i++) {
-        m_FFT_output_realTime[i] = static_cast<float>(real[i]) / 0x10000; // ?
+        float re = m_FFT_re[i];
+        float im = m_FFT_im[i];
+        m_FFT_output_realTime[i] = sqrt((re * re + im * im) * SHORT_K_f);
     }
 }

@@ -87,7 +87,7 @@ std::vector<float> neural_network_tools::Layer::FeedForword(vector<float> inputs
     this->inputs = inputs;
 
     for(size_t i = 0; i < numberOfOutputs; i++) {
-        outputs[i] = biases[i];
+        outputs[i] = biases[i]*0; // edit for bias
         for(size_t j = 0; j < numberOfInputs; j++){
             outputs[i] += inputs[j] * weights[i][j];
         }
@@ -197,8 +197,9 @@ void NeuralNetwork::Learn(size_t times)
     }
 }
 
-long long NeuralNetwork::LearnUntilWork(uint precisionPoint, size_t limit)
+long long NeuralNetwork::LearnUntilWork(uint precisionPoint, size_t blocks, size_t limit)
 {
+    size_t block_count = blocks;
     for(size_t i = 0; i < limit; i++) {
         size_t count = 0;
         for(auto category : m_datasetMap) {
@@ -208,24 +209,28 @@ long long NeuralNetwork::LearnUntilWork(uint precisionPoint, size_t limit)
                 m_net.BackProp(dataset.expectedOutputs);
             }
         }
-        for(auto category : m_datasetMap) {
-            for(auto dataset : category.second) {
-                auto result = m_net.FeedForword(dataset.inputs);
-                bool good = true;
-                for(size_t j = 0; j < result.size(); j++) {
-                    if(std::abs(result[j] - dataset.expectedOutputs[j]) >
-                            static_cast<float>(std::pow(0.1, precisionPoint))) {
-                        good = false;
-                        break;
+        block_count--;
+        if(block_count == 0) {
+            block_count = blocks;
+            for(auto category : m_datasetMap) {
+                for(auto dataset : category.second) {
+                    auto result = m_net.FeedForword(dataset.inputs);
+                    bool good = true;
+                    for(size_t j = 0; j < result.size(); j++) {
+                        if(std::abs(result[j] - dataset.expectedOutputs[j]) >
+                                static_cast<float>(std::pow(0.1, precisionPoint))) {
+                            good = false;
+                            break;
+                        }
+                    }
+                    if(good) {
+                        count--;
                     }
                 }
-                if(good) {
-                    count--;
-                }
             }
-        }
-        if(count == 0) {
-            return static_cast<long long>(i);
+            if(count == 0) {
+                return static_cast<long long>(i);
+            }
         }
     }
     return -1;

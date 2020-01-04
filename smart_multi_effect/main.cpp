@@ -6,17 +6,52 @@
 #include <QDial>
 #include <QVariant>
 
+#include <QChartView>
+#include <QChart>
+#include <QtCharts>
+#include <QLineSeries>
+
 #include "SoundProcessing/soundprocessor.h"
 #include <iostream>
 #include <unistd.h>
 
+#include "conf.h"
+
 const QUrl url(QStringLiteral("qrc:/main.qml"));
+
+using namespace QtCharts;
+using namespace CONF;
+using namespace SOUND_PROCCESSING;
+using namespace SOUND_CARD;
+
+void recNote(std::string note, SoundProcessor& sp)
+{
+    std::list<Stroke::Note> notes;
+    notes.clear();
+    if(note != "silence") {
+        notes.push_back(Stroke::StringToNote(note));
+    }
+
+    std::cout << "\n---------------\n" << std::endl;
+    std::cout << "play: " << note << std::endl;
+    usleep(500*1000);
+    std::cout << "3" << std::endl;
+    usleep(500*1000);
+    std::cout << "2" << std::endl;
+    usleep(500*1000);
+    std::cout << "1" << std::endl;
+    usleep(500*1000);
+    sp.RecordSample(notes);
+    std::cout << "captured!" << std::endl;
+    usleep(750*1000);
+}
 
 int main(int argc, char *argv[])
 {
-#if 1
     //start the application
     QApplication app(argc, argv);
+
+#if 0
     QQmlApplicationEngine engine;
     engine.load(url);
 
@@ -29,92 +64,70 @@ int main(int argc, char *argv[])
     comp.loadUrl(QUrl("qrc:/EffectEdit/EffectEdit.qml"));
 
     //add element
-    QQuickItem *rect1Instance = qobject_cast<QQuickItem *>(comp.create());
-    engine.setObjectOwnership(rect1Instance,QQmlEngine::JavaScriptOwnership);
-    rect1Instance->setParentItem(parent);
-
-
-    //add element
     QQuickItem *rect2Instance = qobject_cast<QQuickItem *>(comp.create());
     engine.setObjectOwnership(rect2Instance,QQmlEngine::JavaScriptOwnership);
     rect2Instance->setParentItem(parent);
-    rect2Instance->setX(500);
 
     auto dial1 = rect2Instance->childItems()[0]->findChild<QQuickItem *>("dial1")->findChild<QQuickItem*>("dial");
-    auto dial2 = rect2Instance->childItems()[0]->findChild<QQuickItem *>("dial2")->findChild<QQuickItem*>("dial");
-    auto dial3 = rect2Instance->childItems()[0]->findChild<QQuickItem *>("dial3")->findChild<QQuickItem*>("dial");
     qDebug() << dial1->property("value");
     dial1->setProperty("value", 1);
     dial1->parentItem()->findChild<QQuickItem *>("TextLable")->setProperty("text", "triger");
-
-    //wait for aplication to close
-//    return app.exec();
 #endif
+
+
 #if 1
     SoundProcessor soundProccessor;
     soundProccessor.Start();
 
+#if 1
 
-    sleep(1);
-#if 0
-    std::string input;
-    std::cout << "\n\n> ";
-    std::cout.flush();
-    std::cin >> input;
-    std::list<Stroke::Note> notes;
-    while(input != "done") {
-        notes.clear();
-        if(input == "s") {
-            soundProccessor.RecordSample({});
-        } else {
-            notes.push_back(Stroke::StringToNote(input));
-            while(std::cin.peek() == ' '){
-                std::cin >> input;
-                notes.push_back(Stroke::StringToNote(input));
-            }
+    //recNote("silence", soundProccessor);
+    //recNote("silence", soundProccessor);
 
-            soundProccessor.RecordSample(notes);
+    recNote("E1", soundProccessor);
+    recNote("E1", soundProccessor);
 
-            for(auto note : notes) {
-                std::cout << Stroke::NoteToString(note) << ", ";
-            }
-            std::cout << std::endl;
-    }
-        std::cout << "\n\n> ";
-        std::cout.flush();
-        std::cin >> input;
-    }
+    recNote("F3", soundProccessor);
+    recNote("F3", soundProccessor);
+
+//    recNote("A2", soundProccessor);
+//    recNote("A2", soundProccessor);
+
+//    recNote("D2", soundProccessor);
+//    recNote("D2", soundProccessor);
+
+    std::cout << "proccessing" << std::endl;
 
     soundProccessor.Learn();
 
-    sleep(3);
+    std::cout << "done" << std::endl;
+
 #endif
-    std::cout << "run: " << std::endl;
+
+    QXYSeries* series = new QSplineSeries();
+    series->clear();
+    series->append(0, 0);
+    series->append(POSSIBLE_NOTES_COUNT, 1);
+
+    QChartView* chartView = new QChartView();
+    chartView->chart()->addSeries(series);
+    chartView->chart()->createDefaultAxes();
+    chartView->show();
 
     soundProccessor.AddFunctionOnBufferFill(
-        [&](std::vector<float> fft, std::vector<float> notes) {
-            for(size_t i = 0; i < notes.size(); i++) {
-                if(notes[i] > 0.4f) {
-                    //std::cout << Stroke::NoteToString(static_cast<Stroke::Note>(i)) << std::endl;
-                }
+        [&](std::vector<float>, std::vector<float> notes) {
+            series->clear();
+            for(size_t i = 0; i <  POSSIBLE_NOTES_COUNT; i++) {
+                series->append(i, notes[i]);
             }
-            float max = 0.0f;
-            size_t maxIndex = 0;
-            for(size_t i = 2; i < fft.size() / 2; i++) {
-                if(fft[i] > max) {
-                    maxIndex = i;
-                    max = fft[i];
-                }
-            }
-            if(max >= dial1->property("value").toFloat())
-                std::cout << maxIndex << " : " << max << std::endl;
+            usleep(1000);
         });
 
-    return app.exec();//---
-    while(true) {
-        sleep(1);
-    }
+
+
 #endif
+    return app.exec();
+
 #if 0
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 

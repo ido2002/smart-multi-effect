@@ -1,4 +1,4 @@
-QT += quick quickwidgets
+QT += quick quickwidgets charts
 
 QT += multimedia
 
@@ -23,7 +23,6 @@ SOURCES += \
         EffectController/potentiometer.cpp \
         EffectController/preset.cpp \
         RiffRecognition/riff.cpp \
-        SoundProcessing/fix_fft.cpp \
         SoundProcessing/neuralnetwork.cpp \
         SoundProcessing/soundcard.cpp \
         SoundProcessing/soundprocessor.cpp \
@@ -55,7 +54,6 @@ HEADERS += \
     EffectController/preset.h \
     RiffRecognition/riff.h \
     SoundProcessing/FFT.h \
-    SoundProcessing/fix_fft.h \
     SoundProcessing/neuralnetwork.h \
     SoundProcessing/soundcard.h \
     SoundProcessing/soundprocessor.h \

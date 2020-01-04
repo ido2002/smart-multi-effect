@@ -8,7 +8,7 @@
 #include <map>
 
 namespace neural_network_tools {
-const float learningRate = 0.003f;
+const float learningRate = 0.3f;
 
 using namespace std;
 
@@ -90,7 +90,7 @@ public:
     void ResetWeightsAndBiases();
 
     void Learn(size_t times);
-    long long LearnUntilWork(uint precisionPoint = 2, size_t limit = 50000/*50k*/);
+    long long LearnUntilWork(uint precisionPoint = 2, size_t blocks = 100, size_t limit = 50000/*50k*/);
 
     void AddData(NetworkDataSet data);
     void AddData(std::string category, NetworkDataSet data);
