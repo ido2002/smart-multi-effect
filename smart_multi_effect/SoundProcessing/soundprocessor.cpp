@@ -72,7 +72,14 @@ void SoundProcessor::RecordSample(std::list<Stroke::Note> notes)
 
 void SoundProcessor::Learn()
 {
-    std::cout << "learning times[1, 50000, 5000]: " << m_neuralNetwork->LearnUntilWork(1, 50000, 5000) << std::endl;
+    int learned = 0;
+    int max = 1000;
+    int jump = 10;
+    for(int i = 0; i <= max; i += jump) {
+        m_neuralNetwork->Learn(i - learned);
+        learned = i;
+        std::cout << (learned * 100 / max) << "% learned[" << max << "]: " << learned << std::endl;
+    }
 }
 
 void SoundProcessor::LoadNetwork()

@@ -8,7 +8,7 @@
 #include <map>
 
 namespace neural_network_tools {
-const float learningRate = 0.3f;
+const float learningRate = 0.03f;
 
 using namespace std;
 

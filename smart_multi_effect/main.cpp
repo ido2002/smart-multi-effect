@@ -24,26 +24,36 @@ using namespace CONF;
 using namespace SOUND_PROCCESSING;
 using namespace SOUND_CARD;
 
+typedef Stroke::Note Note;
+
 void recNote(std::string note, SoundProcessor& sp)
 {
-    std::list<Stroke::Note> notes;
+    std::list<Note> notes;
     notes.clear();
     if(note != "silence") {
         notes.push_back(Stroke::StringToNote(note));
     }
 
     std::cout << "\n---------------\n" << std::endl;
+    usleep(200*1000);
     std::cout << "play: " << note << std::endl;
-    usleep(500*1000);
-    std::cout << "3" << std::endl;
-    usleep(500*1000);
-    std::cout << "2" << std::endl;
-    usleep(500*1000);
-    std::cout << "1" << std::endl;
-    usleep(500*1000);
-    sp.RecordSample(notes);
-    std::cout << "captured!" << std::endl;
     usleep(750*1000);
+    std::cout << "3" << std::endl;
+    usleep(200*1000);
+    std::cout << "2" << std::endl;
+    usleep(200*1000);
+    std::cout << "1" << std::endl;
+    usleep(200*1000);
+    std::cout << "listening..." << std::endl;
+    sp.RecordSample(notes);
+    usleep(50*1000);
+    sp.RecordSample(notes);
+    usleep(50*1000);
+    sp.RecordSample(notes);
+    usleep(50*1000);
+    sp.RecordSample(notes);
+    std::cout << "captured 4 snapshots!" << std::endl;
+    usleep(100*1000);
 }
 
 int main(int argc, char *argv[])
@@ -81,20 +91,27 @@ int main(int argc, char *argv[])
 
 #if 1
 
-    //recNote("silence", soundProccessor);
-    //recNote("silence", soundProccessor);
+    std::list<Note> AllNotes;
+    for(Note n = Note::E0; n <= Note::E4; n = static_cast<Note>(n + 1)) {
+        //AllNotes.push_back(n);
+    }
 
-    recNote("E1", soundProccessor);
-    recNote("E1", soundProccessor);
+    AllNotes.push_back(Note::C1);
+    AllNotes.push_back(Note::D1);
+    AllNotes.push_back(Note::E1);
+    AllNotes.push_back(Note::F1);
+    AllNotes.push_back(Note::G1);
+    AllNotes.push_back(Note::A2);
+    AllNotes.push_back(Note::B2);
+    AllNotes.push_back(Note::C2);
+    AllNotes.push_back(Note::D2);
+    AllNotes.push_back(Note::E2);
+    AllNotes.push_back(Note::F2);
+    AllNotes.push_back(Note::G2);
 
-    recNote("F3", soundProccessor);
-    recNote("F3", soundProccessor);
-
-//    recNote("A2", soundProccessor);
-//    recNote("A2", soundProccessor);
-
-//    recNote("D2", soundProccessor);
-//    recNote("D2", soundProccessor);
+    for(Note n : AllNotes) {
+        recNote(Stroke::NoteToString(n), soundProccessor);
+    }
 
     std::cout << "proccessing" << std::endl;
 

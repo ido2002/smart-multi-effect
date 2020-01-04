@@ -83,7 +83,11 @@ Stroke::Note Stroke::StringToNote(std::string str)
     int octave = 0;
 
     if(str.size() == 3 && str[1] == 'b') {
-        note = static_cast<Note>(note - 1);
+        if(note == A0) {
+            note = Ab0;
+        } else {
+            note = static_cast<Note>(note - 1);
+        }
         octave = static_cast<int>(str[2] - '0');
     }
     if(str.size() == 2) {
