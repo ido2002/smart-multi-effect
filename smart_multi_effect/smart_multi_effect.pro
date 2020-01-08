@@ -27,6 +27,7 @@ SOURCES += \
         SoundProcessing/soundcard.cpp \
         SoundProcessing/soundprocessor.cpp \
         SoundProcessing/stroke.cpp \
+        jsonreader.cpp \
         main.cpp
 
 RESOURCES += GUI/qml.qrc
@@ -58,4 +59,5 @@ HEADERS += \
     SoundProcessing/soundcard.h \
     SoundProcessing/soundprocessor.h \
     SoundProcessing/stroke.h \
-    conf.h
+    conf.h \
+    jsonreader.h

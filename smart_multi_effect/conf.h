@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include <vector>
 #include <QAudioFormat>
+#include <QString>
 
 namespace CONF
 {
@@ -48,6 +49,10 @@ namespace SOUND_PROCCESSING {
     const uint RECORDING_WAIT_TIME_MILLISECONDS = 100;
 }
 
+namespace NETWORK_DATA {
+    const QString NET_CONF_PATH = "/home/ido/Development/prototypeCode/NetworkData/net.data";
+    const QString DATASET_PATH = "/home/ido/Development/prototypeCode/NetworkData/RecordedData/";
+}
 };
 
 #endif // CONF_H

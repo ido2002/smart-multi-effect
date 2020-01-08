@@ -6,6 +6,8 @@
 #include <vector>
 #include <list>
 #include <map>
+#include <QString>
+#include <QVariantMap>
 
 namespace neural_network_tools {
 const float learningRate = 0.03f;
@@ -26,6 +28,9 @@ public:
     void BackPropOutput(vector<float> expected);
 
     void BackPropHidden(vector<float> gammaForward, vector<vector<float>> weightsforward);
+
+    void MapToLayer(QVariantMap map);
+    QVariantMap LayerToMap();
 
 public:
     size_t numberOfInputs;
@@ -51,6 +56,9 @@ public:
 
     void BackProp(vector<float> expected);
 
+    void LoadFromJson(QString path);
+    void SaveToJson(QString path);
+
 private:
     vector<size_t> layer;
     vector<Layer*> layers;
@@ -74,6 +82,10 @@ struct NetworkDataSet
         return NetworkDataSet(inputs, expectedOutputs);
     }
 
+    void SaveToJson(QString path);
+
+    void LoadFromJson(QString path);
+
     std::vector<float> inputs;
     std::vector<float> expectedOutputs;
 };
@@ -95,6 +107,10 @@ public:
     void AddData(NetworkDataSet data);
     void AddData(std::string category, NetworkDataSet data);
     void LoadData(std::string path);
+    void SaveData(std::string path);
+
+    void SaveNetwork(QString path) { m_net.SaveToJson(path); }
+    void LoadNetwork(QString path) { m_net.LoadFromJson(path); }
 
     void ClearData();
     void ClearData(std::string category);

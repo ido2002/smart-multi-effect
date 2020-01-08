@@ -49,10 +49,17 @@ void SoundProcessor::AddSample(std::vector<float> FFT_output, std::list<Stroke::
     for(auto& it : expected) {
         it = 0.0f;
     }
+    QString name = "silnce";
+    size_t i = 0;
     for(auto note : notes) {
+        if(i == 0) {
+            name = QString::fromStdString(Stroke::NoteToString(note));
+        } else {
+            name += "-" + QString::fromStdString(Stroke::NoteToString(note));
+        }
         expected[static_cast<size_t>(note)] = 1.0f;
     }
-    m_neuralNetwork->AddData(NetworkDataSet(FFT_output, expected));
+    m_neuralNetwork->AddData(name.toStdString(), NetworkDataSet(FFT_output, expected));
 }
 
 void SoundProcessor::RecordSample(std::list<Stroke::Note> notes)
@@ -72,19 +79,24 @@ void SoundProcessor::RecordSample(std::list<Stroke::Note> notes)
 
 void SoundProcessor::Learn()
 {
-    int learned = 0;
-    int max = 1000;
-    int jump = 10;
-    for(int i = 0; i <= max; i += jump) {
-        m_neuralNetwork->Learn(i - learned);
-        learned = i;
-        std::cout << (learned * 100 / max) << "% learned[" << max << "]: " << learned << std::endl;
-    }
+    m_neuralNetwork->Learn(500);
 }
 
-void SoundProcessor::LoadNetwork()
-{
 
+void SoundProcessor::Save(bool data, bool network)
+{
+    if(network)
+        m_neuralNetwork->SaveNetwork(CONF::NETWORK_DATA::NET_CONF_PATH);
+    if(data)
+        m_neuralNetwork->SaveData(CONF::NETWORK_DATA::DATASET_PATH.toStdString());
+}
+
+void SoundProcessor::Load(bool data, bool network)
+{
+    if(network)
+        m_neuralNetwork->LoadNetwork(CONF::NETWORK_DATA::NET_CONF_PATH);
+    if(data)
+        m_neuralNetwork->LoadData(CONF::NETWORK_DATA::DATASET_PATH.toStdString());
 }
 
 void SoundProcessor::InvokeOnBufferFill(int16_t *buffer, size_t bufferSize)

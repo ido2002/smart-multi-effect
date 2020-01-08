@@ -1,6 +1,16 @@
 #include "neuralnetwork.h"
 #include <cmath>
 #include <ctime>
+#include <QString>
+#include <QDir>
+#include <QUrl>
+#include <QFile>
+#include <QJsonObject>
+#include <QVariant>
+#include <QVariantMap>
+#include <QVariantList>
+#include "jsonreader.h"
+#include <iostream>
 
 neural_network_tools::Network::Network(vector<std::size_t> layer) {
     this->layer.resize(layer.size());
@@ -49,6 +59,47 @@ void neural_network_tools::Network::BackProp(vector<float> expected)
     for(size_t i = 0; i < layers.size(); i++) {
         layers[i]->UpdateWeights();
     }
+}
+
+void neural_network_tools::Network::LoadFromJson(QString path)
+{
+    QVariantMap map;
+    if(!JsonReader::readJsonFile(path, map)) return;
+
+    auto layer = map.find("layer").value().toList();
+    this->layer.clear();
+    this->layer.resize(layer.size());
+    for(int i = 0; i < layer.size(); i++) {
+        this->layer[i] = layer[i].toInt();
+    }
+
+    auto layers = map.find("layers").value().toList();
+    this->layers.clear();
+    this->layers.resize(layers.size());
+
+    for(int i = 0; i < layers.size(); i++) {
+        this->layers[i] = new Layer(this->layer[i], this->layer[i+1]);
+        this->layers[i]->MapToLayer(layers[i].toMap());
+    }
+}
+
+void neural_network_tools::Network::SaveToJson(QString path)
+{
+    QVariantMap map;
+
+    QVariantList layer;
+    for(size_t i = 0; i < this->layer.size(); i++) {
+        layer.push_back((quint64)this->layer[i]);
+    }
+    map.insert("layer", layer);
+
+    QVariantList layers;
+    for(size_t i = 0; i < this->layers.size(); i++) {
+        layers.push_back(this->layers[i]->LayerToMap());
+    }
+    map.insert("layers", layers);
+
+    JsonReader::writeJsonFile(map, path);
 }
 
 neural_network_tools::Layer::Layer(std::size_t numberOfInputs, std::size_t numberOfOutputs){
@@ -162,6 +213,46 @@ void neural_network_tools::Layer::BackPropHidden(vector<float> gammaForward, vec
     }
 }
 
+void neural_network_tools::Layer::MapToLayer(QVariantMap map)
+{
+    auto weights = map.find("weights").value().toList();
+    this->weights.resize(weights.size());
+    for(int i = 0; i < weights.size(); i++) {
+        this->weights[i].resize(weights[i].toList().size());
+        for(int j = 0; j < weights[i].toList().size(); j++) {
+            this->weights[i][j] = weights[i].toList()[j].toFloat();
+        }
+    }
+
+    auto biases = map.find("biases").value().toList();
+    this->biases.resize(biases.size());
+    for(int i = 0; i < biases.size(); i++) {
+        this->biases[i] = biases[i].toFloat();
+    }
+}
+
+QVariantMap neural_network_tools::Layer::LayerToMap()
+{
+    QVariantMap map;
+    QVariantList biases;
+    for(size_t i = 0; i < this->biases.size(); i++) {
+        biases.push_back(this->biases[i]);
+    }
+    map.insert("biases", biases);
+
+    QVariantList weights;
+    for(size_t i = 0; i < this->weights.size(); i++) {
+        QVariantList list;
+        for(size_t j = 0; j < this->weights[i].size(); j++) {
+            list.push_back(this->weights[i][j]);
+        }
+        weights.push_back(list);
+    }
+    map.insert("weights", weights);
+
+    return map;
+}
+
 // ------------------ NeuralNetworkManager ------------------
 
 NeuralNetwork::NeuralNetwork(std::vector<size_t> layer) : m_net(layer)
@@ -187,12 +278,15 @@ void NeuralNetwork::ResetWeightsAndBiases()
 
 void NeuralNetwork::Learn(size_t times)
 {
-    for(size_t i = 0; i < times; i++) {
+    for(size_t i = 1; i <= times; i++) {
         for(auto category : m_datasetMap) {
             for(auto dataset : category.second) {
                 m_net.FeedForword(dataset.inputs);
                 m_net.BackProp(dataset.expectedOutputs);
             }
+        }
+        if((i*100)%times == 0) {
+            std::cout << (i*100)/times << "% learned[" << i << " / " << times << "]" << std::endl;
         }
     }
 }
@@ -208,6 +302,9 @@ long long NeuralNetwork::LearnUntilWork(uint precisionPoint, size_t blocks, size
                 m_net.FeedForword(dataset.inputs);
                 m_net.BackProp(dataset.expectedOutputs);
             }
+        }
+        if(((i%blocks + 1)*100) % blocks == 0) {
+            std::cout << ((i%blocks + 1)*100)/blocks << "% learned[" << i%blocks + 1 << " / " << blocks << "] total: " << i + 1 << std::endl;
         }
         block_count--;
         if(block_count == 0) {
@@ -262,16 +359,73 @@ void NeuralNetwork::ClearData(std::string category)
     }
 }
 
-#include <QString>
-#include <QDir>
-#include <QUrl>
-#include <QFile>
-#include <QJsonObject>
-#include <QVariant>
-#include <QVariantMap>
-#include <QVariantList>
-
-void NeuralNetwork::LoadData(std::string path) //For Gabi
+void NeuralNetwork::LoadData(std::string path)
 {
+    QVariantMap map;
+    QString _path;
+    _path = QString::fromStdString(path) + "data.data";
+    if(!JsonReader::readJsonFile(_path, map)) return;
 
+    for(auto paths : map) {
+        for (int i = 0; i < paths.toList().size(); i++) {
+            NetworkDataSet data({}, {});
+            data.LoadFromJson(paths.toList()[i].toString());
+            this->AddData(paths.toList()[i].toString().toStdString(), data);
+        }
+    }
+}
+
+void NeuralNetwork::SaveData(std::string path)
+{
+    QVariantMap map;
+    for(auto dataList : m_datasetMap) {
+        QVariantList list;
+        QString name = QString::fromStdString(dataList.first);
+        size_t i = 0;
+        for(auto data : dataList.second) {
+            QString subName = name + "_" + QString::number(i);
+            QString url = QString::fromStdString(path) + name + "/" + subName + ".data";
+            data.SaveToJson(url);
+            list.push_back(url);
+            i++;
+        }
+        map.insert(name, list);
+    }
+    JsonReader::writeJsonFile(map, QString::fromStdString(path) + "data.data");
+}
+
+void NetworkDataSet::SaveToJson(QString path)
+{
+    QVariantMap map;
+    QVariantList inputs;
+    for(size_t i = 0; i < this->inputs.size(); i++) {
+        inputs.push_back(this->inputs[i]);
+    }
+    map.insert("inputs", inputs);
+
+    QVariantList expectedOutputs;
+    for(size_t i = 0; i < this->expectedOutputs.size(); i++) {
+        expectedOutputs.push_back(this->expectedOutputs[i]);
+    }
+    map.insert("expectedOutputs", expectedOutputs);
+
+    JsonReader::writeJsonFile(map, path);
+}
+
+void NetworkDataSet::LoadFromJson(QString path)
+{
+    QVariantMap map;
+    if(!JsonReader::readJsonFile(path, map)) return;
+
+    auto inputs = map.find("inputs").value().toList();
+    this->inputs.resize(inputs.size());
+    for(int i = 0; i < inputs.size(); i++) {
+        this->inputs[i] = inputs[i].toFloat();
+    }
+
+    auto expectedOutputs = map.find("expectedOutputs").value().toList();
+    this->expectedOutputs.resize(expectedOutputs.size());
+    for(int i = 0; i < expectedOutputs.size(); i++) {
+        this->expectedOutputs[i] = expectedOutputs[i].toFloat();
+    }
 }

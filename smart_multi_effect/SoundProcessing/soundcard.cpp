@@ -26,8 +26,6 @@ SoundCard::SoundCard(QAudioFormat::Endian byteOrder, int channelCount, QString c
 
     m_audioInput = new QAudioInput(m_audioInfo, m_audioFormat);
 
-    qDebug() << "start listening...";
-
     m_audioInput->setBufferSize(static_cast<int>(m_bufferSize * 4));
     m_rawBuffer = new int16_t[m_bufferSize * 2/*chanels*/];
     m_ch1_buffer = new int16_t[m_bufferSize];

@@ -21,7 +21,9 @@ public:
     void RecordSample(std::list<Stroke::Note> notes);
 
     void Learn();
-    void LoadNetwork(); //Gabi
+
+    void Save(bool data = true, bool network = true);
+    void Load(bool data = true, bool network = true);
 
 private:
     void InvokeOnBufferFill(int16_t* buffer, size_t bufferSize);

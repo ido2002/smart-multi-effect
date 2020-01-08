@@ -17,6 +17,8 @@
 
 #include "conf.h"
 
+#include <limits>
+
 const QUrl url(QStringLiteral("qrc:/main.qml"));
 
 using namespace QtCharts;
@@ -35,25 +37,28 @@ void recNote(std::string note, SoundProcessor& sp)
     }
 
     std::cout << "\n---------------\n" << std::endl;
-    usleep(200*1000);
     std::cout << "play: " << note << std::endl;
-    usleep(750*1000);
+    std::cout << "Press Enter to Continue...";
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
+    usleep(1000*1000);
     std::cout << "3" << std::endl;
-    usleep(200*1000);
+    usleep(500*1000);
     std::cout << "2" << std::endl;
-    usleep(200*1000);
+    usleep(500*1000);
     std::cout << "1" << std::endl;
-    usleep(200*1000);
+    usleep(500*1000);
     std::cout << "listening..." << std::endl;
     sp.RecordSample(notes);
-    usleep(50*1000);
+    usleep(150*1000);
     sp.RecordSample(notes);
-    usleep(50*1000);
+    usleep(150*1000);
     sp.RecordSample(notes);
-    usleep(50*1000);
+    usleep(150*1000);
     sp.RecordSample(notes);
     std::cout << "captured 4 snapshots!" << std::endl;
-    usleep(100*1000);
+    usleep(300*1000);
+    std::cout << "..." << std::endl;
+    usleep(750*1000);
 }
 
 int main(int argc, char *argv[])
@@ -85,41 +90,40 @@ int main(int argc, char *argv[])
 #endif
 
 
-#if 1
+#if 1  //sound card
     SoundProcessor soundProccessor;
+
+
+#if 0  //record
     soundProccessor.Start();
-
-#if 1
-
     std::list<Note> AllNotes;
-    for(Note n = Note::E0; n <= Note::E4; n = static_cast<Note>(n + 1)) {
-        //AllNotes.push_back(n);
+    for(Note n = Note::E0; n <= Note::D4/*E4*/; n = static_cast<Note>(n + 1)) {
+        AllNotes.push_back(n);
     }
-
-    AllNotes.push_back(Note::C1);
-    AllNotes.push_back(Note::D1);
-    AllNotes.push_back(Note::E1);
-    AllNotes.push_back(Note::F1);
-    AllNotes.push_back(Note::G1);
-    AllNotes.push_back(Note::A2);
-    AllNotes.push_back(Note::B2);
-    AllNotes.push_back(Note::C2);
-    AllNotes.push_back(Note::D2);
-    AllNotes.push_back(Note::E2);
-    AllNotes.push_back(Note::F2);
-    AllNotes.push_back(Note::G2);
-
     for(Note n : AllNotes) {
         recNote(Stroke::NoteToString(n), soundProccessor);
     }
-
-    std::cout << "proccessing" << std::endl;
-
-    soundProccessor.Learn();
-
+    soundProccessor.Save(true, false);
+#else
+    std::cout << "loading..." << std::endl;
+    soundProccessor.Load(true, true);
     std::cout << "done" << std::endl;
 
-#endif
+#endif //record
+
+
+#if 0  //learn
+    std::cout << "proccessing" << std::endl;
+    for(int i = 0; i < 10000; i++) {
+        std::cout << "\n\n\n-- " << i << " --\n" << std::endl;
+        soundProccessor.Learn();
+        soundProccessor.Save(false, true);
+    }
+    std::cout << "done" << std::endl;
+#else
+    //soundProccessor.Load(false, true);
+#endif //learn
+    soundProccessor.Start();
 
     QXYSeries* series = new QSplineSeries();
     series->clear();
@@ -139,10 +143,8 @@ int main(int argc, char *argv[])
             }
             usleep(1000);
         });
+#endif //sound card
 
-
-
-#endif
     return app.exec();
 
 #if 0
