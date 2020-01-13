@@ -14,13 +14,13 @@ public:
     void Stop();
 
     void AddFunctionOnBufferFill(
-            std::function<void(std::vector<float> fft, std::vector<float> notes)> func);
+            std::function<void(std::vector<float> fft, std::vector<float> notes, float volume)> func);
 
     void LoadSamples(std::string path);
-    void AddSample(std::vector<float> FFT_output, std::list<Stroke::Note> notes);
-    void RecordSample(std::list<Stroke::Note> notes);
+    void AddSample(std::vector<float> FFT_output, std::vector<Stroke::Note> notes);
+    void RecordSample(std::vector<Stroke::Note> notes);
 
-    void Learn();
+    void Learn(size_t times = 500);
 
     void Save(bool data = true, bool network = true);
     void Load(bool data = true, bool network = true);
@@ -39,8 +39,10 @@ private:
     std::vector<double> m_FFT_re;
     std::vector<double> m_FFT_im;
 
+    float avgVolume;
+
     std::list<std::function<void(
-            std::vector<float> fft, std::vector<float> notes)>> m_functionsOnBufferFill;
+            std::vector<float> fft, std::vector<float> notes, float volume)>> m_functionsOnBufferFill;
 };
 
 #endif // SOUNDPROCESSOR_H

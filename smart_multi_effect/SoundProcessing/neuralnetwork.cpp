@@ -190,7 +190,7 @@ void neural_network_tools::Layer::BackPropOutput(vector<float> expected)
         for(size_t j = 0; j < numberOfInputs; j++) {
             weightsDelta[i][j] = gamma[i] * inputs[j];
         }
-        biases[i] -= gamma[i] * learningRate;
+        biases[i] -= gamma[i] * learningRate * 500;
     }
 
 }

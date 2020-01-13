@@ -65,7 +65,7 @@ void SoundCard::Start()
 
         m_iodevice = m_audioInput->start();
 
-        while(true) {
+        while(running) {
             //read to buffer
             bufferPos += (m_iodevice->read(&buffer[bufferPos * sampleSize], (m_bufferSize-bufferPos) * sampleSize)) / sampleSize;
 
@@ -109,6 +109,7 @@ void SoundCard::Start()
 void SoundCard::Stop()
 {
     running = false;
+    m_readThread->join();
     delete m_readThread;
     m_readThread = nullptr;
 }

@@ -3,8 +3,14 @@
 #include "FFT.h"
 #include <iostream>
 #include <cmath>
+#include <unistd.h>
+
+#define K * 1000
+
+const float MAX_SHORT = 1 << 15;
 
 const float SHORT_K_f = (100.0f / ((long)1 << 30));
+
 
 using namespace CONF::SOUND_PROCCESSING;
 
@@ -33,7 +39,7 @@ void SoundProcessor::Stop()
     m_soundCard->Stop();
 }
 
-void SoundProcessor::AddFunctionOnBufferFill(std::function<void (std::vector<float>, std::vector<float>)> func)
+void SoundProcessor::AddFunctionOnBufferFill(std::function<void (std::vector<float>, std::vector<float>, float volume)> func)
 {
     m_functionsOnBufferFill.push_back(func);
 }
@@ -43,7 +49,7 @@ void SoundProcessor::LoadSamples(std::string path)
     m_neuralNetwork->LoadData(path);
 }
 
-void SoundProcessor::AddSample(std::vector<float> FFT_output, std::list<Stroke::Note> notes)
+void SoundProcessor::AddSample(std::vector<float> FFT_output, std::vector<Stroke::Note> notes)
 {
     std::vector<float> expected(POSSIBLE_NOTES_COUNT);
     for(auto& it : expected) {
@@ -58,28 +64,55 @@ void SoundProcessor::AddSample(std::vector<float> FFT_output, std::list<Stroke::
             name += "-" + QString::fromStdString(Stroke::NoteToString(note));
         }
         expected[static_cast<size_t>(note)] = 1.0f;
+        i++;
     }
     m_neuralNetwork->AddData(name.toStdString(), NetworkDataSet(FFT_output, expected));
 }
 
-void SoundProcessor::RecordSample(std::list<Stroke::Note> notes)
+void SoundProcessor::RecordSample(std::vector<Stroke::Note> notes)
 {
     bool beginning_state = m_soundCard->IsRunning();
     Start();
 
-    //wait for high volume
+    std::cout << "wating for[ ";
+    for(auto note : notes) {
+        std::cout << Stroke::NoteToString(note) << " ";
+    }
+    std::cout << "]to be played..." << std::endl;
+    usleep(300 K);
+    std::cout << "..." << std::endl;
 
-    //while high volume: Add and wait RECORDING_WAIT_TIME_MILLISECOND
-    AddSample(m_FFT_output_realTime, notes);
+    if(notes.size() == 0) {
+        while(avgVolume > RECORDING_SILENCE_THRESHOLD)usleep(10);
+
+        usleep(RECORDING_START_WAIT_TIME_MILLISECONDS K);
+
+        for(size_t i = 0; i < RECORDING_TIMES_LIMIT && avgVolume < RECORDING_SILENCE_THRESHOLD; i++) {
+            AddSample(m_FFT_output_realTime, notes);
+            std::cout << "recorded!" << std::endl;
+            usleep(RECORDING_WAIT_TIME_MILLISECONDS K);
+        }
+    } else {
+        while(avgVolume < RECORDING_VOLUME_THRESHOLD)usleep(10);
+
+        usleep(RECORDING_START_WAIT_TIME_MILLISECONDS K);
+
+        for(size_t i = 0; i < RECORDING_TIMES_LIMIT && avgVolume > RECORDING_VOLUME_THRESHOLD; i++) {
+            AddSample(m_FFT_output_realTime, notes);
+            std::cout << "recorded!" << std::endl;
+            usleep(RECORDING_WAIT_TIME_MILLISECONDS K);
+        }
+    }
+    std::cout << "done!" << std::endl;
 
     if(beginning_state == false) {
         Stop();
     }
 }
 
-void SoundProcessor::Learn()
+void SoundProcessor::Learn(size_t times)
 {
-    m_neuralNetwork->Learn(500);
+    m_neuralNetwork->Learn(times);
 }
 
 
@@ -104,9 +137,16 @@ void SoundProcessor::InvokeOnBufferFill(int16_t *buffer, size_t bufferSize)
     FFT(buffer, bufferSize);
     m_notes_output_realTime = m_neuralNetwork->FeedForword(m_FFT_output_realTime);
 
+    avgVolume = 0;
+    for(size_t i = 0; i < bufferSize; i++) {
+        avgVolume += abs(buffer[i]) * RECORDING_VOLUME_BOOST / MAX_SHORT;
+    }
+
+    avgVolume /= bufferSize;
+
     // notes to stroke...
     for(auto func : m_functionsOnBufferFill) {
-        func(m_FFT_output_realTime, m_notes_output_realTime);
+        func(m_FFT_output_realTime, m_notes_output_realTime, avgVolume);
     }
 }
 
@@ -133,5 +173,6 @@ void SoundProcessor::FFT(int16_t *buffer, size_t bufferSize)
         float re = m_FFT_re[i];
         float im = m_FFT_im[i];
         m_FFT_output_realTime[i] = sqrt((re * re + im * im) * SHORT_K_f);
+        //m_FFT_output_realTime[i] = std::tanh(30 * std::pow(m_FFT_output_realTime[i], 6));
     }
 }
