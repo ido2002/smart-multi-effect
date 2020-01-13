@@ -33,70 +33,6 @@ typedef Stroke::Note Note;
 
 using namespace std;
 
-void recNote(vector<string> _notes, SoundProcessor& sp)
-{
-    std::vector<Note> notes;
-    notes.clear();
-    for(auto note : _notes) {
-        notes.push_back(Stroke::StringToNote(note));
-    }
-
-    std::cout << "\n---------------\n" << std::endl;
-    std::cout << "play: ";
-    for(auto note : _notes) {
-        std::cout << note << " ";
-    }
-    std::cout << " hard" << std::endl;
-    std::cout << "Press Enter to Continue...";
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
-    usleep(1000*1000);
-    std::cout << "3" << std::endl;
-    usleep(500*1000);
-    std::cout << "2" << std::endl;
-    usleep(500*1000);
-    std::cout << "1" << std::endl;
-    usleep(500*1000);
-    std::cout << "listening..." << std::endl;
-    sp.RecordSample(notes);
-    usleep(150*1000);
-    sp.RecordSample(notes);
-    usleep(150*1000);
-    sp.RecordSample(notes);
-    usleep(150*1000);
-    sp.RecordSample(notes);
-    std::cout << "captured 4 snapshots!" << std::endl;
-    usleep(300*1000);
-    std::cout << "..." << std::endl;
-#if 1 // second time
-    usleep(750*1000);std::cout << "play: ";
-    for(auto note : _notes) {
-        std::cout << note << " ";
-    }
-    std::cout << " soft" << std::endl;
-    std::cout << "Press Enter to Continue...";
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
-    usleep(1000*1000);
-    std::cout << "3" << std::endl;
-    usleep(500*1000);
-    std::cout << "2" << std::endl;
-    usleep(500*1000);
-    std::cout << "1" << std::endl;
-    usleep(500*1000);
-    std::cout << "listening..." << std::endl;
-    sp.RecordSample(notes);
-    usleep(150*1000);
-    sp.RecordSample(notes);
-    usleep(150*1000);
-    sp.RecordSample(notes);
-    usleep(150*1000);
-    sp.RecordSample(notes);
-    std::cout << "captured 4 snapshots!" << std::endl;
-    usleep(300*1000);
-    std::cout << "..." << std::endl;
-    usleep(750*1000);
-#endif
-}
-
 float timerFunc(std::function<void()> func)
 {
     auto temp = std::chrono::steady_clock::now();
@@ -138,35 +74,34 @@ int main(int argc, char *argv[])
 #if 1  //sound card
     SoundProcessor soundProccessor;
 
-#if 1  //record
+#if 0  //record
 
-    //std::cout << "loading data..." << std::endl;
-    //timerFunc([&](){ soundProccessor.Load(true, false); });
+    std::cout << "loading data..." << std::endl;
+    timerFunc([&](){ soundProccessor.Load(true, false); });
 
     soundProccessor.Start();
     std::list<Note> AllNotes;
-    for(Note n = Note::E0; n <= Note::G0/*E4*/; n = static_cast<Note>(n + 1)) {
-        AllNotes.push_back(n);
+    for(Note n = Note::E0; n <= Note::D4/*E4*/; n = static_cast<Note>(n + 1)) {
+        //AllNotes.push_back(n);
     }
-//    recNote({ "E0", "A1", "D1", "G1", "B2", "E2" }, soundProccessor); //open
-//    recNote({ "E0", "B1", "E1", "G1", "B2", "E2" }, soundProccessor); //Em
-//    recNote({       "A1", "E1", "A1", "C2", "E2" }, soundProccessor); //Am
-//    recNote({       "C1", "E1", "G1", "C2", "E2" }, soundProccessor); //C
+
     for(Note n : AllNotes) {
         soundProccessor.RecordSample({n});
         sleep(2);
     }
 
-    //std::cout << "saving data..." << std::endl;
-    //soundProccessor.Save(true, false);
-    //std::cout << "done!" << std::endl;
+    soundProccessor.RecordSample({});
+
+    std::cout << "saving data..." << std::endl;
+    soundProccessor.Save(true, false);
+    std::cout << "done!" << std::endl;
 #else
     std::cout << "loading data..." << std::endl;
     timerFunc([&](){ soundProccessor.Load(true, false); });
 
 #endif
 
-#if 0 //load network
+#if 1 //load network
     std::cout << "loading network..." << std::endl;
     timerFunc([&](){ soundProccessor.Load(false, true); });
 #endif
@@ -175,12 +110,12 @@ int main(int argc, char *argv[])
     soundProccessor.Stop();
     std::cout << "proccessing" << std::endl;
     float time_past = 0;
-    int times = 2;
+    int times = 100;
     for(int i = 1; i <= times; i++) {
-        std::cout << "\n\n\n-- " << i << " --\n" << std::endl;
-        time_past += timerFunc([&](){ soundProccessor.Learn(20); });
-        //std::cout << "learned! saving network..." << std::endl;
-        //time_past += timerFunc([&](){ soundProccessor.Save(false, true); });
+        std::cout << "\n\n\n-- " << i << " / " << times <<" --\n" << std::endl;
+        time_past += timerFunc([&](){ soundProccessor.Learn(50); });
+        std::cout << "learned! saving network..." << std::endl;
+        time_past += timerFunc([&](){ soundProccessor.Save(false, true); });
         float avgTime = time_past / i;
         std::cout << "time past: " << time_past << " seconds!\n";
         std::cout << "remaining time: " << (times - i) * avgTime / 3600.0f << " hours!" << std::endl;
@@ -212,7 +147,7 @@ int main(int argc, char *argv[])
 
 #if 1
     soundProccessor.AddFunctionOnBufferFill(
-        [&](std::vector<float>, std::vector<float> notes, float) {
+        [&](std::vector<float>, std::vector<float> notes, float volume) {
             strongNotes.clear();
             series->clear();
             for(size_t i = 0; i < POSSIBLE_NOTES_COUNT; i++) {
@@ -220,20 +155,20 @@ int main(int argc, char *argv[])
                 if(notes[i] > 0.25f) {
                     if(notes[i] > 0.85) {
                         strongNotes.push_back((Note)i);
-                        cout << Stroke::NoteToString((Note)i) << " ";
+                        std::cout << Stroke::NoteToString((Note)i) << " ";
                     }
                     else {
                         for(Note note : PstrongNotes) {
                             if((Note)i == note) {
                                 strongNotes.push_back((Note)i);
-                                cout << Stroke::NoteToString((Note)i) << " ";
+                                std::cout << Stroke::NoteToString((Note)i) << " ";
                             }
                         }
                     }
                 }
             }
             if(strongNotes.size() > 0)
-                cout << endl;
+                std::cout << volume << std::endl;
             PstrongNotes.clear();
             for(Note note : strongNotes) {
                 PstrongNotes.push_back(note);

@@ -87,9 +87,9 @@ void SoundProcessor::RecordSample(std::vector<Stroke::Note> notes)
 
         usleep(RECORDING_START_WAIT_TIME_MILLISECONDS K);
 
-        for(size_t i = 0; i < RECORDING_TIMES_LIMIT && avgVolume < RECORDING_SILENCE_THRESHOLD; i++) {
+        for(size_t i = 1; i <= RECORDING_TIMES_LIMIT && avgVolume < RECORDING_SILENCE_THRESHOLD; i++) {
             AddSample(m_FFT_output_realTime, notes);
-            std::cout << "recorded!" << std::endl;
+            std::cout << "recorded! [" << i << "]" << std::endl;
             usleep(RECORDING_WAIT_TIME_MILLISECONDS K);
         }
     } else {
@@ -97,9 +97,9 @@ void SoundProcessor::RecordSample(std::vector<Stroke::Note> notes)
 
         usleep(RECORDING_START_WAIT_TIME_MILLISECONDS K);
 
-        for(size_t i = 0; i < RECORDING_TIMES_LIMIT && avgVolume > RECORDING_VOLUME_THRESHOLD; i++) {
+        for(size_t i = 1; i <= RECORDING_TIMES_LIMIT && avgVolume > RECORDING_VOLUME_THRESHOLD; i++) {
             AddSample(m_FFT_output_realTime, notes);
-            std::cout << "recorded!" << std::endl;
+            std::cout << "recorded! [" << i << "]" << std::endl;
             usleep(RECORDING_WAIT_TIME_MILLISECONDS K);
         }
     }

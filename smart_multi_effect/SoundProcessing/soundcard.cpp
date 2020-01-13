@@ -109,9 +109,11 @@ void SoundCard::Start()
 void SoundCard::Stop()
 {
     running = false;
-    m_readThread->join();
-    delete m_readThread;
-    m_readThread = nullptr;
+    if(m_readThread) {
+        m_readThread->join();
+        delete m_readThread;
+        m_readThread = nullptr;
+    }
 }
 
 bool SoundCard::IsRunning()
