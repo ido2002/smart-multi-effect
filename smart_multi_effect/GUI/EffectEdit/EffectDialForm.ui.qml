@@ -18,7 +18,7 @@ Item {
 
     Label {
         id: labelname
-        objectName: "TextLable"
+        objectName: "textLable"
         x: 64
         y: 134
         width: 144
@@ -34,6 +34,7 @@ Item {
 
     Label {
         id: labelval
+        objectName: "valueLable"
         x: -6
         y: 43
         text: (dial.position * 100).toFixed(0)

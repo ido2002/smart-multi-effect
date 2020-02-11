@@ -1,28 +1,30 @@
 #include "stroke.h"
 
+using namespace sound_processing;
+
 std::string Stroke::NoteToString(Stroke::Note note)
 {
     std::string str = "";
     switch (note%12) {
-    case A0:
+    case A1:
         str += "A";
         break;
-    case Bb0:
+    case Bb1:
         str += "Bb";
         break;
-    case B0:
+    case B1:
         str += "B";
         break;
-    case C0:
+    case C1:
         str += "C";
         break;
-    case Db0:
+    case Db1:
         str += "Db";
         break;
-    case D0:
+    case D1:
         str += "D";
         break;
-    case Eb0:
+    case Eb1:
         str += "Eb";
         break;
     case E0:
@@ -37,7 +39,7 @@ std::string Stroke::NoteToString(Stroke::Note note)
     case G0:
         str += "G";
         break;
-    case Ab0:
+    case Ab1:
         str += "Ab";
         break;
     default:
@@ -45,7 +47,12 @@ std::string Stroke::NoteToString(Stroke::Note note)
         break;
     }
 
-    str += std::to_string(static_cast<int>(note/12));
+    int octave = note / 12;
+    if(note%12 >= Ab1) {
+        octave++;
+    }
+
+    str += std::to_string(static_cast<int>(octave));
 
     return str;
 }
@@ -55,46 +62,46 @@ Stroke::Note Stroke::StringToNote(std::string str)
     Note note;
     switch (str[0]) {
     case 'A':
-        note = A0;
+        note = A1;
         break;
     case 'B':
-        note = B0;
+        note = B1;
         break;
     case 'C':
-        note = C0;
+        note = C1;
         break;
     case 'D':
-        note = D0;
+        note = D1;
         break;
     case 'E':
-        note = E0;
+        note = E1;
         break;
     case 'F':
-        note = F0;
+        note = F1;
         break;
     case 'G':
-        note = G0;
+        note = G1;
         break;
     default:
-        note = A0;
+        note = A1;
         break;
     }
 
     int octave = 0;
 
     if(str.size() == 3 && str[1] == 'b') {
-        if(note == A0) {
-            note = Ab0;
-        } else {
-            note = static_cast<Note>(note - 1);
-        }
+        note = static_cast<Note>(note - 1);
         octave = static_cast<int>(str[2] - '0');
     }
     if(str.size() == 2) {
         octave = static_cast<int>(str[1] - '0');
     }
 
-    note = static_cast<Note>(note + 12 * octave);
+    if(note%12 >= Ab1) {
+        octave -= 1;
+    }
+
+    note = static_cast<Note>(note%12 + 12 * octave);
 
     return note;
 }

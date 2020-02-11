@@ -1,6 +1,7 @@
 #include "soundcard.h"
 #include <qdebug.h>
 
+using namespace sound_processing;
 
 SoundCard::SoundCard(QAudioFormat::Endian byteOrder, int channelCount, QString codec,
                      int sampleRate, int sampleSize, QAudioFormat::SampleType sampleType, qint64 bufferSize)

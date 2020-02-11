@@ -1,124 +1,124 @@
 #ifndef NEURALNETWORK_H
 #define NEURALNETWORK_H
 
-// todo: save weights(Gabi), load samples from file(Gabi)
-
 #include <vector>
 #include <list>
 #include <map>
 #include <QString>
 #include <QVariantMap>
 
-namespace neural_network_tools {
-const float learningRate = 0.03f;
+namespace sound_processing {
 
-using namespace std;
+    namespace neural_network_tools {
+        const float learningRate = 0.03f;
 
-class Layer
-{
-public:
-    Layer(size_t numberOfInputs, size_t numberOfOutputs);
+        using namespace std;
 
-    vector<float> FeedForword(vector<float> inputs);
+        class Layer
+        {
+        public:
+            Layer(size_t numberOfInputs, size_t numberOfOutputs);
 
-    void InitializeWeights();
+            vector<float> FeedForword(vector<float> inputs);
 
-    void UpdateWeights();
+            void InitializeWeights();
 
-    void BackPropOutput(vector<float> expected);
+            void UpdateWeights();
 
-    void BackPropHidden(vector<float> gammaForward, vector<vector<float>> weightsforward);
+            void BackPropOutput(vector<float> expected);
 
-    void MapToLayer(QVariantMap map);
-    QVariantMap LayerToMap();
+            void BackPropHidden(vector<float> gammaForward, vector<vector<float>> weightsforward);
 
-public:
-    size_t numberOfInputs;
-    size_t numberOfOutputs;
+            void MapToLayer(QVariantMap map);
+            QVariantMap LayerToMap();
 
-    vector<float> outputs;
-    vector<float> inputs;
-    vector<vector<float>> weights;
-    vector<vector<float>> weightsDelta;
-    vector<float> gamma;
-    vector<float> error;
-    vector<float> biases;
-};
+        public:
+            size_t numberOfInputs;
+            size_t numberOfOutputs;
 
-class Network
-{
-public:
-    Network(vector<size_t> layer);
+            vector<float> outputs;
+            vector<float> inputs;
+            vector<vector<float>> weights;
+            vector<vector<float>> weightsDelta;
+            vector<float> gamma;
+            vector<float> error;
+            vector<float> biases;
+        };
 
-    void Reset();
+        class Network
+        {
+        public:
+            Network(vector<size_t> layer);
 
-    vector<float> FeedForword(vector<float> inputs);
+            void Reset();
 
-    void BackProp(vector<float> expected);
+            vector<float> FeedForword(vector<float> inputs);
 
-    void LoadFromJson(QString path);
-    void SaveToJson(QString path);
+            void BackProp(vector<float> expected);
 
-private:
-    vector<size_t> layer;
-    vector<Layer*> layers;
-};
-}
+            void LoadFromJson(QString path);
+            void SaveToJson(QString path);
 
-struct NetworkDataSet
-{
-    NetworkDataSet(std::vector<float> inputs, std::vector<float> expectedOutputs) {
-        this->inputs = inputs;
-        this->expectedOutputs = expectedOutputs;
+        private:
+            vector<size_t> layer;
+            vector<Layer*> layers;
+        };
     }
 
-    static NetworkDataSet ByIndex(std::vector<float> inputs,
-                                  size_t expectedOutputIndex, size_t outputSize) {
-        std::vector<float> expectedOutputs(outputSize);
-        for(auto& it : expectedOutputs) {
-            it = 0.0f;
+    struct NetworkDataSet
+    {
+        NetworkDataSet(std::vector<float> inputs, std::vector<float> expectedOutputs) {
+            this->inputs = inputs;
+            this->expectedOutputs = expectedOutputs;
         }
-        expectedOutputs[expectedOutputIndex] = 1.0f;
-        return NetworkDataSet(inputs, expectedOutputs);
-    }
 
-    void SaveToJson(QString path);
+        static NetworkDataSet ByIndex(std::vector<float> inputs,
+                                      size_t expectedOutputIndex, size_t outputSize) {
+            std::vector<float> expectedOutputs(outputSize);
+            for(auto& it : expectedOutputs) {
+                it = 0.0f;
+            }
+            expectedOutputs[expectedOutputIndex] = 1.0f;
+            return NetworkDataSet(inputs, expectedOutputs);
+        }
 
-    void LoadFromJson(QString path);
+        void SaveToJson(QString path);
 
-    std::vector<float> inputs;
-    std::vector<float> expectedOutputs;
-};
+        void LoadFromJson(QString path);
 
-class NeuralNetwork
-{
-public:
-    NeuralNetwork(std::vector<size_t> layer);
+        std::vector<float> inputs;
+        std::vector<float> expectedOutputs;
+    };
 
-    std::vector<float> FeedForword(std::vector<float> inputs);
+    class NeuralNetwork
+    {
+    public:
+        NeuralNetwork(std::vector<size_t> layer);
 
-    void SetLearningRate(float learningRate);
+        std::vector<float> FeedForword(std::vector<float> inputs);
 
-    void ResetWeightsAndBiases();
+        void SetLearningRate(float learningRate);
 
-    void Learn(size_t times);
-    long long LearnUntilWork(uint precisionPoint = 2, size_t blocks = 100, size_t limit = 50000/*50k*/);
+        void ResetWeightsAndBiases();
 
-    void AddData(NetworkDataSet data);
-    void AddData(std::string category, NetworkDataSet data);
-    void LoadData(std::string path);
-    void SaveData(std::string path);
+        void Learn(size_t times);
+        long long LearnUntilWork(uint precisionPoint = 2, size_t blocks = 100, size_t limit = 50000/*50k*/);
 
-    void SaveNetwork(QString path) { m_net.SaveToJson(path); }
-    void LoadNetwork(QString path) { m_net.LoadFromJson(path); }
+        void AddData(NetworkDataSet data);
+        void AddData(std::string category, NetworkDataSet data);
+        void LoadData(std::string path);
+        void SaveData(std::string path);
 
-    void ClearData();
-    void ClearData(std::string category);
+        void SaveNetwork(QString path) { m_net.SaveToJson(path); }
+        void LoadNetwork(QString path) { m_net.LoadFromJson(path); }
 
-private:
-    neural_network_tools::Network m_net;
-    std::map<std::string, std::list<NetworkDataSet>> m_datasetMap;
-    float m_learningRate = 0.03f;
-};
+        void ClearData();
+        void ClearData(std::string category);
 
+    private:
+        neural_network_tools::Network m_net;
+        std::map<std::string, std::list<NetworkDataSet>> m_datasetMap;
+        float m_learningRate = 0.03f;
+    };
+}
 #endif // NEURALNETWORK_H

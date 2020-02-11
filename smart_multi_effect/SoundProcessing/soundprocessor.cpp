@@ -7,6 +7,8 @@
 
 #define K * 1000
 
+using namespace sound_processing;
+
 const float MAX_SHORT = 1 << 15;
 
 const float SHORT_K_f = (100.0f / ((long)1 << 30));
@@ -24,7 +26,7 @@ SoundProcessor::SoundProcessor()
         InvokeOnBufferFill(buffer, bufferSize);
     }, BUFFER_FILL_SIZE);
 
-    m_FFT_output_realTime.resize(FFT_COUNT);
+    m_FFT_output_realTime.resize(FFT_COUNT/4);
     m_FFT_re.resize(BUFFER_SIZE);
     m_FFT_im.resize(BUFFER_SIZE);
 }
@@ -39,7 +41,7 @@ void SoundProcessor::Stop()
     m_soundCard->Stop();
 }
 
-void SoundProcessor::AddFunctionOnBufferFill(std::function<void (std::vector<float>, std::vector<float>, float volume)> func)
+void SoundProcessor::AddFunctionOnBufferFill(std::function<void (std::vector<float> fft, std::vector<float> notes, float volume)> func)
 {
     m_functionsOnBufferFill.push_back(func);
 }
@@ -51,10 +53,27 @@ void SoundProcessor::LoadSamples(std::string path)
 
 void SoundProcessor::AddSample(std::vector<float> FFT_output, std::vector<Stroke::Note> notes)
 {
+    //input:
+    float max = 0;
+    for(auto it : FFT_output) { //find maximum
+        if(it > max) {
+            max = it;
+        }
+    }
+
+    for(auto& it : FFT_output) { //compress
+        if(it < max/3) {
+            it = 0;
+        }
+    }
+
+    //expected output:
     std::vector<float> expected(POSSIBLE_NOTES_COUNT);
     for(auto& it : expected) {
         it = 0.0f;
     }
+
+    //name:
     QString name = "silnce";
     size_t i = 0;
     for(auto note : notes) {
@@ -95,13 +114,17 @@ void SoundProcessor::RecordSample(std::vector<Stroke::Note> notes)
     } else {
         while(avgVolume < RECORDING_VOLUME_THRESHOLD)usleep(10);
 
-        usleep(RECORDING_START_WAIT_TIME_MILLISECONDS K);
+        usleep(RECORDING_START_WAIT_TIME_MILLISECONDS K * 3);
 
         for(size_t i = 1; i <= RECORDING_TIMES_LIMIT && avgVolume > RECORDING_VOLUME_THRESHOLD; i++) {
             AddSample(m_FFT_output_realTime, notes);
             std::cout << "recorded! [" << i << "]" << std::endl;
             usleep(RECORDING_WAIT_TIME_MILLISECONDS K);
         }
+
+
+        std::cout << "waiting for silnce..." << std::endl;
+        while(avgVolume > RECORDING_SILENCE_THRESHOLD)usleep(10);
     }
     std::cout << "done!" << std::endl;
 
@@ -169,10 +192,26 @@ void SoundProcessor::FFT(int16_t *buffer, size_t bufferSize)
     _FFT(1, static_cast<int>(log2(FFT_COUNT)), &m_FFT_re[0], &m_FFT_im[0]);
 
     // calculating results
-    for(size_t i = 0; i < FFT_COUNT; i++) {
+    float max = 0;
+    for(size_t i = 0; i < FFT_COUNT/4; i++) {
         float re = m_FFT_re[i];
         float im = m_FFT_im[i];
         m_FFT_output_realTime[i] = sqrt((re * re + im * im) * SHORT_K_f);
-        //m_FFT_output_realTime[i] = std::tanh(30 * std::pow(m_FFT_output_realTime[i], 6));
+        if(m_FFT_output_realTime[i] > max) {
+            max = m_FFT_output_realTime[i];
+        }
     }
+
+#if 1
+    for(size_t i = 0; i < FFT_FILTER && i < FFT_COUNT/4; i++) {
+        m_FFT_output_realTime[i] = 0;
+    }
+
+    //filtering
+    for(size_t i = 0; i < FFT_COUNT/4; i++) {
+        if(m_FFT_output_realTime[i] < max * FFT_FILTER_FACTOR) {
+            m_FFT_output_realTime[i] = 0;
+        }
+    }
+#endif
 }

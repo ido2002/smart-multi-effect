@@ -12,6 +12,8 @@
 #include "jsonreader.h"
 #include <iostream>
 
+using namespace sound_processing;
+
 neural_network_tools::Network::Network(vector<std::size_t> layer) {
     this->layer.resize(layer.size());
     for(size_t i = 0; i < layer.size(); i++) {
@@ -155,11 +157,13 @@ void neural_network_tools::Layer::InitializeWeights()
     for(auto& it : weights) {
         for(auto& w : it) {
             w = (static_cast<float>(rand()) / RAND_MAX) - 0.5f;
+            //w = 0;
         }
     }
 
     for(auto& bias : biases) {
         bias = (static_cast<float>(rand()) / RAND_MAX) - 0.5f;
+        //bias = 0;
     }
 }
 
@@ -173,7 +177,7 @@ void neural_network_tools::Layer::UpdateWeights()
 }
 
 float TanHDer(float value){
-    return 1 - (value * value);
+    return 1 - (tanh(value) * tanh(value));
 }
 
 void neural_network_tools::Layer::BackPropOutput(vector<float> expected)

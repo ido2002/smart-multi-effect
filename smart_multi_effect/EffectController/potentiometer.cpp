@@ -1,5 +1,7 @@
 #include "potentiometer.h"
 
+using namespace hardware_ctrl;
+
 Potentiometer::Potentiometer(int ioNumber, bool NegativeLogic) :
     m_chipSelectPin(new GpioControl(ioNumber, NegativeLogic))
 {
@@ -19,6 +21,11 @@ void Potentiometer::SetTarget(uint target)
 uint Potentiometer::GetValue()
 {
     return m_currentValue;
+}
+
+uint Potentiometer::GetTarget()
+{
+    return m_targetValue;
 }
 
 void Potentiometer::CS(bool on_off)

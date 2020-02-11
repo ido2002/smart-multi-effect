@@ -21,6 +21,7 @@ Item {
 
         Label {
             id: label
+            objectName: "effectNameLable"
             x: 48
             y: 358
             text: qsTr("Effect Name")
@@ -34,6 +35,7 @@ Item {
         }
 
         Switch {
+            objectName: "switch"
             id: element1
             x: 132
             y: 440
@@ -45,7 +47,7 @@ Item {
         }
 
         EffectDialForm {
-            objectName: "dial1"
+            objectName: "dial3"
             id: effectDialForm
             anchors.top: parent.top
             anchors.topMargin: 130
@@ -54,7 +56,7 @@ Item {
         }
 
         EffectDialForm {
-            objectName: "dial2"
+            objectName: "dial1"
             id: effectDialForm2
             x: 76
             y: 132
@@ -65,17 +67,13 @@ Item {
         }
 
         EffectDialForm {
-            objectName: "dial3"
+            objectName: "dial2"
             id: effectDialForm1
             x: 76
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.top: parent.top
             anchors.topMargin: 0
         }
-
-
-
-
 
     }
     states: [

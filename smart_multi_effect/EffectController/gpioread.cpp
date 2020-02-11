@@ -6,6 +6,8 @@
 #include <chrono>
 #include <string>
 
+using namespace hardware_ctrl;
+
 GpioRead::GpioRead(int ioPin, bool negativeLogic, std::string name)
 {
     m_negativeLogic = negativeLogic;

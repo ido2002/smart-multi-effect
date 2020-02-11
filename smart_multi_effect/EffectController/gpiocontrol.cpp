@@ -6,6 +6,8 @@
 #include <chrono>
 #include <string>
 
+using namespace hardware_ctrl;
+
 using namespace std;
 
 GpioControl::GpioControl(int ioPin, bool negativeLogic)

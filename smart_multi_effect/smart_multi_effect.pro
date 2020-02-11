@@ -22,6 +22,8 @@ SOURCES += \
         EffectController/gpioread.cpp \
         EffectController/potentiometer.cpp \
         EffectController/preset.cpp \
+        GUI/Elements/effect_gui.cpp \
+        GUI/Elements/guimanager.cpp \
         RiffRecognition/riff.cpp \
         SoundProcessing/neuralnetwork.cpp \
         SoundProcessing/soundcard.cpp \
@@ -53,6 +55,8 @@ HEADERS += \
     EffectController/gpioread.h \
     EffectController/potentiometer.h \
     EffectController/preset.h \
+    GUI/Elements/effect_gui.h \
+    GUI/Elements/guimanager.h \
     RiffRecognition/riff.h \
     SoundProcessing/FFT.h \
     SoundProcessing/neuralnetwork.h \
