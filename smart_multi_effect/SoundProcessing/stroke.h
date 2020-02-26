@@ -6,9 +6,12 @@
 #include <string>
 
 namespace sound_processing {
+
+    typedef std::chrono::steady_clock::time_point TimePoint;
+
     struct Stroke
     {
-        typedef std::chrono::steady_clock::time_point TimePoint;
+
     public:
         enum Note {     E0, F0, Gb0, G0, Ab1, A1, Bb1, B1, C1, Db1, D1,
                    Eb1, E1, F1, Gb1, G1, Ab2, A2, Bb2, B2, C2, Db2, D2,

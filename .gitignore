@@ -3,4 +3,5 @@ build-smart_multi_effect-Desktop-Release/
 build-smart_multi_effect-Raspberry_Pi_4-Debug/
 build-smart_multi_effect-Raspberry_Pi_4-Release/
 smart_multi_effect.backup/
+NetworkData
 *.zip

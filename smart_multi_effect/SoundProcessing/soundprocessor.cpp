@@ -4,6 +4,7 @@
 #include <iostream>
 #include <cmath>
 #include <unistd.h>
+#include "noterecognition.h"
 
 #define K * 1000
 
@@ -167,7 +168,6 @@ void SoundProcessor::InvokeOnBufferFill(int16_t *buffer, size_t bufferSize)
 
     avgVolume /= bufferSize;
 
-    // notes to stroke...
     for(auto func : m_functionsOnBufferFill) {
         func(m_FFT_output_realTime, m_notes_output_realTime, avgVolume);
     }

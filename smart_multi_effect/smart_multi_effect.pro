@@ -26,6 +26,7 @@ SOURCES += \
         GUI/Elements/guimanager.cpp \
         RiffRecognition/riff.cpp \
         SoundProcessing/neuralnetwork.cpp \
+        SoundProcessing/noterecognition.cpp \
         SoundProcessing/soundcard.cpp \
         SoundProcessing/soundprocessor.cpp \
         SoundProcessing/stroke.cpp \
@@ -60,6 +61,7 @@ HEADERS += \
     RiffRecognition/riff.h \
     SoundProcessing/FFT.h \
     SoundProcessing/neuralnetwork.h \
+    SoundProcessing/noterecognition.h \
     SoundProcessing/soundcard.h \
     SoundProcessing/soundprocessor.h \
     SoundProcessing/stroke.h \
