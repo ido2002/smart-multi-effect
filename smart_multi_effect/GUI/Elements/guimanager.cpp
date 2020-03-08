@@ -1,6 +1,6 @@
 #include "guimanager.h"
 
-GuiManager::GuiManager()
+GUI_elements::GuiManager::GuiManager()
 {
 
 }

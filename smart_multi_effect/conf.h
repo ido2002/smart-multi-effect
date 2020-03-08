@@ -7,10 +7,18 @@
 #include <QAudioFormat>
 #include <QString>
 #include <EffectController/effect.h>
+#include <QDir>
 #include <QUrl>
+#include <math.h>
+
+#define Kilo * 1000
+#define Mega * 1000000
+#define Giga * 1000000000
 
 namespace CONF
 {
+const QString MAIN_DIR = QDir::homePath() + "/.smart_multi_effect/";
+
 namespace NAMES{
     const std::string OVERDRIVE = "OverDrive";
     const std::string DELAY = "Delay";
@@ -87,53 +95,69 @@ namespace SOUND_CARD {
 }
 
 namespace SOUND_PROCCESSING {
-    const size_t BUFFER_FILL_SIZE = SOUND_CARD::BUFFER_SIZE * 1/2; // editable
-    const size_t POSSIBLE_NOTES_COUNT = 48; //48 - E0 - E4
-    const size_t FFT_COUNT = SOUND_CARD::BUFFER_SIZE / 2;
-    const size_t FFT_FILTER = 4;
-    const double FFT_FILTER_FACTOR = 0.5;
-    const std::vector<size_t> NEURAL_NETWORK_STRUCTURE = {FFT_COUNT/4, /*FFT_COUNT/4,*/ /*POSSIBLE_NOTES_COUNT*2,*/ POSSIBLE_NOTES_COUNT};
-    const uint RECORDING_WAIT_TIME_MILLISECONDS = (1000 * SOUND_CARD::BUFFER_SIZE / SOUND_CARD::SAMPLE_RATE) * 4 / 3;
-    const uint RECORDING_START_WAIT_TIME_MILLISECONDS = 10;
-    const size_t RECORDING_TIMES_LIMIT = 10;
-    const float RECORDING_VOLUME_THRESHOLD = 0.15f;
-    const float RECORDING_SILENCE_THRESHOLD = 0.005f;
-    const float RECORDING_VOLUME_BOOST = 100;
+    const size_t BUFFER_FILL_SIZE = SOUND_CARD::BUFFER_SIZE * 1/2;
+    const uint BUFFER_FILL_UTIME = 1 Mega * BUFFER_FILL_SIZE / SOUND_CARD::SAMPLE_RATE;
+    const size_t FFT_SIZE = SOUND_CARD::BUFFER_SIZE / 2;
+    const double RECORDING_VOLUME_FACTOR = std::pow(2, -(SOUND_CARD::SAMPLE_SIZE - 1));
+    const uint RECORDING_WAIT_UTIME = BUFFER_FILL_UTIME * 1;
+    const uint RECORDING_START_WAIT_UTIME = BUFFER_FILL_UTIME * 0;
+    const size_t RECORDING_LIMIT = 10;
 }
 
-namespace NETWORK_DATA {
-    const QString NET_CONF_PATH = "/home/ido/Development/prototypeCode/NetworkData/net.data";
-    const QString DATASET_PATH = "/home/ido/Development/prototypeCode/NetworkData/RecordedData/";
+namespace NOTE_RECOGNITION {
+    const float NOTE_THRESHOLD = 0.5f;
+    const float OCTAVE_THRESHOLD = 0.5f;
+
+    const uint8_t NOTES_IN_OCTAVE = 12;
+    const uint8_t OCTAVE_LEVEL_COUNT = 3;
+
+    const std::vector<size_t> FFT_TO_NOTE_NETWORK_STRUCTURE = {SOUND_PROCCESSING::FFT_SIZE, SOUND_PROCCESSING::FFT_SIZE * 2, NOTES_IN_OCTAVE};
+    const std::vector<size_t> FFT_TO_OCTAVE_NETWORK_STRUCTURE = {SOUND_PROCCESSING::FFT_SIZE, SOUND_PROCCESSING::FFT_SIZE * 2, OCTAVE_LEVEL_COUNT};
+
+    const double VOLUMELEVEL_VERYLOW_THRESHOLD = 0.0005;
+    const double VOLUMELEVEL_LOW_THRESHOLD = 0.001;
+    const double VOLUMELEVEL_MID_THRESHOLD = 0.005;
+    const double VOLUMELEVEL_HIGH_THRESHOLD = 0.03;
+    const double VOLUMELEVEL_VERYHIGH_THRESHOLD = 0.08;
+
+    namespace NETWORK_DATA {
+        const QString NETWORK_DATASET_FILE = "data.data";
+        const QString NETWORK_DATA_ENDING = ".data";
+        const QString FFT_TO_NOTE_NET_PATH = MAIN_DIR + "NetworkData/notes_net.data";
+        const QString FFT_TO_OCTAVE_NET_PATH = MAIN_DIR + "NetworkData/octave_net.data";
+        const QString NOTES_DATASET_DIR_PATH = MAIN_DIR + "NetworkData/RecordedData/Notes/";
+        const QString OCTAVES_DATASET_DIR_PATH = MAIN_DIR + "NetworkData/RecordedData/Octaves/";
+    }
 }
 
 namespace GUI_PARAMETERS {
-namespace EFFECT_EDIT_PARAMETERS {
-    const QUrl EFFECT_EDIT3_URL("qrc:/EffectEdit/EffectEdit.qml");
+    namespace EFFECT_EDIT_PARAMETERS {
+        const QUrl EFFECT_EDIT3_URL("qrc:/EffectEdit/EffectEdit.qml");
 
-    const QString DIAL1_NAME = "dial1";
-    const QString DIAL2_NAME = "dial2";
-    const QString DIAL3_NAME = "dial3";
-    const QString DIAL4_NAME = "dial4";
-    const QString DIAL5_NAME = "dial5";
-    const QString DIAL6_NAME = "dial6";
+        const QString DIAL1_NAME = "dial1";
+        const QString DIAL2_NAME = "dial2";
+        const QString DIAL3_NAME = "dial3";
+        const QString DIAL4_NAME = "dial4";
+        const QString DIAL5_NAME = "dial5";
+        const QString DIAL6_NAME = "dial6";
 
-    const QString SWITCH_NAME = "switch";
+        const QString SWITCH_NAME = "switch";
 
-    const QString DIAL_NAME = "dial";
-    const QString VALUE_LABLE_NAME = "valueLable";
-    const QString TEXT_LABLE_NAME = "textLable";
+        const QString DIAL_NAME = "dial";
+        const QString VALUE_LABLE_NAME = "valueLable";
+        const QString TEXT_LABLE_NAME = "textLable";
 
-    const QString EFFECT_LABLE_NAME = "effectNameLable";
-}
+        const QString EFFECT_LABLE_NAME = "effectNameLable";
+    }
 
-namespace GENERAL_GUI_PARAMETERS {
+    namespace GENERAL_GUI_PARAMETERS {
 
-}
+    }
 
-namespace GENERAL_GUI_PROPERTIES_NAMES {
-const char LABLE_TEXT[] = "text";
-const char SWITCH_STATE[] = "position";
-const char DIAL_VALUE[] = "value";
+    namespace GENERAL_GUI_PROPERTIES_NAMES {
+    const char LABLE_TEXT[] = "text";
+    const char SWITCH_STATE[] = "position";
+    const char DIAL_VALUE[] = "value";
 }
 }
 };

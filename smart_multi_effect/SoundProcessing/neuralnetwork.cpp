@@ -11,6 +11,9 @@
 #include <QVariantList>
 #include "jsonreader.h"
 #include <iostream>
+#include "conf.h"
+
+using namespace CONF::NOTE_RECOGNITION::NETWORK_DATA;
 
 using namespace sound_processing;
 
@@ -367,7 +370,7 @@ void NeuralNetwork::LoadData(std::string path)
 {
     QVariantMap map;
     QString _path;
-    _path = QString::fromStdString(path) + "data.data";
+    _path = QString::fromStdString(path) + NETWORK_DATASET_FILE;
     if(!JsonReader::readJsonFile(_path, map)) return;
 
     for(auto paths : map) {
@@ -388,14 +391,14 @@ void NeuralNetwork::SaveData(std::string path)
         size_t i = 0;
         for(auto data : dataList.second) {
             QString subName = name + "_" + QString::number(i);
-            QString url = QString::fromStdString(path) + name + "/" + subName + ".data";
+            QString url = QString::fromStdString(path) + name + "/" + subName + NETWORK_DATA_ENDING;
             data.SaveToJson(url);
             list.push_back(url);
             i++;
         }
         map.insert(name, list);
     }
-    JsonReader::writeJsonFile(map, QString::fromStdString(path) + "data.data");
+    JsonReader::writeJsonFile(map, QString::fromStdString(path) + NETWORK_DATASET_FILE);
 }
 
 void NetworkDataSet::SaveToJson(QString path)

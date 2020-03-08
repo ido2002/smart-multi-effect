@@ -6,53 +6,46 @@ std::string Stroke::NoteToString(Stroke::Note note)
 {
     std::string str = "";
     switch (note%12) {
-    case A1:
+    case A:
         str += "A";
         break;
-    case Bb1:
+    case Bb:
         str += "Bb";
         break;
-    case B1:
+    case B:
         str += "B";
         break;
-    case C1:
+    case C:
         str += "C";
         break;
-    case Db1:
+    case Db:
         str += "Db";
         break;
-    case D1:
+    case D:
         str += "D";
         break;
-    case Eb1:
+    case Eb:
         str += "Eb";
         break;
-    case E0:
+    case E:
         str += "E";
         break;
-    case F0:
+    case F:
         str += "F";
         break;
-    case Gb0:
+    case Gb:
         str += "Gb";
         break;
-    case G0:
+    case G:
         str += "G";
         break;
-    case Ab1:
+    case Ab:
         str += "Ab";
         break;
     default:
         str += "Error";
         break;
     }
-
-    int octave = note / 12;
-    if(note%12 >= Ab1) {
-        octave++;
-    }
-
-    str += std::to_string(static_cast<int>(octave));
 
     return str;
 }
@@ -62,46 +55,34 @@ Stroke::Note Stroke::StringToNote(std::string str)
     Note note;
     switch (str[0]) {
     case 'A':
-        note = A1;
+        note = A;
         break;
     case 'B':
-        note = B1;
+        note = B;
         break;
     case 'C':
-        note = C1;
+        note = C;
         break;
     case 'D':
-        note = D1;
+        note = D;
         break;
     case 'E':
-        note = E1;
+        note = E;
         break;
     case 'F':
-        note = F1;
+        note = F;
         break;
     case 'G':
-        note = G1;
+        note = G;
         break;
     default:
-        note = A1;
+        note = A;
         break;
     }
-
-    int octave = 0;
 
     if(str.size() == 3 && str[1] == 'b') {
         note = static_cast<Note>(note - 1);
-        octave = static_cast<int>(str[2] - '0');
     }
-    if(str.size() == 2) {
-        octave = static_cast<int>(str[1] - '0');
-    }
-
-    if(note%12 >= Ab1) {
-        octave -= 1;
-    }
-
-    note = static_cast<Note>(note%12 + 12 * octave);
 
     return note;
 }
@@ -125,10 +106,24 @@ std::string Stroke::VolumeLevelToString(Stroke::VolumeLevel volumeLevel)
     return "error";
 }
 
-Stroke::Stroke(TimePoint start, std::list<Note> notes, VolumeLevel volume)
+std::string Stroke::NoteOctaveToString(Stroke::NoteOctave noteOctave)
+{
+    switch (noteOctave) {
+    case Low:
+        return "Low";
+    case Mid:
+        return "Mid";
+    case High:
+        return "High";
+    }
+    return "error";
+}
+
+Stroke::Stroke(TimePoint start, std::list<Note> notes, NoteOctave octave, VolumeLevel volume)
 {
     this->start = start;
     this->notes = notes;
+    this->octave = octave;
     this->volume = volume;
 }
 

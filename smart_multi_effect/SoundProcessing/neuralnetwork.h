@@ -72,16 +72,6 @@ namespace sound_processing {
             this->expectedOutputs = expectedOutputs;
         }
 
-        static NetworkDataSet ByIndex(std::vector<float> inputs,
-                                      size_t expectedOutputIndex, size_t outputSize) {
-            std::vector<float> expectedOutputs(outputSize);
-            for(auto& it : expectedOutputs) {
-                it = 0.0f;
-            }
-            expectedOutputs[expectedOutputIndex] = 1.0f;
-            return NetworkDataSet(inputs, expectedOutputs);
-        }
-
         void SaveToJson(QString path);
 
         void LoadFromJson(QString path);
