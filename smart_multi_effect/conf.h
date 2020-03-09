@@ -132,6 +132,8 @@ namespace NOTE_RECOGNITION {
 }
 
 namespace GUI_PARAMETERS {
+    const QUrl MAIN_URL(QStringLiteral("qrc:/main.qml"));
+
     namespace EFFECT_EDIT_PARAMETERS {
         const QUrl EFFECT_EDIT3_URL("qrc:/EffectEdit/EffectEdit.qml");
 
@@ -151,8 +153,14 @@ namespace GUI_PARAMETERS {
         const QString EFFECT_LABLE_NAME = "effectNameLable";
     }
 
-    namespace GENERAL_GUI_PARAMETERS {
+    namespace CUSTON_BUTTON {
+    const QString BUTTON = "button";
+    const QString BUTTON_TEXT = "buttonText";
+    }
 
+    namespace PAGES_NAMES {
+    const QString MAIN_WINDOW = "window";
+    const QString MAIN_VIEW_AREA = "viewArea";
     }
 
     namespace GENERAL_GUI_PROPERTIES_NAMES {

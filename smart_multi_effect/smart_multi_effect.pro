@@ -23,7 +23,11 @@ SOURCES += \
         EffectController/potentiometer.cpp \
         EffectController/preset.cpp \
         GUI/Elements/effect_gui.cpp \
+        GUI/Elements/guibutton.cpp \
         GUI/Elements/guimanager.cpp \
+        GUI/Elements/presetframe.cpp \
+        GUI/Elements/songframe.cpp \
+        GUI/Elements/testgui.cpp \
         RiffRecognition/riff.cpp \
         SoundProcessing/neuralnetwork.cpp \
         SoundProcessing/noterecognition.cpp \
@@ -57,7 +61,11 @@ HEADERS += \
     EffectController/potentiometer.h \
     EffectController/preset.h \
     GUI/Elements/effect_gui.h \
+    GUI/Elements/guibutton.h \
     GUI/Elements/guimanager.h \
+    GUI/Elements/presetframe.h \
+    GUI/Elements/songframe.h \
+    GUI/Elements/testgui.h \
     RiffRecognition/riff.h \
     SoundProcessing/FFT.h \
     SoundProcessing/neuralnetwork.h \

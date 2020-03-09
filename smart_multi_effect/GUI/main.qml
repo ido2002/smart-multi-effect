@@ -17,56 +17,51 @@ ApplicationWindow {
         Column {
             anchors.fill: parent
 
-            ItemDelegate {
-                text: qsTr("Edit Mode")
-                width: parent.width
-                onClicked: {
-                    stackView.push("EditingForm.ui.qml")
-                    drawer.close()
-                }
-            }
-            ItemDelegate {
-                text: qsTr("Settings")
-                width: parent.width
-                onClicked: {
-                    stackView.push("SettingsForm.ui.qml")
-                    drawer.close()
-                }
-            }
+//            ItemDelegate {
+//                text: qsTr("Edit Mode")
+//                width: parent.width
+//                onClicked: {
+//                    stackView.push("EditingForm.ui.qml")
+//                    drawer.close()
+//                }
+//            }
+//            ItemDelegate {
+//                text: qsTr("Settings")
+//                width: parent.width
+//                onClicked: {
+//                    stackView.push("SettingsForm.ui.qml")
+//                    drawer.close()
+//                }
+//            }
         }
     }
 
-    StackView {
-        id: stackView
-        initialItem: "HomeForm.ui.qml"
-        anchors.fill: parent
-    }
+
 
     Button {
         id: toolButton
         text: stackView.depth > 1 ? "\u25C0" : "\u2630"
 
-        width: 40
-        height: 40
+        width: 50
+        height: 56
 
         anchors.left: parent.left
         anchors.leftMargin: 0
         anchors.top: parent.top
         anchors.topMargin: 0
 
+
         font.pixelSize: Qt.application.font.pixelSize * 1.6
 
         onClicked: {
-            if (stackView.depth > 1) {
-                stackView.pop()
-            } else {
                 drawer.open()
-            }
         }
     }
-    Rectangle {
-            objectName: "myRect"
-            width: 0
-            height: 0
-        }
+
+    Frame {
+        id: frame
+        objectName: "viewArea"
+        anchors.bottomMargin: 100
+        anchors.fill: parent
+    }
 }

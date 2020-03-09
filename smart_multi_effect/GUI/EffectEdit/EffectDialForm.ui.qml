@@ -20,16 +20,18 @@ Item {
         id: labelname
         objectName: "textLable"
         x: 64
-        y: 134
+        y: 106
         width: 144
         height: 42
         text: qsTr("Label")
+        font.family: "Verdana"
+        anchors.horizontalCenterOffset: 0
         verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignHCenter
         anchors.horizontalCenter: parent.horizontalCenter
         font.pixelSize: 30
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 10
+        anchors.bottomMargin: 2
     }
 
     Label {

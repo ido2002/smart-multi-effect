@@ -2,12 +2,24 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>qtquickcontrols2.conf</file>
-        <file>HomeForm.ui.qml</file>
-        <file>SettingsForm.ui.qml</file>
-        <file>EditingForm.ui.qml</file>
         <file>EffectEdit/EffectDial.qml</file>
         <file>EffectEdit/EffectDialForm.ui.qml</file>
         <file>EffectEdit/EffectEdit.qml</file>
         <file>EffectEdit/EffectEditForm.ui.qml</file>
+        <file>Frames/SongFrame.qml</file>
+        <file>Frames/SongFrameForm.ui.qml</file>
+        <file>Pages/SongsPage.qml</file>
+        <file>Pages/SongsPageForm.ui.qml</file>
+        <file>ButtonsArea/ButtonArea.qml</file>
+        <file>ButtonsArea/ButtonAreaForm.ui.qml</file>
+        <file>ButtonsArea/CustomBuotton.qml</file>
+        <file>ButtonsArea/CustomBuottonForm.ui.qml</file>
+        <file>Pages/PresetPage.qml</file>
+        <file>Pages/PresetPageForm.ui.qml</file>
+        <file>Pages/triangleButtonPreset.png</file>
+        <file>Pages/triangleButton.png</file>
+        <file>Pages/SongBackground.png</file>
+        <file>Pages/PresetBackground.png</file>
+        <file>Pages/MenuBackground.png</file>
     </qresource>
 </RCC>
