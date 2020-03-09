@@ -46,7 +46,7 @@ QML_DESIGNER_IMPORT_PATH =
 #else: unix:!android: target.path = /opt/$${TARGET}/bin
 #!isEmpty(target.path): INSTALLS += target
 
-target.path = smart_multi_effect_App
+target.path = .smart_multi_effect
 INSTALLS += target
 
 HEADERS += \

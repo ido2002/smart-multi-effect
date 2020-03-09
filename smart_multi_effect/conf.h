@@ -88,6 +88,7 @@ namespace SOUND_CARD {
     const size_t BUFFER_SIZE = 1024 * 1;
     const auto SAMPLE_BYTE_ORDER = QAudioFormat::LittleEndian;
     const int CHANNEL_COUNT = 2;
+    const int CHANNEL = 0; //start from 0
     const QString CODEC = "";
     const int SAMPLE_RATE = 8000;
     const int SAMPLE_SIZE = 16;

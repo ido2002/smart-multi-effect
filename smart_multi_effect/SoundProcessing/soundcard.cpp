@@ -1,5 +1,6 @@
 #include "soundcard.h"
 #include <qdebug.h>
+#include "conf.h"
 
 using namespace sound_processing;
 
@@ -49,6 +50,7 @@ void SoundCard::SetOnBufferFill(std::function<void (int16_t *, size_t)> onBuffer
 
 void SoundCard::Start()
 {
+    using namespace CONF::SOUND_CARD;
     running = true;
     if(m_readThread != nullptr) {
         return;
@@ -94,7 +96,7 @@ void SoundCard::Start()
 
                 //read ch1 from the buffer
                 for(qint64 i = 0; i < m_bufferSize; i++) {
-                    m_ch1_buffer[i] = m_rawBuffer[i*m_audioFormat.channelCount()];
+                    m_ch1_buffer[i] = m_rawBuffer[i*m_audioFormat.channelCount() + CHANNEL];
                 }
 
                 //open thread

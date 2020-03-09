@@ -1,16 +1,16 @@
 #define RASPBERRY_PI    0
-#define USE_GUI         0
-#define USE_SOUNDCARD   1
+#define USE_GUI         1
+#define USE_SOUNDCARD   0
 #define LOAD_NETWORK    0
 #define LOAD_DATA       0
 #define RECORD_DATA     0
 #define LEARN           0
 #define SAVE_NETWORK    0
 #define SAVE_DATA       0
-#define VOLUME_GUI      1
-#define FFT_GUI         1
-#define NOTES_GUI       1
-#define OCTAVE_GUI      1
+#define VOLUME_GUI      0
+#define FFT_GUI         0
+#define NOTES_GUI       0
+#define OCTAVE_GUI      0
 
 #define GUI_FFT_FACTOR 0.002
 #define GUI_VOLUME_FACTOR 0.08
@@ -58,6 +58,8 @@ using Note = Stroke::Note;
 using namespace std;
 
 using type_element = hardware_ctrl::Effect::EffectControlLayoutEllements;
+
+std::thread* button_thraed = nullptr;
 
 float timerFunc(std::function<void()> func)
 {
@@ -159,7 +161,7 @@ void configButtons(hardware_ctrl::EffectController& controller)
         controller->SetAllToValue();
     });
 
-    std::thread t1([&]() {
+    button_thraed = new std::thread([&]() {
         while(true) {
             controller.UpdateButtons();
         }
@@ -186,9 +188,12 @@ int main(int argc, char *argv[])
     qDebug() << engine.rootObjects()[0];
     QQuickItem* parent = engine.rootObjects()[0]->findChild<QQuickItem*>("myRect");
 
+#if RASPBERRY_PI
     Effect* e1 = controller.GetEffect(NAMES::OVERDRIVE);
 
     GUI_elements::Effect_gui e1G(QString::fromStdString(NAMES::OVERDRIVE), parent, &engine, e1);
+#endif
+
 #endif
 
 
