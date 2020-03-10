@@ -6,12 +6,14 @@
 #include <QFlag>
 #include "guibutton.h"
 #include "effect_gui.h"
-#include "songframe.h"
-#include "presetframe.h"
+#include "presetswindow.h"
+#include "songswindow.h"
 
 namespace GUI_elements {
     class GuiManager
     {
+    public:
+        enum ViewAreaContent { nothing, songs, presets, song, preset};
     public:
         GuiManager();
 
@@ -19,7 +21,12 @@ namespace GUI_elements {
 
         void UpdateButtons();
 
-    public:
+        void SetViewAreaTo(ViewAreaContent content);
+
+        PresetsWindow* getPresetsWindow() { return presetsPage; }
+        SongsWindow* getSongsWindow() { return songsPage; }
+
+    private:
         QQmlApplicationEngine engine;
 
         QQuickItem* mainWindow = nullptr;
@@ -28,11 +35,9 @@ namespace GUI_elements {
         QQuickItem* buttonsArea = nullptr;
         std::map<std::string, GuiButton*> buttons;
 
-        QQuickItem* songsPage = nullptr;
-        std::map<std::string, SongFrame*> songsFrames;
+        SongsWindow* songsPage = nullptr;
 
-        QQuickItem* presetsPage = nullptr;
-        std::map<std::string, PresetFrame*> presetsFrames;
+        PresetsWindow* presetsPage = nullptr;
 
         QQuickItem* editArea = nullptr;
         std::map<std::string, Effect_gui*> effects;

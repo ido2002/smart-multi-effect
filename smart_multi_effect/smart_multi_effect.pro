@@ -26,7 +26,9 @@ SOURCES += \
         GUI/Elements/guibutton.cpp \
         GUI/Elements/guimanager.cpp \
         GUI/Elements/presetframe.cpp \
+        GUI/Elements/presetswindow.cpp \
         GUI/Elements/songframe.cpp \
+        GUI/Elements/songswindow.cpp \
         GUI/Elements/testgui.cpp \
         RiffRecognition/riff.cpp \
         SoundProcessing/neuralnetwork.cpp \
@@ -66,7 +68,9 @@ HEADERS += \
     GUI/Elements/guibutton.h \
     GUI/Elements/guimanager.h \
     GUI/Elements/presetframe.h \
+    GUI/Elements/presetswindow.h \
     GUI/Elements/songframe.h \
+    GUI/Elements/songswindow.h \
     GUI/Elements/testgui.h \
     RiffRecognition/riff.h \
     SoundProcessing/FFT.h \

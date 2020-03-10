@@ -25,6 +25,9 @@ GUI_elements::GuiManager::GuiManager()
         buttons.insert(std::pair<std::string, GuiButton*>(b.toStdString(), new GuiButton(buttonItem)));
         buttons[b.toStdString()]->SetText(b);
     }
+
+    presetsPage = new PresetsWindow(&engine, viewArea);
+    songsPage = new SongsWindow(&engine, viewArea);
 }
 
 GUI_elements::GuiButton *GUI_elements::GuiManager::getButtonByName(std::string name)
@@ -36,5 +39,27 @@ void GUI_elements::GuiManager::UpdateButtons()
 {
     for(auto b : buttons) {
         b.second->Update();
+    }
+}
+
+void GUI_elements::GuiManager::SetViewAreaTo(GUI_elements::GuiManager::ViewAreaContent content)
+{
+    presetsPage->Hide();
+    songsPage->Hide();
+
+    switch(content) {
+    case nothing:
+        break;
+    case songs:
+        songsPage->Show();
+        break;
+    case presets:
+        presetsPage->UpdateIndex();
+        presetsPage->Show();
+        break;
+    case song:
+        break;
+    case preset:
+        break;
     }
 }

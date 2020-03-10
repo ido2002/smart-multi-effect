@@ -145,8 +145,7 @@ namespace GUI_PARAMETERS {
     namespace FRAMES {
         const QUrl SONG_FRAME_URL("qrc:/Frames/SongFrame");
         const QString SONG_FRAME_CONTANER = "SongPreset";
-        const QUrl PRESET_FRAME_URL("qrc:/Frames/PresetFrame");
-        const QString PRESET_FRAME_CONTANER = "Preset";
+        const QString PRESET_NAME = "presetText";
     }
 
     namespace CUSTON_BUTTON {
