@@ -47,11 +47,11 @@ namespace HARDWARE {
     const uint8_t RELAY_2 = 20;
     const uint8_t RELAY_3 = 16;
 
-    const uint8_t BUTTON1 = 5 ;
-    const uint8_t BUTTON2 = 6 ;
+    const uint8_t BUTTON1 = 26 ;
+    const uint8_t BUTTON2 = 19 ;
     const uint8_t BUTTON3 = 13;
-    const uint8_t BUTTON4 = 19;
-    const uint8_t BUTTON5 = 26;
+    const uint8_t BUTTON4 = 6;
+    const uint8_t BUTTON5 = 5;
 
     const std::string P1_NAME = NAMES::SPEED;
     const std::string P2_NAME = NAMES::VOLUME;
@@ -132,7 +132,37 @@ namespace NOTE_RECOGNITION {
 }
 
 namespace GUI_PARAMETERS {
-    const QUrl MAIN_URL(QStringLiteral("qrc:/main.qml"));
+    namespace PAGES {
+        const QUrl MAIN_URL("qrc:/main.qml");
+        const QUrl SONGS_URL("qrc:/Pages/SongsPage.qml");
+        const QUrl PRESETS_URL("qrc:/Pages/PresetPage.qml");
+        const QUrl BUTTON_AREA_URL("qrc:/ButtonsArea/ButtonArea.qml");
+        const QString MAIN_WINDOW = "window";
+        const QString MAIN_VIEW_AREA = "viewArea";
+        const QString BUTTONS_AREA = "buttonsArea";
+    }
+
+    namespace FRAMES {
+        const QUrl SONG_FRAME_URL("qrc:/Frames/SongFrame");
+        const QString SONG_FRAME_CONTANER = "SongPreset";
+        const QUrl PRESET_FRAME_URL("qrc:/Frames/PresetFrame");
+        const QString PRESET_FRAME_CONTANER = "Preset";
+    }
+
+    namespace CUSTON_BUTTON {
+        const QUrl CUSTOM_BUTTON_URL("qrc:/ButtonsArea/CustomButton.qml");
+        const QString BUTTON = "button";
+        const QString BUTTON_TEXT = "buttonText";
+        const QString BUTTON_1 = "button_1";
+        const QString BUTTON_2 = "button_2";
+        const QString BUTTON_3 = "button_3";
+        const QString BUTTON_4 = "button_4";
+        const QString BUTTON_5 = "button_5";
+        const char IS_PRESSED[] = "isPressed";
+        const QString BUTTON_COLOR = "#1e222e";
+        const QString BUTTON_COLOR_PRESSED = "#2e323e";
+        const std::vector<QString> BUTTONS = { BUTTON_1, BUTTON_2, BUTTON_3, BUTTON_4, BUTTON_5 };
+    }
 
     namespace EFFECT_EDIT_PARAMETERS {
         const QUrl EFFECT_EDIT3_URL("qrc:/EffectEdit/EffectEdit.qml");
@@ -153,20 +183,11 @@ namespace GUI_PARAMETERS {
         const QString EFFECT_LABLE_NAME = "effectNameLable";
     }
 
-    namespace CUSTON_BUTTON {
-    const QString BUTTON = "button";
-    const QString BUTTON_TEXT = "buttonText";
-    }
-
-    namespace PAGES_NAMES {
-    const QString MAIN_WINDOW = "window";
-    const QString MAIN_VIEW_AREA = "viewArea";
-    }
-
     namespace GENERAL_GUI_PROPERTIES_NAMES {
-    const char LABLE_TEXT[] = "text";
-    const char SWITCH_STATE[] = "position";
-    const char DIAL_VALUE[] = "value";
+        const char LABLE_TEXT[] = "text";
+        const char SWITCH_STATE[] = "position";
+        const char DIAL_VALUE[] = "value";
+        const char COLOR[] = "color";
 }
 }
 };

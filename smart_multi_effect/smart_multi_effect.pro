@@ -35,7 +35,9 @@ SOURCES += \
         SoundProcessing/soundprocessor.cpp \
         SoundProcessing/stroke.cpp \
         jsonreader.cpp \
-        main.cpp
+        main.cpp \
+        mytimer.cpp \
+        smartmultieffect.cpp
 
 RESOURCES += GUI/qml.qrc
 
@@ -74,4 +76,6 @@ HEADERS += \
     SoundProcessing/soundprocessor.h \
     SoundProcessing/stroke.h \
     conf.h \
-    jsonreader.h
+    jsonreader.h \
+    mytimer.h \
+    smartmultieffect.h

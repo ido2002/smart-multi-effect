@@ -23,7 +23,8 @@ namespace hardware_ctrl {
         Effect* GetEffect(std::string name);
         void AddEffect(std::string name, Effect* effect);
         void AddButton(std::string name, int ioPin);
-        void AddButtonEvent(std::string buttonName, std::function<void(EffectController* controller)> func);
+        void AddButtonPressEvent(std::string buttonName, std::function<void(EffectController* controller)> func);
+        void AddButtonReleaseEvent(std::string buttonName, std::function<void(EffectController* controller)> func);
 
         void LoadPreset(Preset preset);
 
@@ -43,6 +44,7 @@ namespace hardware_ctrl {
 
     private:
         std::map<std::string, std::vector<std::function<void(EffectController* controller)>>*> m_onButonPress;
+        std::map<std::string, std::vector<std::function<void(EffectController* controller)>>*> m_onButonRelease;
         std::map<std::string, Effect*> m_effects;
         GpioControl* m_ud;
         GpioControl* m_inc;

@@ -85,7 +85,7 @@ void EffectController::AddButton(std::string name, int ioPin)
     m_buttons.insert(std::pair<std::string, GpioRead*>(name, new GpioRead(ioPin, true, name)));
 }
 
-void EffectController::AddButtonEvent(std::string buttonName, std::function<void(EffectController* controller)> func)
+void EffectController::AddButtonPressEvent(std::string buttonName, std::function<void(EffectController* controller)> func)
 {
     if(m_buttons.find(buttonName) != m_buttons.end()) {
         auto b = m_onButonPress.find(buttonName);
@@ -93,6 +93,20 @@ void EffectController::AddButtonEvent(std::string buttonName, std::function<void
             m_onButonPress.insert(std::pair<std::string, std::vector<std::function<void(EffectController* controller)>>*>
                                   (buttonName, new std::vector<std::function<void(EffectController* controller)>>));
             b = m_onButonPress.find(buttonName);
+        }
+        b->second->push_back(func);
+    }
+}
+
+
+void EffectController::AddButtonReleaseEvent(std::string buttonName, std::function<void(EffectController* controller)> func)
+{
+    if(m_buttons.find(buttonName) != m_buttons.end()) {
+        auto b = m_onButonRelease.find(buttonName);
+        if(b ==  m_onButonRelease.end()) {
+             m_onButonRelease.insert(std::pair<std::string, std::vector<std::function<void(EffectController* controller)>>*>
+                                  (buttonName, new std::vector<std::function<void(EffectController* controller)>>));
+            b =  m_onButonRelease.find(buttonName);
         }
         b->second->push_back(func);
     }
@@ -224,12 +238,21 @@ void EffectController::ButtonChanged(uint64_t changedButtons)
     for (auto it = m_buttons.begin(); it != m_buttons.end(); it++) {
         if((changedButtons >> count)&1) {
             std::cout << it->second->GetName() << ": " << ((m_buttonsState >> count)&1) << std::endl;
-            if(((m_buttonsState >> count)&1) == 1) {
+            if(((m_buttonsState >> count)&1) == 1) { //pressed
                 auto onButtonPress = m_onButonPress.find(it->second->GetName());
                 if(onButtonPress == m_onButonPress.end()) {
                     continue;
                 }
                 auto functions = onButtonPress->second;
+                for (auto f : *functions) {
+                    f(this);
+                }
+            } else { //released
+                auto onButtonRelease = m_onButonRelease.find(it->second->GetName());
+                if(onButtonRelease == m_onButonRelease.end()) {
+                    continue;
+                }
+                auto functions = onButtonRelease->second;
                 for (auto f : *functions) {
                     f(this);
                 }
