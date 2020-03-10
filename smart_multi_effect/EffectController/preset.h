@@ -9,9 +9,15 @@
 namespace hardware_ctrl {
     struct EffectInfo
     {
+        EffectInfo();
+        EffectInfo(std::string name, bool state, std::map<Effect::EffectControlLayoutEllements, double/*value*/> potentiometers) {
+            this->name = name;
+            this->state = state;
+            this->potentiometers = potentiometers;
+        }
         std::string name;
         bool state;
-        std::map<std::string/*name*/, double/*value*/> potentiometers;
+        std::map<Effect::EffectControlLayoutEllements, double/*value*/> potentiometers;
     };
 
     class Preset
@@ -19,14 +25,14 @@ namespace hardware_ctrl {
     public:
         Preset();
         Preset(std::string path);
-        Preset(size_t time_ms, size_t resolution, std::list<EffectInfo> effects);
+        Preset(std::list<EffectInfo> effects, size_t time_ms = 0, size_t resolution = 0);
 
         void Load(std::string path);
         void Set(size_t time_ms, size_t resolution, std::list<EffectInfo> effects);
 
     public:
-        size_t time_ms;
-        size_t resolution;
+        size_t time_ms = 0;
+        size_t resolution = 0;
         std::list<EffectInfo> effects;
     };
 }

@@ -8,12 +8,13 @@ Preset::Preset()
 
 }
 
+
 Preset::Preset(std::string path)
 {
     Load(path);
 }
 
-Preset::Preset(size_t time_ms, size_t resolution, std::list<EffectInfo> effects)
+Preset::Preset(std::list<EffectInfo> effects, size_t time_ms, size_t resolution)
 {
     Set(time_ms, resolution, effects);
 }
