@@ -261,3 +261,61 @@ void EffectController::ButtonChanged(uint64_t changedButtons)
         count++;
     }
 }
+
+void EffectController::SetPreset(Preset preset)
+{
+    std::map<std::string, bool> effectStates;
+    for(auto e : m_effects) {
+        effectStates.insert(std::pair<std::string, bool>(e.first, false));
+    }
+    for(auto e : preset.effects) {
+        effectStates[e.name] = e.state;
+    }
+
+    for(auto e : effectStates) {
+        if(e.second) {
+            m_effects[e.first]->On();
+        } else {
+            m_effects[e.first]->Off();
+        }
+    }
+
+
+    if(preset.resolution > 0 && preset.time_ms > 0) {
+        std::map<std::string, std::map<Effect::EffectControlLayoutEllements, int>> d_targets;
+
+        for(auto e : preset.effects) {
+            std::map<Effect::EffectControlLayoutEllements, int> effectDelta;
+            for(auto p : e.potentiometers) {
+                if(GetEffect(e.name)->GetPotentiometer(p.first))
+                    effectDelta.insert(std::pair<Effect::EffectControlLayoutEllements, int>(p.first,
+                        p.second - GetEffect(e.name)->GetPotentiometer(p.first)->GetValue()));
+            }
+            d_targets.insert(std::pair<std::string, std::map<Effect::EffectControlLayoutEllements, int>>(e.name, effectDelta));
+        }
+
+        for (int i = 0; i < 100; i += preset.resolution) {
+            usleep(preset.time_ms * 1000/(100 / preset.resolution));
+            for (auto e : d_targets) {
+                for(auto p : e.second) {
+                    if(m_effects[e.first]->GetPotentiometer(p.first)) {
+                        m_effects[e.first]->GetPotentiometer(p.first)->
+                          SetTarget( m_effects[e.first]->GetPotentiometer(p.first)->
+                                GetTarget() + p.second * preset.resolution / 100); //not good yet
+                    }
+                }
+            }
+            SetAllToValue();
+        }
+    }
+
+    for (auto e : preset.effects) {
+        for(auto p : e.potentiometers) {
+            if(m_effects[e.name]->GetPotentiometer(p.first)) {
+                m_effects[e.name]->GetPotentiometer(p.first)->SetTarget(p.second);
+            }
+        }
+    }
+
+    SetAllToValue();
+}

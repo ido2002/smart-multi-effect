@@ -10,14 +10,10 @@ namespace hardware_ctrl {
     struct EffectInfo
     {
         EffectInfo();
-        EffectInfo(std::string name, bool state, std::map<Effect::EffectControlLayoutEllements, double/*value*/> potentiometers) {
-            this->name = name;
-            this->state = state;
-            this->potentiometers = potentiometers;
-        }
+        EffectInfo(std::string name, bool state, std::map<Effect::EffectControlLayoutEllements, int/*value*/> potentiometers);
         std::string name;
         bool state;
-        std::map<Effect::EffectControlLayoutEllements, double/*value*/> potentiometers;
+        std::map<Effect::EffectControlLayoutEllements, int/*value*/> potentiometers;
     };
 
     class Preset

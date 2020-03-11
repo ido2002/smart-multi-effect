@@ -11,6 +11,30 @@ ApplicationWindow {
     height: 600
     title: qsTr("Smart Multi Effect")
 
+
+    function openDrawer_f() {
+        drawer.open();
+    }
+    function closeDrawer_f() {
+        drawer.close();
+    }
+
+    function exit_f() {
+        window.close();
+    }
+
+    function fullScreen_f() {
+        if(fullScreenButton.text === "Full Screen") {
+            window.visibility = "FullScreen";
+            fullScreenButton.text = "Exit Full Screen";
+        } else {
+            window.visibility = "Windowed";
+            fullScreenButton.text = "Full Screen";
+        }
+    }
+
+
+
     Frame {
         id: frame
         objectName: "viewArea"
@@ -32,8 +56,10 @@ ApplicationWindow {
 
     Drawer {
         id: drawer
+        objectName: "drawer"
         width: window.width * 0.25
         height: window.height
+
 
         Column {
             anchors.fill: parent
@@ -43,13 +69,7 @@ ApplicationWindow {
                 text: qsTr("Exit Full Screen")
                 width: parent.width
                 onClicked: {
-                    if(fullScreenButton.text === "Full Screen") {
-                        window.visibility = "FullScreen";
-                        fullScreenButton.text = "Exit Full Screen";
-                    } else {
-                        window.visibility = "Windowed";
-                        fullScreenButton.text = "Full Screen";
-                    }
+                    window.fullScreen_f();
                 }
             }
 
@@ -57,7 +77,7 @@ ApplicationWindow {
                 text: qsTr("exit")
                 width: parent.width
                 onClicked: {
-                    window.close();
+                    window.exit_f();
                 }
             }
         }
@@ -79,7 +99,7 @@ ApplicationWindow {
         font.pixelSize: Qt.application.font.pixelSize * 1.6
 
         onClicked: {
-            drawer.open()
+            window.openDrawer_f();
         }
     }
 

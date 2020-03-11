@@ -1,4 +1,7 @@
 #include "preset.h"
+#include "conf.h"
+
+#include <iostream>
 
 using namespace hardware_ctrl;
 
@@ -29,4 +32,10 @@ void Preset::Set(size_t time_ms, size_t resolution, std::list<EffectInfo> effect
     this->time_ms = time_ms;
     this->resolution = resolution;
     this->effects = effects;
+}
+
+EffectInfo::EffectInfo(std::string name, bool state, std::map<Effect::EffectControlLayoutEllements, int> potentiometers) {
+    this->name = name;
+    this->state = state;
+    this->potentiometers = potentiometers;
 }

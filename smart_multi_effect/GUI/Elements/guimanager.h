@@ -8,12 +8,13 @@
 #include "effect_gui.h"
 #include "presetswindow.h"
 #include "songswindow.h"
+#include "menu.h"
 
 namespace GUI_elements {
     class GuiManager
     {
     public:
-        enum ViewAreaContent { nothing, songs, presets, song, preset};
+        enum ViewAreaContent { nothing, songs, presets, song, preset, recordNote, recordOctave, train, manage};
     public:
         GuiManager();
 
@@ -25,6 +26,7 @@ namespace GUI_elements {
 
         PresetsWindow* getPresetsWindow() { return presetsPage; }
         SongsWindow* getSongsWindow() { return songsPage; }
+        Menu* getMenu() { return menu; }
 
     private:
         QQmlApplicationEngine engine;
@@ -39,8 +41,7 @@ namespace GUI_elements {
 
         PresetsWindow* presetsPage = nullptr;
 
-        QQuickItem* editArea = nullptr;
-        std::map<std::string, Effect_gui*> effects;
+        Menu* menu = nullptr;
     };
 }
 #endif // GUIMANAGER_H

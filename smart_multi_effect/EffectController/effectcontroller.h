@@ -38,6 +38,7 @@ namespace hardware_ctrl {
 
         void ButtonChanged(uint64_t changedButtons);
 
+        void SetPreset(Preset p);
 
     private:
         void ForEachPotentiometer(std::function<void(Potentiometer*)> func);

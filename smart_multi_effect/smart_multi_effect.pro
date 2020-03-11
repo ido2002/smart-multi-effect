@@ -25,11 +25,16 @@ SOURCES += \
         GUI/Elements/effect_gui.cpp \
         GUI/Elements/guibutton.cpp \
         GUI/Elements/guimanager.cpp \
+        GUI/Elements/managedata.cpp \
+        GUI/Elements/menu.cpp \
         GUI/Elements/presetframe.cpp \
         GUI/Elements/presetswindow.cpp \
+        GUI/Elements/recordnote.cpp \
+        GUI/Elements/recordoctave.cpp \
         GUI/Elements/songframe.cpp \
         GUI/Elements/songswindow.cpp \
         GUI/Elements/testgui.cpp \
+        GUI/Elements/train.cpp \
         RiffRecognition/riff.cpp \
         SoundProcessing/neuralnetwork.cpp \
         SoundProcessing/noterecognition.cpp \
@@ -67,11 +72,16 @@ HEADERS += \
     GUI/Elements/effect_gui.h \
     GUI/Elements/guibutton.h \
     GUI/Elements/guimanager.h \
+    GUI/Elements/managedata.h \
+    GUI/Elements/menu.h \
     GUI/Elements/presetframe.h \
     GUI/Elements/presetswindow.h \
+    GUI/Elements/recordnote.h \
+    GUI/Elements/recordoctave.h \
     GUI/Elements/songframe.h \
     GUI/Elements/songswindow.h \
     GUI/Elements/testgui.h \
+    GUI/Elements/train.h \
     RiffRecognition/riff.h \
     SoundProcessing/FFT.h \
     SoundProcessing/neuralnetwork.h \

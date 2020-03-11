@@ -28,6 +28,7 @@ GUI_elements::GuiManager::GuiManager()
 
     presetsPage = new PresetsWindow(&engine, viewArea);
     songsPage = new SongsWindow(&engine, viewArea);
+    menu = new Menu(mainWindow);
 }
 
 GUI_elements::GuiButton *GUI_elements::GuiManager::getButtonByName(std::string name)
@@ -60,6 +61,15 @@ void GUI_elements::GuiManager::SetViewAreaTo(GUI_elements::GuiManager::ViewAreaC
     case song:
         break;
     case preset:
+        break;
+
+    case recordNote:
+        break;
+    case recordOctave:
+        break;
+    case train:
+        break;
+    case manage:
         break;
     }
 }
