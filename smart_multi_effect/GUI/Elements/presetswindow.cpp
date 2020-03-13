@@ -34,14 +34,14 @@ void PresetsWindow::choose()
 void PresetsWindow::left()
 {
     index--;
-    if(index < 0) index = frames.size() - 1;
+    if(index < 0) index = presetWindows.size() - 1;
     UpdateIndex();
 }
 
 void PresetsWindow::right()
 {
     index++;
-    if(index >= (int)frames.size()) index = 0;
+    if(index >= (int)presetWindows.size()) index = 0;
     UpdateIndex();
 }
 
@@ -50,18 +50,18 @@ void PresetsWindow::UpdateIndex()
     using namespace CONF::GUI_PARAMETERS::SONG_FRAME;
     using namespace CONF::GUI_PARAMETERS::GENERAL_GUI_PROPERTIES_NAMES;
 
-    window->childItems()[0]->findChild<QQuickItem*>(PRESET_NAME)->setProperty(LABLE_TEXT, frames[index]->name);
+    window->childItems()[0]->findChild<QQuickItem*>(PRESET_NAME)->setProperty(LABLE_TEXT, presetWindows[index]->getName());
 }
 
-void PresetsWindow::AddFrame(PresetFrame *frame)
+void PresetsWindow::AddPresetWindow(PresetWindow *presetWindow)
 {
-    frames.push_back(frame);
+    presetWindows.push_back(presetWindow);
 }
 
-PresetFrame *PresetsWindow::getCurrentPreset()
+PresetWindow *PresetsWindow::getCurrentPreset()
 {
-    if(frames.size() == 0) {
+    if(presetWindows.size() == 0) {
         return nullptr;
     }
-    return frames[index];
+    return presetWindows[index];
 }

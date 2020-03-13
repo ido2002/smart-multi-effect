@@ -27,8 +27,8 @@ SOURCES += \
         GUI/Elements/guimanager.cpp \
         GUI/Elements/managedata.cpp \
         GUI/Elements/menu.cpp \
-        GUI/Elements/presetframe.cpp \
         GUI/Elements/presetswindow.cpp \
+        GUI/Elements/presetwindow.cpp \
         GUI/Elements/recordnote.cpp \
         GUI/Elements/recordoctave.cpp \
         GUI/Elements/songframe.cpp \
@@ -74,8 +74,8 @@ HEADERS += \
     GUI/Elements/guimanager.h \
     GUI/Elements/managedata.h \
     GUI/Elements/menu.h \
-    GUI/Elements/presetframe.h \
     GUI/Elements/presetswindow.h \
+    GUI/Elements/presetwindow.h \
     GUI/Elements/recordnote.h \
     GUI/Elements/recordoctave.h \
     GUI/Elements/songframe.h \

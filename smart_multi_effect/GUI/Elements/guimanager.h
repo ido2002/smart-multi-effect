@@ -28,6 +28,9 @@ namespace GUI_elements {
         SongsWindow* getSongsWindow() { return songsPage; }
         Menu* getMenu() { return menu; }
 
+        QQmlApplicationEngine* getEngine() { return &engine; }
+        QQuickItem* &getViewArea() { return viewArea; }
+
     private:
         QQmlApplicationEngine engine;
 

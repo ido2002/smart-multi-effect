@@ -42,16 +42,6 @@ ApplicationWindow {
         anchors.fill: parent
     }
 
-    PresetEditPage {
-        id: presetEditPage
-        anchors.right: parent.right
-        anchors.rightMargin: 0
-        anchors.left: parent.left
-        anchors.leftMargin: 0
-        anchors.top: parent.top
-        anchors.topMargin: 0
-    }
-
     ButtonArea {
         objectName: "buttonsArea"
         id: buttonArea

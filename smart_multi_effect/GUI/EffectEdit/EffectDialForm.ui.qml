@@ -17,7 +17,7 @@ Item {
         anchors.top: parent.top
         anchors.topMargin: 0
         anchors.horizontalCenter: parent.horizontalCenter
-        value:  0.5
+        value:  0.2
     }
 
     Label {

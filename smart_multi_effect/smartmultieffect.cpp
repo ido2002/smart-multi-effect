@@ -9,10 +9,10 @@ SmartMultiEffect::SmartMultiEffect()
 
     InitializeEffects();
     InitializeGui();
+    InitializePresets();
     InitializeButtons();
     InitializeSoundProcessor();
 
-    InitializePresets();
     InitializeSongs();
     InitializeMenu();
 
@@ -68,61 +68,104 @@ void SmartMultiEffect::InitializeSoundProcessor()
 
 void SmartMultiEffect::InitializePresets()
 {
-    PresetFrame* pf1 = new PresetFrame("rock");
     using element = hardware_ctrl::Effect::EffectControlLayoutEllements;
+    using namespace CONF::NAMES;
+    using map = std::map<element, int>;
+    using pair = std::pair<element, int>;
 
-    pf1->p1.name = "acdc1";
-    pf1->p1.preset = hardware_ctrl::Preset({hardware_ctrl::EffectInfo(
-                                            CONF::NAMES::OVERDRIVE, true,
-                                            {{element::Gain, 5}, {element::Tone, 5}, {element::Volume, 50}}
-                                            ), hardware_ctrl::EffectInfo(
-                                            CONF::NAMES::TREMOLO, false,
-                                            {}
-                                            ), hardware_ctrl::EffectInfo(
-                                            CONF::NAMES::DELAY, true,
-                                            {}
-                                            )}, 0, 0);
-    pf1->p2.name = "acdc2";
-    pf1->p2.preset = hardware_ctrl::Preset({hardware_ctrl::EffectInfo(
-                                            CONF::NAMES::OVERDRIVE, true,
-                                            {{element::Gain, 60}, {element::Tone, 60}, {element::Volume, 50}}
-                                            ), hardware_ctrl::EffectInfo(
-                                            CONF::NAMES::TREMOLO, false,
-                                            {}
-                                            ), hardware_ctrl::EffectInfo(
-                                            CONF::NAMES::DELAY, true,
-                                            {{element::Repeat, 50}, {element::Mix,50}, {element::Delay, 50}}
-                                            )}, 0, 0);
-    pf1->p3.name = "Hendrix";
-    pf1->p3.preset = hardware_ctrl::Preset({hardware_ctrl::EffectInfo(
-                                            CONF::NAMES::OVERDRIVE, true,
-                                            {{element::Gain, 40}, {element::Tone, 40}, {element::Volume, 50}}
-                                            ), hardware_ctrl::EffectInfo(
-                                            CONF::NAMES::TREMOLO, false,
-                                            {}
-                                            ), hardware_ctrl::EffectInfo(
-                                            CONF::NAMES::DELAY, false,
-                                            {}
-                                            )}, 0, 0);
-    pf1->p4.name = "evh";
-    pf1->p4.preset = hardware_ctrl::Preset({hardware_ctrl::EffectInfo(
-                                            CONF::NAMES::OVERDRIVE, true,
-                                            {{element::Gain, 100}, {element::Tone, 80}, {element::Volume, 60}}
-                                            ), hardware_ctrl::EffectInfo(
-                                            CONF::NAMES::TREMOLO, false,
-                                            {}
-                                            ), hardware_ctrl::EffectInfo(
-                                            CONF::NAMES::DELAY, true,
-                                            {{element::Repeat, 50}, {element::Mix,50}, {element::Delay, 30}}
-                                            )}, 1000, 1);
-    guiManager->getPresetsWindow()->AddFrame(pf1);
+    PresetWindow* pw1 = new PresetWindow("rock");
+    pw1->setP1(new Preset("clean", new hardware_ctrl::Preset(
+    {new hardware_ctrl::EffectInfo(OVERDRIVE, false, map({
+         pair(element::Gain, 50),
+         pair(element::Tone, 50),
+         pair(element::Volume, 50)})),
+     new hardware_ctrl::EffectInfo(TREMOLO, true, map({
+              pair(element::Depth, 50),
+              pair(element::Speed, 50),
+              pair(element::Volume, 50)})),
+     new hardware_ctrl::EffectInfo(DELAY, true, map({
+              pair(element::Regen, 50),
+              pair(element::Mix, 50),
+              pair(element::Delay, 50)
+     }))}, 0, 0), guiManager->getEngine(), guiManager->getViewArea()));
 
-    PresetFrame* pf2 = new PresetFrame("metal");
-    pf2->p1.name = "metal1";
-    pf2->p2.name = "metal2";
-    pf2->p3.name = "jh";
-    pf2->p4.name = "kh";
-    guiManager->getPresetsWindow()->AddFrame(pf2);
+    pw1->setP2(new Preset("low gain", new hardware_ctrl::Preset(
+    {new hardware_ctrl::EffectInfo(OVERDRIVE, true, map({
+         pair(element::Gain, 10),
+         pair(element::Tone, 50),
+         pair(element::Volume, 50)})),
+     new hardware_ctrl::EffectInfo(TREMOLO, false, map({
+              pair(element::Depth, 50),
+              pair(element::Speed, 50),
+              pair(element::Volume, 50)})),
+     new hardware_ctrl::EffectInfo(DELAY, true, map({
+              pair(element::Regen, 50),
+              pair(element::Mix, 50),
+              pair(element::Delay, 50)
+     }))}, 0, 0), guiManager->getEngine(), guiManager->getViewArea()));
+
+    pw1->setP3(new Preset("high gain", new hardware_ctrl::Preset(
+    {new hardware_ctrl::EffectInfo(OVERDRIVE, true, map({
+         pair(element::Gain, 100),
+         pair(element::Tone, 70),
+         pair(element::Volume, 50)})),
+     new hardware_ctrl::EffectInfo(TREMOLO, false, map({
+              pair(element::Depth, 50),
+              pair(element::Speed, 50),
+              pair(element::Volume, 50)})),
+     new hardware_ctrl::EffectInfo(DELAY, true, map({
+              pair(element::Regen, 50),
+              pair(element::Mix, 50),
+              pair(element::Delay, 50)
+     }))}, 0, 0), guiManager->getEngine(), guiManager->getViewArea()));
+
+    pw1->setP4(new Preset("all off", new hardware_ctrl::Preset(
+    {new hardware_ctrl::EffectInfo(OVERDRIVE, false, map({
+         pair(element::Gain, 50),
+         pair(element::Tone, 50),
+         pair(element::Volume, 50)})),
+     new hardware_ctrl::EffectInfo(TREMOLO, false, map({
+              pair(element::Depth, 50),
+              pair(element::Speed, 50),
+              pair(element::Volume, 50)})),
+     new hardware_ctrl::EffectInfo(DELAY, false, map({
+              pair(element::Regen, 50),
+              pair(element::Mix, 50),
+              pair(element::Delay, 50)
+     }))}, 0, 0), guiManager->getEngine(), guiManager->getViewArea()));
+    guiManager->getPresetsWindow()->AddPresetWindow(pw1);
+
+    PresetWindow* pw2 = new PresetWindow("test");
+    pw2->setP1(new Preset("6 effects", new hardware_ctrl::Preset(
+    {new hardware_ctrl::EffectInfo(OVERDRIVE, false, map({
+         pair(element::Gain, 50),
+         pair(element::Tone, 50),
+         pair(element::Volume, 50)})),
+     new hardware_ctrl::EffectInfo(TREMOLO, false, map({
+              pair(element::Depth, 50),
+              pair(element::Speed, 50),
+              pair(element::Volume, 50)})),
+     new hardware_ctrl::EffectInfo(DELAY, false, map({
+              pair(element::Regen, 50),
+              pair(element::Mix, 50),
+              pair(element::Delay, 50)})),
+     new hardware_ctrl::EffectInfo("4", false, map({
+         pair(element::Gain, 50),
+         pair(element::Tone, 50),
+         pair(element::Volume, 50)})),
+     new hardware_ctrl::EffectInfo("5", false, map({
+         pair(element::Gain, 50),
+         pair(element::Tone, 50),
+         pair(element::Volume, 50)})),
+     new hardware_ctrl::EffectInfo("6", false, map({
+         pair(element::Gain, 50),
+         pair(element::Tone, 50),
+         pair(element::Volume, 50)}))
+    }, 0, 0), guiManager->getEngine(), guiManager->getViewArea()));
+
+    pw2->setP2(new Preset("empty", new hardware_ctrl::Preset(
+    {}, 0, 0), guiManager->getEngine(), guiManager->getViewArea()));
+    guiManager->getPresetsWindow()->AddPresetWindow(pw2);
 }
 
 void SmartMultiEffect::InitializeSongs()
@@ -317,10 +360,21 @@ void SmartMultiEffect::SetButtonsFunctions()
             UpdateWindow();
             return;
         }
-        button1->SetText(guiManager->getPresetsWindow()->getCurrentPreset()->p1.name);
-        button2->SetText(guiManager->getPresetsWindow()->getCurrentPreset()->p2.name);
-        button3->SetText(guiManager->getPresetsWindow()->getCurrentPreset()->p3.name);
-        button4->SetText(guiManager->getPresetsWindow()->getCurrentPreset()->p4.name);
+        {
+            auto cp = guiManager->getPresetsWindow()->getCurrentPreset();
+            if(cp->getP1())
+                button1->SetText(cp->getP1()->getName());
+            else button1->SetText("");
+            if(cp->getP2())
+                button2->SetText(cp->getP2()->getName());
+            else button2->SetText("");
+            if(cp->getP3())
+                button3->SetText(cp->getP3()->getName());
+            else button3->SetText("");
+            if(cp->getP4())
+                button4->SetText(cp->getP4()->getName());
+            else button4->SetText("");
+        }
         button5->SetText("back");
         button1->SetTextColor(CONF::GUI_PARAMETERS::COLORS::BRIGHT_BLUE);
         button2->SetTextColor(CONF::GUI_PARAMETERS::COLORS::BRIGHT_BLUE);
@@ -328,18 +382,30 @@ void SmartMultiEffect::SetButtonsFunctions()
         button4->SetTextColor(CONF::GUI_PARAMETERS::COLORS::BRIGHT_BLUE);
         button5->SetTextColor(CONF::GUI_PARAMETERS::COLORS::RED);
 
-        button1->AddFunction([&](){
-            controller->SetPreset(guiManager->getPresetsWindow()->getCurrentPreset()->p1.preset);
-        });
-        button2->AddFunction([&](){
-            controller->SetPreset(guiManager->getPresetsWindow()->getCurrentPreset()->p2.preset);
-        });
-        button3->AddFunction([&](){
-            controller->SetPreset(guiManager->getPresetsWindow()->getCurrentPreset()->p3.preset);
-        });
-        button4->AddFunction([&](){
-            controller->SetPreset(guiManager->getPresetsWindow()->getCurrentPreset()->p4.preset);
-        });
+        if(button1->getText() != "")
+            button1->AddFunction([&](){
+                auto p = guiManager->getPresetsWindow()->getCurrentPreset();
+                p->setActivePreset(p->getP1());
+                updateWindowFlag = true;
+            });
+        if(button2->getText() != "")
+            button2->AddFunction([&](){
+                auto p = guiManager->getPresetsWindow()->getCurrentPreset();
+                p->setActivePreset(p->getP2());
+                updateWindowFlag = true;
+            });
+        if(button3->getText() != "")
+            button3->AddFunction([&](){
+                auto p = guiManager->getPresetsWindow()->getCurrentPreset();
+                p->setActivePreset(p->getP3());
+                updateWindowFlag = true;
+            });
+        if(button4->getText() != "")
+            button4->AddFunction([&](){
+                auto p = guiManager->getPresetsWindow()->getCurrentPreset();
+                p->setActivePreset(p->getP4());
+                updateWindowFlag = true;
+            });
         button5->AddFunction([&](){
             windowState = presets;
             updateWindowFlag = true;
@@ -506,6 +572,11 @@ void SmartMultiEffect::ButtonsUpdate()
     if(updateWindowFlag) {
         UpdateWindow();
         updateWindowFlag = false;
+    }
+
+    if(windowState == preset && guiManager->getPresetsWindow()->getCurrentPreset()->getActivePreset() != nullptr) {
+        guiManager->getPresetsWindow()->getCurrentPreset()->getActivePreset()->Update();
+        controller->SetPreset(*guiManager->getPresetsWindow()->getCurrentPreset()->getActivePreset()->getPreset());
     }
 }
 

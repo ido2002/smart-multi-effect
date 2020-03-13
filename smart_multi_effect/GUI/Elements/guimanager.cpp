@@ -51,6 +51,7 @@ void GUI_elements::GuiManager::SetViewAreaTo(GUI_elements::GuiManager::ViewAreaC
 {
     presetsPage->Hide();
     songsPage->Hide();
+    presetsPage->getCurrentPreset()->Hide();
 
     switch(content) {
     case nothing:
@@ -65,6 +66,7 @@ void GUI_elements::GuiManager::SetViewAreaTo(GUI_elements::GuiManager::ViewAreaC
     case song:
         break;
     case preset:
+        presetsPage->getCurrentPreset()->ShowActivePreset();
         break;
 
     case recordNote:

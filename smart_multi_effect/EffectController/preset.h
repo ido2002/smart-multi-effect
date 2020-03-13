@@ -21,15 +21,17 @@ namespace hardware_ctrl {
     public:
         Preset();
         Preset(std::string path);
-        Preset(std::list<EffectInfo> effects, size_t time_ms = 0, size_t resolution = 0);
+        Preset(std::list<EffectInfo*> effects, size_t time_ms = 0, size_t resolution = 0);
 
         void Load(std::string path);
-        void Set(size_t time_ms, size_t resolution, std::list<EffectInfo> effects);
+        void Set(size_t time_ms, size_t resolution, std::list<EffectInfo*> effects);
+
+        EffectInfo* getEffect(std::string name);
 
     public:
         size_t time_ms = 0;
         size_t resolution = 0;
-        std::list<EffectInfo> effects;
+        std::map<std::string, EffectInfo*> effects;
     };
 }
 #endif // PRESET_H

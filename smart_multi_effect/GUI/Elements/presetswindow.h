@@ -3,7 +3,7 @@
 
 #include <QQuickItem>
 #include <QQmlApplicationEngine>
-#include "presetframe.h"
+#include "presetwindow.h"
 #include <vector>
 
 class PresetsWindow
@@ -20,13 +20,13 @@ public:
 
     void UpdateIndex();
 
-    void AddFrame(PresetFrame* frame);
+    void AddPresetWindow(PresetWindow* presetWindow);
 
-    PresetFrame* getCurrentPreset();
+    PresetWindow* getCurrentPreset();
 
 private:
     QQuickItem* window = nullptr;
-    std::vector<PresetFrame*> frames;
+    std::vector<PresetWindow*> presetWindows;
     int index = 0;
 };
 

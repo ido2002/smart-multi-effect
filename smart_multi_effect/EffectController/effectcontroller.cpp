@@ -269,10 +269,12 @@ void EffectController::SetPreset(Preset preset)
         effectStates.insert(std::pair<std::string, bool>(e.first, false));
     }
     for(auto e : preset.effects) {
-        effectStates[e.name] = e.state;
+        effectStates[e.second->name] = e.second->state;
     }
 
     for(auto e : effectStates) {
+        if(m_effects.find(e.first) == m_effects.end())
+            continue;
         if(e.second) {
             m_effects[e.first]->On();
         } else {
@@ -285,13 +287,17 @@ void EffectController::SetPreset(Preset preset)
         std::map<std::string, std::map<Effect::EffectControlLayoutEllements, int>> d_targets;
 
         for(auto e : preset.effects) {
-            std::map<Effect::EffectControlLayoutEllements, int> effectDelta;
-            for(auto p : e.potentiometers) {
-                if(GetEffect(e.name)->GetPotentiometer(p.first))
-                    effectDelta.insert(std::pair<Effect::EffectControlLayoutEllements, int>(p.first,
-                        p.second - GetEffect(e.name)->GetPotentiometer(p.first)->GetValue()));
+            if(m_effects.find(e.first) == m_effects.end()) {
+                std::cout << e.first << "does not exist" << std::endl;
+                continue;
             }
-            d_targets.insert(std::pair<std::string, std::map<Effect::EffectControlLayoutEllements, int>>(e.name, effectDelta));
+            std::map<Effect::EffectControlLayoutEllements, int> effectDelta;
+            for(auto p : e.second->potentiometers) {
+                if(GetEffect(e.second->name)->GetPotentiometer(p.first))
+                    effectDelta.insert(std::pair<Effect::EffectControlLayoutEllements, int>(p.first,
+                        p.second - GetEffect(e.second->name)->GetPotentiometer(p.first)->GetValue()));
+            }
+            d_targets.insert(std::pair<std::string, std::map<Effect::EffectControlLayoutEllements, int>>(e.second->name, effectDelta));
         }
 
         for (int i = 0; i < 100; i += preset.resolution) {
@@ -310,9 +316,13 @@ void EffectController::SetPreset(Preset preset)
     }
 
     for (auto e : preset.effects) {
-        for(auto p : e.potentiometers) {
-            if(m_effects[e.name]->GetPotentiometer(p.first)) {
-                m_effects[e.name]->GetPotentiometer(p.first)->SetTarget(p.second);
+        if(m_effects.find(e.first) == m_effects.end()) {
+            std::cout << e.first << "does not exist" << std::endl;
+            continue;
+        }
+        for(auto p : e.second->potentiometers) {
+            if(m_effects[e.second->name]->GetPotentiometer(p.first)) {
+                m_effects[e.second->name]->GetPotentiometer(p.first)->SetTarget(p.second);
             }
         }
     }

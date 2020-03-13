@@ -9,19 +9,12 @@ using namespace GENERAL_GUI_PROPERTIES_NAMES;
 
 using layoutElements = hardware_ctrl::Effect::EffectControlLayoutEllements;
 
-Effect_gui::Effect_gui()
-{
 
-}
-
-Effect_gui::Effect_gui(QString effectName, QQuickItem *parent, QQmlApplicationEngine *engine, hardware_ctrl::Effect *effect)
+Effect_gui::Effect_gui(hardware_ctrl::EffectInfo* effect, QQuickItem *parent, QQmlApplicationEngine *engine)
 {
-    initialize(effectName, parent, engine, effect);
-}
+    this->effect = effect;
+    name = effect->name;
 
-void Effect_gui::initialize(QString effectName, QQuickItem *parent, QQmlApplicationEngine *engine, hardware_ctrl::Effect *effect)
-{
-    m_effect = effect;
     //create component
     QQmlComponent comp(engine, parent);
     comp.loadUrl(EFFECT_EDIT3_URL);
@@ -33,12 +26,12 @@ void Effect_gui::initialize(QString effectName, QQuickItem *parent, QQmlApplicat
     m_item = Instance;
 
     //set name lable
-    Instance->childItems()[0]->findChild<QQuickItem*>(EFFECT_LABLE_NAME)->setProperty(LABLE_TEXT, effectName);
+    Instance->childItems()[0]->findChild<QQuickItem*>(EFFECT_LABLE_NAME)->setProperty(LABLE_TEXT, QString::fromStdString(effect->name));
 
     //set dials
     {
         size_t i = 1;
-        for(auto p : effect->m_potentiometers) {
+        for(auto p : effect->potentiometers) {
             QString dialName = "error";
             switch (i) {
             case 1:
@@ -71,6 +64,15 @@ void Effect_gui::initialize(QString effectName, QQuickItem *parent, QQmlApplicat
 
     //set switch
     m_switch = m_item->childItems()[0]->findChild<QQuickItem*>(SWITCH_NAME);
+    RefreshGui();
+}
+
+void Effect_gui::RefreshGui()
+{
+    SetSwitch(effect->state);
+    for(auto p : effect->potentiometers) {
+        SetDial(p.first, p.second);
+    }
 }
 
 double Effect_gui::ReadDial(hardware_ctrl::Effect::EffectControlLayoutEllements dialElement)
@@ -79,7 +81,7 @@ double Effect_gui::ReadDial(hardware_ctrl::Effect::EffectControlLayoutEllements 
     if(dial == nullptr) {
         return 0;
     }
-    return dial->property(DIAL_VALUE).toDouble();
+    return dial->findChild<QQuickItem*>(DIAL_NAME)->property(DIAL_VALUE).toDouble() * 100;
 }
 
 void Effect_gui::SetDial(hardware_ctrl::Effect::EffectControlLayoutEllements dialElement, double value)
@@ -88,7 +90,7 @@ void Effect_gui::SetDial(hardware_ctrl::Effect::EffectControlLayoutEllements dia
     if(dial == nullptr) {
         return;
     }
-    dial->setProperty(DIAL_VALUE, value);
+    dial->findChild<QQuickItem*>(DIAL_NAME)->setProperty(DIAL_VALUE, value / 100);
 }
 
 bool Effect_gui::ReadSwitch()
@@ -101,7 +103,3 @@ void Effect_gui::SetSwitch(bool value)
     m_switch->setProperty(SWITCH_STATE, value);
 }
 
-bool Effect_gui::update(bool setTarget, bool activateSwitch)
-{
-
-}

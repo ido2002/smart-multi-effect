@@ -6,16 +6,15 @@
 #include <list>
 #include <QQmlApplicationEngine>
 
-#include <EffectController/effect.h>
+#include <EffectController/preset.h>
 
 namespace GUI_elements {
     class Effect_gui
     {
     public:
-        Effect_gui();
-        Effect_gui(QString effectName, QQuickItem* parent, QQmlApplicationEngine *engine, hardware_ctrl::Effect* effect);
+        Effect_gui(hardware_ctrl::EffectInfo* effect, QQuickItem* parent, QQmlApplicationEngine *engine);
 
-        void initialize(QString effectName, QQuickItem *parent, QQmlApplicationEngine *engine, hardware_ctrl::Effect* effect);
+        void RefreshGui();
 
         double ReadDial(hardware_ctrl::Effect::EffectControlLayoutEllements dialElement);
         void SetDial(hardware_ctrl::Effect::EffectControlLayoutEllements dialElement, double value);
@@ -23,13 +22,14 @@ namespace GUI_elements {
         bool ReadSwitch();
         void SetSwitch(bool value);
 
-        bool update(bool setTarget, bool activateSwitch); //return true if there is a change
+        std::string getName() { return name; }
 
     private:
+        hardware_ctrl::EffectInfo* effect = nullptr;
+        std::string name;
         QQuickItem* m_item = nullptr;
         QQuickItem* m_switch = nullptr;
         std::map<hardware_ctrl::Effect::EffectControlLayoutEllements, QQuickItem*> m_dials;
-        hardware_ctrl::Effect* m_effect = nullptr;
     };
 }
 

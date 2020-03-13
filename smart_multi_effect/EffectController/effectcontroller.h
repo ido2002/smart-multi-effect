@@ -26,8 +26,6 @@ namespace hardware_ctrl {
         void AddButtonPressEvent(std::string buttonName, std::function<void(EffectController* controller)> func);
         void AddButtonReleaseEvent(std::string buttonName, std::function<void(EffectController* controller)> func);
 
-        void LoadPreset(Preset preset);
-
         void SetAllToValue();
         void SetAllToValueSmooth(size_t time_ms, size_t resolution = 100);
         void SetAllToValue_Long();

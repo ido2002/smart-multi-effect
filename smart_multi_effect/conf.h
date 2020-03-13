@@ -152,7 +152,7 @@ namespace GUI_PARAMETERS {
     }
 
     namespace PRESET_EDIT_PAGE {
-        const QUrl PRESETS_URL("qrc:/EffectEdir/PresetEditPage.qml");
+        const QUrl PRESET_EDIT_URL("qrc:/EffectEdit/PresetEditPage.qml");
         const QString PRESET_HEADLINE = "presetHeadline";
 
         const QString EFFECT_1 = "effect_1";
@@ -204,7 +204,7 @@ namespace GUI_PARAMETERS {
 
     namespace GENERAL_GUI_PROPERTIES_NAMES {
         const char LABLE_TEXT[] = "text";
-        const char SWITCH_STATE[] = "position";
+        const char SWITCH_STATE[] = "checked";
         const char DIAL_VALUE[] = "value";
         const char COLOR[] = "color";
 }
