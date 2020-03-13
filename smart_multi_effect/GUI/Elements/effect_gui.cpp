@@ -4,7 +4,7 @@
 
 using namespace GUI_elements;
 using namespace CONF::GUI_PARAMETERS;
-using namespace EFFECT_EDIT_PARAMETERS;
+using namespace EFFECT_EDIT;
 using namespace GENERAL_GUI_PROPERTIES_NAMES;
 
 using layoutElements = hardware_ctrl::Effect::EffectControlLayoutEllements;

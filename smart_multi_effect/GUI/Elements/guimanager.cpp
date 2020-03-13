@@ -6,18 +6,22 @@
 
 #include <QQmlApplicationEngine>
 #include <QQmlComponent>
+#include <QCursor>
 
 using namespace CONF;
 using namespace GUI_PARAMETERS;
 
 GUI_elements::GuiManager::GuiManager()
 {
-    engine.load(PAGES::MAIN_URL);
+    engine.load(MAIN_WINDOW::MAIN_URL);
+
+    //hide the cursor
+    ///QGuiApplication::setOverrideCursor(QCursor(Qt::BlankCursor));
 
     //get main window, view area and buttons area
     mainWindow = (QQuickItem*)engine.rootObjects()[0];
-    viewArea = mainWindow->findChild<QQuickItem*>(PAGES::MAIN_VIEW_AREA);
-    buttonsArea = mainWindow->findChild<QQuickItem*>(PAGES::BUTTONS_AREA);
+    viewArea = mainWindow->findChild<QQuickItem*>(MAIN_WINDOW::MAIN_VIEW_AREA);
+    buttonsArea = mainWindow->findChild<QQuickItem*>(MAIN_WINDOW::BUTTONS_AREA);
 
     //get buttons
     for(auto b : CUSTON_BUTTON::BUTTONS) {

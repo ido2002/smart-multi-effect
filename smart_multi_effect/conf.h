@@ -132,20 +132,40 @@ namespace NOTE_RECOGNITION {
 }
 
 namespace GUI_PARAMETERS {
-    namespace PAGES {
+    namespace MAIN_WINDOW {
         const QUrl MAIN_URL("qrc:/main.qml");
-        const QUrl SONGS_URL("qrc:/Pages/SongsPage.qml");
-        const QUrl PRESETS_URL("qrc:/Pages/PresetPage.qml");
-        const QUrl BUTTON_AREA_URL("qrc:/ButtonsArea/ButtonArea.qml");
         const QString MAIN_WINDOW = "window";
         const QString MAIN_VIEW_AREA = "viewArea";
         const QString BUTTONS_AREA = "buttonsArea";
     }
 
-    namespace FRAMES {
-        const QUrl SONG_FRAME_URL("qrc:/Frames/SongFrame");
+    namespace SONGS_PAGE {
+        const QUrl SONGS_URL("qrc:/Pages/SongsPage.qml");
         const QString SONG_FRAME_CONTANER = "SongPreset";
+
+    }
+
+    namespace PRESETS_PAGE {
+        const QUrl PRESETS_URL("qrc:/Pages/PresetPage.qml");
         const QString PRESET_NAME = "presetText";
+
+    }
+
+    namespace PRESET_EDIT_PAGE {
+        const QUrl PRESETS_URL("qrc:/EffectEdir/PresetEditPage.qml");
+        const QString PRESET_HEADLINE = "presetHeadline";
+
+        const QString EFFECT_1 = "effect_1";
+        const QString EFFECT_2 = "effect_2";
+        const QString EFFECT_3 = "effect_3";
+        const QString EFFECT_4 = "effect_4";
+        const QString EFFECT_5 = "effect_5";
+        const QString EFFECT_6 = "effect_6";
+
+    }
+
+    namespace SONG_FRAME {
+        const QUrl SONG_FRAME_URL("qrc:/Frames/SongFrame");
     }
 
     namespace CUSTON_BUTTON {
@@ -163,7 +183,7 @@ namespace GUI_PARAMETERS {
         const std::vector<QString> BUTTONS = { BUTTON_1, BUTTON_2, BUTTON_3, BUTTON_4, BUTTON_5 };
     }
 
-    namespace EFFECT_EDIT_PARAMETERS {
+    namespace EFFECT_EDIT {
         const QUrl EFFECT_EDIT3_URL("qrc:/EffectEdit/EffectEdit.qml");
 
         const QString DIAL1_NAME = "dial1";

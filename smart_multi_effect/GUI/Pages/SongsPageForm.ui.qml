@@ -5,6 +5,11 @@ Item {
     width: 1024
     height: 500
 
+    MouseArea {
+        anchors.fill: parent
+        enabled: true
+        cursorShape: Qt.BlankCursor
+    }
 
     Rectangle {
         id: rectangle
@@ -69,14 +74,8 @@ Item {
             source: "triangleButton.png"
             fillMode: Image.PreserveAspectFit
         }
-
-
-
     }
 }
 
-/*##^##
-Designer {
-    D{i:2;anchors_height:250;anchors_width:250;anchors_x:512;anchors_y:214}D{i:6;anchors_x:142;anchors_y:86}
-}
-##^##*/
+
+

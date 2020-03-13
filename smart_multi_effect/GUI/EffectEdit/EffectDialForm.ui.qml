@@ -10,6 +10,10 @@ Item {
         objectName: "dial"
         id: dial
         x: 0
+        width: 100
+        height: 100
+        scale: 1
+        font.pointSize: 20
         anchors.top: parent.top
         anchors.topMargin: 0
         anchors.horizontalCenter: parent.horizontalCenter

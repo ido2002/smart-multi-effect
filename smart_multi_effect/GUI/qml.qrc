@@ -21,5 +21,8 @@
         <file>Pages/SongBackground.png</file>
         <file>Pages/PresetBackground.png</file>
         <file>Pages/MenuBackground.png</file>
+        <file>EffectEdit/PresetEditPage.qml</file>
+        <file>EffectEdit/PresetEditPageForm.ui.qml</file>
+        <file>EffectEdit/PresetBackground.png</file>
     </qresource>
 </RCC>

@@ -4,7 +4,7 @@ import QtQuick.Controls 2.5
 Item {
     id: element
     width: 350
-    height: 600
+    height: 200
 
     Frame {
         id: frame
@@ -15,72 +15,68 @@ Item {
             x: -12
             y: -12
             width: 350
-            height: 600
+            height: 200
             color: "#032b0b"
         }
 
         Label {
             id: label
             objectName: "effectNameLable"
-            x: 48
-            y: 358
+            x: 5
+            y: 119
             text: qsTr("Effect Name")
             font.pixelSize: 40
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignHCenter
             wrapMode: Text.NoWrap
-            anchors.bottom: element1.bottom
-            anchors.bottomMargin: 75
-            anchors.horizontalCenter: parent.horizontalCenter
         }
 
         Switch {
             objectName: "switch"
             id: element1
             x: 132
-            y: 440
-            anchors.horizontalCenterOffset: 0
+            y: 119
+            anchors.horizontalCenterOffset: 125
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.bottom: parent.bottom
-            anchors.bottomMargin: 100
-            scale: 2.5
+            anchors.bottomMargin: 9
+            scale: 1.6
         }
 
         EffectDialForm {
             objectName: "dial3"
             id: effectDialForm
+            scale: 0.8
             anchors.top: parent.top
-            anchors.topMargin: 130
+            anchors.topMargin: -23
             anchors.left: parent.left
-            anchors.leftMargin: -10
+            anchors.leftMargin: -27
         }
 
         EffectDialForm {
             objectName: "dial1"
             id: effectDialForm2
-            x: 76
+            x: 203
             y: 132
+            scale: 0.8
             anchors.top: parent.top
-            anchors.topMargin: 130
+            anchors.topMargin: -23
             anchors.right: parent.right
-            anchors.rightMargin: -10
+            anchors.rightMargin: -27
         }
 
         EffectDialForm {
             objectName: "dial2"
             id: effectDialForm1
             x: 76
+            anchors.horizontalCenterOffset: 1
+            scale: 0.8
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.top: parent.top
-            anchors.topMargin: 0
+            anchors.topMargin: -23
         }
 
     }
-    states: [
-        State {
-            name: "State1"
-        }
-    ]
 }
 
 /*##^##

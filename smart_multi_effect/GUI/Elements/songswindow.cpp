@@ -1,7 +1,7 @@
 #include "songswindow.h"
 #include "conf.h"
 
-using namespace CONF::GUI_PARAMETERS::PAGES;
+using namespace CONF::GUI_PARAMETERS::SONGS_PAGE;
 
 
 SongsWindow::SongsWindow(QQmlApplicationEngine *engine, QQuickItem *parent)

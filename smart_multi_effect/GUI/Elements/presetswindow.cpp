@@ -1,7 +1,7 @@
 #include "presetswindow.h"
 #include "conf.h"
 
-using namespace CONF::GUI_PARAMETERS::PAGES;
+using namespace CONF::GUI_PARAMETERS::PRESETS_PAGE;
 
 PresetsWindow::PresetsWindow(QQmlApplicationEngine *engine, QQuickItem *parent)
 {
@@ -47,7 +47,7 @@ void PresetsWindow::right()
 
 void PresetsWindow::UpdateIndex()
 {
-    using namespace CONF::GUI_PARAMETERS::FRAMES;
+    using namespace CONF::GUI_PARAMETERS::SONG_FRAME;
     using namespace CONF::GUI_PARAMETERS::GENERAL_GUI_PROPERTIES_NAMES;
 
     window->childItems()[0]->findChild<QQuickItem*>(PRESET_NAME)->setProperty(LABLE_TEXT, frames[index]->name);

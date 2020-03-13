@@ -1,6 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.5
 import "ButtonsArea"
+import "EffectEdit"
 
 ApplicationWindow {
     objectName: "window"
@@ -10,7 +11,6 @@ ApplicationWindow {
     width: 1024
     height: 600
     title: qsTr("Smart Multi Effect")
-
 
     function openDrawer_f() {
         drawer.open();
@@ -40,6 +40,16 @@ ApplicationWindow {
         objectName: "viewArea"
         anchors.bottomMargin: 100
         anchors.fill: parent
+    }
+
+    PresetEditPage {
+        id: presetEditPage
+        anchors.right: parent.right
+        anchors.rightMargin: 0
+        anchors.left: parent.left
+        anchors.leftMargin: 0
+        anchors.top: parent.top
+        anchors.topMargin: 0
     }
 
     ButtonArea {
@@ -102,11 +112,6 @@ ApplicationWindow {
             window.openDrawer_f();
         }
     }
-
 }
 
-/*##^##
-Designer {
-    D{i:5;anchors_x:195}
-}
-##^##*/
+
