@@ -1,4 +1,4 @@
-*
+*.backup
 !smart_multi_effect
 !.gitignore
 *.zip

@@ -188,6 +188,13 @@ namespace GUI_PARAMETERS {
         const char DIAL_VALUE[] = "value";
         const char COLOR[] = "color";
 }
+
+    namespace COLORS {
+        const QString GREEN = "#00ff00";
+        const QString RED = "#ff0000";
+        const QString BRIGHT_BLUE = "#0099ff";
+        const QString ORANGE = "#f48e06";
+    }
 }
 };
 
