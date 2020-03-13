@@ -2,3 +2,4 @@
 !smart_multi_effect
 !.gitignore
 *.zip
+*.build

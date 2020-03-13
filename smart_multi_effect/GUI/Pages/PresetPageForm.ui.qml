@@ -33,7 +33,7 @@ Item {
             width: 302
             height: 80
             color: "#efeeee"
-            text: qsTr("Presetsd")
+            text: qsTr("Presets")
             font.bold: true
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignHCenter
