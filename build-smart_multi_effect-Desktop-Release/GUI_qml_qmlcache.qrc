@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<RCC>
+    <qresource prefix="/">
+        <file alias="qtquickcontrols2.conf">../smart_multi_effect/GUI/qtquickcontrols2.conf</file>
+        <file alias="Pages/triangleButtonPreset.png">../smart_multi_effect/GUI/Pages/triangleButtonPreset.png</file>
+        <file alias="Pages/triangleButton.png">../smart_multi_effect/GUI/Pages/triangleButton.png</file>
+        <file alias="Pages/SongBackground.png">../smart_multi_effect/GUI/Pages/SongBackground.png</file>
+        <file alias="Pages/PresetBackground.png">../smart_multi_effect/GUI/Pages/PresetBackground.png</file>
+        <file alias="Pages/MenuBackground.png">../smart_multi_effect/GUI/Pages/MenuBackground.png</file>
+    </qresource>
+</RCC>

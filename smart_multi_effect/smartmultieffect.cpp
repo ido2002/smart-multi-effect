@@ -248,7 +248,7 @@ void SmartMultiEffect::SetButtonsFunctions()
         button2->SetTextColor(CONF::GUI_PARAMETERS::COLORS::ORANGE);
         button3->SetTextColor(CONF::GUI_PARAMETERS::COLORS::BRIGHT_BLUE);
         button4->SetTextColor(CONF::GUI_PARAMETERS::COLORS::BRIGHT_BLUE);
-        button5->SetTextColor(CONF::GUI_PARAMETERS::COLORS::RED);
+        button5->SetTextColor(CONF::GUI_PARAMETERS::COLORS::GREEN);
 
         button1->AddFunction([&](){
             lastWindowState = presets;
