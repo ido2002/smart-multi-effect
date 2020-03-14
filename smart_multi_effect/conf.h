@@ -60,8 +60,8 @@ namespace HARDWARE {
     const std::string P5_NAME = NAMES::TONE;
     const std::string P6_NAME = NAMES::GAIN;
 
-    const hardware_ctrl::Effect::EffectControlLayoutEllements P1_TYPE = hardware_ctrl::Effect::Speed;
-    const hardware_ctrl::Effect::EffectControlLayoutEllements P2_TYPE = hardware_ctrl::Effect::Volume;
+    const hardware_ctrl::Effect::EffectControlLayoutEllements P1_TYPE = hardware_ctrl::Effect::Delay;
+    const hardware_ctrl::Effect::EffectControlLayoutEllements P2_TYPE = hardware_ctrl::Effect::Mix;
     const hardware_ctrl::Effect::EffectControlLayoutEllements P3_TYPE = hardware_ctrl::Effect::Speed;
     const hardware_ctrl::Effect::EffectControlLayoutEllements P4_TYPE = hardware_ctrl::Effect::Volume;
     const hardware_ctrl::Effect::EffectControlLayoutEllements P5_TYPE = hardware_ctrl::Effect::Tone;
@@ -71,9 +71,9 @@ namespace HARDWARE {
     const hardware_ctrl::Effect::EffectType EFFECT_2_TYPE = hardware_ctrl::Effect::delay;
     const hardware_ctrl::Effect::EffectType EFFECT_3_TYPE = hardware_ctrl::Effect::overdrive;
 
-    const uint64_t EFFECT_1_LAYOUT = hardware_ctrl::Effect::Speed;
-    const uint64_t EFFECT_2_LAYOUT = hardware_ctrl::Effect::Speed | hardware_ctrl::Effect::Volume;
-    const uint64_t EFFECT_3_LAYOUT = hardware_ctrl::Effect::Volume | hardware_ctrl::Effect::Tone | hardware_ctrl::Effect::Gain;
+    const uint64_t EFFECT_1_LAYOUT = P3_TYPE;
+    const uint64_t EFFECT_2_LAYOUT = P1_TYPE | P2_TYPE;
+    const uint64_t EFFECT_3_LAYOUT = P4_TYPE | P5_TYPE | P6_TYPE;
 
     const uint64_t EFFECT_1_POTENTIOMETERS = 1 << 0;
     const uint64_t EFFECT_2_POTENTIOMETERS = 1 << 1 | 1 << 2;
@@ -162,6 +162,9 @@ namespace GUI_PARAMETERS {
         const QString EFFECT_5 = "effect_5";
         const QString EFFECT_6 = "effect_6";
 
+        const QString TIME_SLIDER = "timeSlider";
+        const QString RESOLUTION_SLIDER = "resSlider";
+
     }
 
     namespace SONG_FRAME {
@@ -200,20 +203,32 @@ namespace GUI_PARAMETERS {
         const QString TEXT_LABLE_NAME = "textLable";
 
         const QString EFFECT_LABLE_NAME = "effectNameLable";
+
+        const QString BACKGROUND_RECT = "rect";
     }
 
     namespace GENERAL_GUI_PROPERTIES_NAMES {
         const char LABLE_TEXT[] = "text";
         const char SWITCH_STATE[] = "checked";
         const char DIAL_VALUE[] = "value";
+        const char SLIDER_VALUE[] = "value";
         const char COLOR[] = "color";
 }
 
     namespace COLORS {
+        const QString WHITE = "#ffffff";
+        const QString GREY = "#383838";
+
         const QString GREEN = "#00ff00";
         const QString RED = "#ff0000";
         const QString BRIGHT_BLUE = "#0099ff";
         const QString ORANGE = "#f48e06";
+
+        const QString BROWN = "#613c00";
+        const QString DARK_GREEN = "#005010";
+        const QString DARK_RED = "#700000";
+        const QString DARK_MAGENTA = "#39004a";
+        const QString DARK_BLUE = "#002561";
     }
 }
 };

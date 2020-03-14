@@ -12,6 +12,7 @@ Item {
 
         Rectangle {
             id: rectangle
+            objectName: "rect"
             x: -12
             y: -12
             width: 280

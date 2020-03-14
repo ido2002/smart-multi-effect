@@ -28,6 +28,8 @@ private:
     QString name;
     hardware_ctrl::Preset* preset;
     QQuickItem* editWindow = nullptr;
+    //QQuickItem* editTime = nullptr;
+    //QQuickItem* editResolution = nullptr;
 
     std::vector<GUI_elements::Effect_gui*> effects;
 };

@@ -27,7 +27,7 @@ namespace GUI_elements {
     private:
         hardware_ctrl::EffectInfo* effect = nullptr;
         std::string name;
-        QQuickItem* m_item = nullptr;
+        QQuickItem* item = nullptr;
         QQuickItem* m_switch = nullptr;
         std::map<hardware_ctrl::Effect::EffectControlLayoutEllements, QQuickItem*> m_dials;
     };

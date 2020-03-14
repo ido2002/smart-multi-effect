@@ -5,15 +5,29 @@
 #include <map>
 #include <list>
 #include <string>
+#include <QString>
 
 namespace hardware_ctrl {
+    struct ColorSet
+    {
+        ColorSet(QString backGroundColor, QString dialsColor, QString fontColor) {
+            this->fontColor = fontColor;
+            this->dialsColor = dialsColor;
+            this->backGroundColor = backGroundColor;
+        }
+
+        QString backGroundColor;
+        QString dialsColor;
+        QString fontColor;
+    };
+
     struct EffectInfo
     {
-        EffectInfo();
-        EffectInfo(std::string name, bool state, std::map<Effect::EffectControlLayoutEllements, int/*value*/> potentiometers);
+        EffectInfo(ColorSet colors, std::string name, bool state, std::map<Effect::EffectControlLayoutEllements, int/*value*/> potentiometers);
         std::string name;
         bool state;
         std::map<Effect::EffectControlLayoutEllements, int/*value*/> potentiometers;
+        ColorSet colors;
     };
 
     class Preset

@@ -69,66 +69,68 @@ void SmartMultiEffect::InitializeSoundProcessor()
 void SmartMultiEffect::InitializePresets()
 {
     using element = hardware_ctrl::Effect::EffectControlLayoutEllements;
+    using colors = hardware_ctrl::ColorSet;
+    using namespace CONF::GUI_PARAMETERS::COLORS;
     using namespace CONF::NAMES;
     using map = std::map<element, int>;
     using pair = std::pair<element, int>;
 
     PresetWindow* pw1 = new PresetWindow("rock");
     pw1->setP1(new Preset("clean", new hardware_ctrl::Preset(
-    {new hardware_ctrl::EffectInfo(OVERDRIVE, false, map({
+    {new hardware_ctrl::EffectInfo(colors(BROWN, WHITE, WHITE), OVERDRIVE, false, map({
          pair(element::Gain, 50),
          pair(element::Tone, 50),
          pair(element::Volume, 50)})),
-     new hardware_ctrl::EffectInfo(TREMOLO, true, map({
+     new hardware_ctrl::EffectInfo(colors(DARK_MAGENTA, WHITE, WHITE), TREMOLO, true, map({
               pair(element::Depth, 50),
               pair(element::Speed, 50),
               pair(element::Volume, 50)})),
-     new hardware_ctrl::EffectInfo(DELAY, true, map({
+     new hardware_ctrl::EffectInfo(colors(DARK_GREEN, WHITE, WHITE), DELAY, true, map({
               pair(element::Regen, 50),
               pair(element::Mix, 50),
               pair(element::Delay, 50)
      }))}, 0, 0), guiManager->getEngine(), guiManager->getViewArea()));
 
     pw1->setP2(new Preset("low gain", new hardware_ctrl::Preset(
-    {new hardware_ctrl::EffectInfo(OVERDRIVE, true, map({
+    {new hardware_ctrl::EffectInfo(colors(BROWN, WHITE, WHITE), OVERDRIVE, true, map({
          pair(element::Gain, 10),
          pair(element::Tone, 50),
          pair(element::Volume, 50)})),
-     new hardware_ctrl::EffectInfo(TREMOLO, false, map({
+     new hardware_ctrl::EffectInfo(colors(DARK_MAGENTA, WHITE, WHITE), TREMOLO, false, map({
               pair(element::Depth, 50),
               pair(element::Speed, 50),
               pair(element::Volume, 50)})),
-     new hardware_ctrl::EffectInfo(DELAY, true, map({
+     new hardware_ctrl::EffectInfo(colors(DARK_GREEN, WHITE, WHITE), DELAY, true, map({
               pair(element::Regen, 50),
               pair(element::Mix, 50),
               pair(element::Delay, 50)
      }))}, 0, 0), guiManager->getEngine(), guiManager->getViewArea()));
 
     pw1->setP3(new Preset("high gain", new hardware_ctrl::Preset(
-    {new hardware_ctrl::EffectInfo(OVERDRIVE, true, map({
+    {new hardware_ctrl::EffectInfo(colors(BROWN, WHITE, WHITE), OVERDRIVE, true, map({
          pair(element::Gain, 100),
          pair(element::Tone, 70),
          pair(element::Volume, 50)})),
-     new hardware_ctrl::EffectInfo(TREMOLO, false, map({
+     new hardware_ctrl::EffectInfo(colors(DARK_MAGENTA, WHITE, WHITE), TREMOLO, false, map({
               pair(element::Depth, 50),
               pair(element::Speed, 50),
               pair(element::Volume, 50)})),
-     new hardware_ctrl::EffectInfo(DELAY, true, map({
+     new hardware_ctrl::EffectInfo(colors(DARK_GREEN, WHITE, WHITE), DELAY, true, map({
               pair(element::Regen, 50),
               pair(element::Mix, 50),
               pair(element::Delay, 50)
      }))}, 0, 0), guiManager->getEngine(), guiManager->getViewArea()));
 
     pw1->setP4(new Preset("all off", new hardware_ctrl::Preset(
-    {new hardware_ctrl::EffectInfo(OVERDRIVE, false, map({
+    {new hardware_ctrl::EffectInfo(colors(BROWN, WHITE, WHITE), OVERDRIVE, false, map({
          pair(element::Gain, 50),
          pair(element::Tone, 50),
          pair(element::Volume, 50)})),
-     new hardware_ctrl::EffectInfo(TREMOLO, false, map({
+     new hardware_ctrl::EffectInfo(colors(DARK_MAGENTA, WHITE, WHITE), TREMOLO, false, map({
               pair(element::Depth, 50),
               pair(element::Speed, 50),
               pair(element::Volume, 50)})),
-     new hardware_ctrl::EffectInfo(DELAY, false, map({
+     new hardware_ctrl::EffectInfo(colors(DARK_GREEN, WHITE, WHITE), DELAY, false, map({
               pair(element::Regen, 50),
               pair(element::Mix, 50),
               pair(element::Delay, 50)
@@ -137,27 +139,27 @@ void SmartMultiEffect::InitializePresets()
 
     PresetWindow* pw2 = new PresetWindow("test");
     pw2->setP1(new Preset("6 effects", new hardware_ctrl::Preset(
-    {new hardware_ctrl::EffectInfo(OVERDRIVE, false, map({
+    {new hardware_ctrl::EffectInfo(colors(BROWN, WHITE, WHITE), OVERDRIVE, false, map({
          pair(element::Gain, 50),
          pair(element::Tone, 50),
          pair(element::Volume, 50)})),
-     new hardware_ctrl::EffectInfo(TREMOLO, false, map({
+     new hardware_ctrl::EffectInfo(colors(DARK_MAGENTA, WHITE, WHITE), TREMOLO, false, map({
               pair(element::Depth, 50),
               pair(element::Speed, 50),
               pair(element::Volume, 50)})),
-     new hardware_ctrl::EffectInfo(DELAY, false, map({
+     new hardware_ctrl::EffectInfo(colors(DARK_GREEN, WHITE, WHITE), DELAY, false, map({
               pair(element::Regen, 50),
               pair(element::Mix, 50),
               pair(element::Delay, 50)})),
-     new hardware_ctrl::EffectInfo("4", false, map({
+     new hardware_ctrl::EffectInfo(colors(DARK_RED, WHITE, WHITE), "comp", false, map({
          pair(element::Gain, 50),
          pair(element::Tone, 50),
          pair(element::Volume, 50)})),
-     new hardware_ctrl::EffectInfo("5", false, map({
+     new hardware_ctrl::EffectInfo(colors(DARK_BLUE, WHITE, WHITE), "chorus", false, map({
          pair(element::Gain, 50),
          pair(element::Tone, 50),
          pair(element::Volume, 50)})),
-     new hardware_ctrl::EffectInfo("6", false, map({
+     new hardware_ctrl::EffectInfo(colors(GREY, WHITE, WHITE), "deth Metal", false, map({
          pair(element::Gain, 50),
          pair(element::Tone, 50),
          pair(element::Volume, 50)}))

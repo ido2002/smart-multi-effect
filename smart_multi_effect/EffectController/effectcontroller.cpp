@@ -284,30 +284,38 @@ void EffectController::SetPreset(Preset preset)
 
 
     if(preset.resolution > 0 && preset.time_ms > 0) {
-        std::map<std::string, std::map<Effect::EffectControlLayoutEllements, int>> d_targets;
+        using pMap = std::map<Effect::EffectControlLayoutEllements, int>;
+        using pPair = std::pair<Effect::EffectControlLayoutEllements, int>;
+
+        std::map<std::string, pMap> targets_delta;
+        std::map<std::string, pMap> initial_values;
 
         for(auto e : preset.effects) {
             if(m_effects.find(e.first) == m_effects.end()) {
                 std::cout << e.first << "does not exist" << std::endl;
                 continue;
             }
-            std::map<Effect::EffectControlLayoutEllements, int> effectDelta;
+            pMap effectDelta;
+            pMap effectInitial;
             for(auto p : e.second->potentiometers) {
-                if(GetEffect(e.second->name)->GetPotentiometer(p.first))
-                    effectDelta.insert(std::pair<Effect::EffectControlLayoutEllements, int>(p.first,
-                        p.second - GetEffect(e.second->name)->GetPotentiometer(p.first)->GetValue()));
+                auto effect = GetEffect(e.second->name)->GetPotentiometer(p.first);
+                if(effect) {
+                    effectDelta.insert(pPair(p.first, p.second - effect->GetValue()));
+                    effectInitial.insert(pPair(p.first, effect->GetValue()));
+                }
             }
-            d_targets.insert(std::pair<std::string, std::map<Effect::EffectControlLayoutEllements, int>>(e.second->name, effectDelta));
+            targets_delta.insert(std::pair<std::string, pMap>(e.second->name, effectDelta));
+            initial_values.insert(std::pair<std::string, pMap>(e.second->name, effectDelta));
         }
 
         for (int i = 0; i < 100; i += preset.resolution) {
             usleep(preset.time_ms * 1000/(100 / preset.resolution));
-            for (auto e : d_targets) {
+            for (auto e : targets_delta) {
                 for(auto p : e.second) {
-                    if(m_effects[e.first]->GetPotentiometer(p.first)) {
-                        m_effects[e.first]->GetPotentiometer(p.first)->
-                          SetTarget( m_effects[e.first]->GetPotentiometer(p.first)->
-                                GetTarget() + p.second * preset.resolution / 100); //not good yet
+                    auto potentiometer = m_effects[e.first]->GetPotentiometer(p.first);
+                    auto pInitial = initial_values[e.first][p.first];
+                    if(potentiometer) {
+                        potentiometer->SetTarget(pInitial + p.second * i * preset.resolution / 100); //not good yet
                     }
                 }
             }

@@ -41,7 +41,9 @@ EffectInfo* Preset::getEffect(std::string name)
     return effects.find(name)->second;
 }
 
-EffectInfo::EffectInfo(std::string name, bool state, std::map<Effect::EffectControlLayoutEllements, int> potentiometers) {
+EffectInfo::EffectInfo(ColorSet colors, std::string name, bool state, std::map<Effect::EffectControlLayoutEllements, int> potentiometers)
+ : colors(colors)
+{
     this->name = name;
     this->state = state;
     this->potentiometers = potentiometers;

@@ -16,7 +16,9 @@ GUI_elements::GuiManager::GuiManager()
     engine.load(MAIN_WINDOW::MAIN_URL);
 
     //hide the cursor
-    ///QGuiApplication::setOverrideCursor(QCursor(Qt::BlankCursor));
+#ifdef RASPBERRY_PI
+    QGuiApplication::setOverrideCursor(QCursor(Qt::BlankCursor));
+#endif
 
     //get main window, view area and buttons area
     mainWindow = (QQuickItem*)engine.rootObjects()[0];

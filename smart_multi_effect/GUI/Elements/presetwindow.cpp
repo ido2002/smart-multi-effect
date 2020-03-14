@@ -3,6 +3,7 @@
 
 using namespace CONF;
 using namespace GUI_PARAMETERS;
+using namespace GENERAL_GUI_PROPERTIES_NAMES;
 using namespace PRESET_EDIT_PAGE;
 
 using namespace GUI_elements;
@@ -57,6 +58,8 @@ Preset::Preset(QString name, hardware_ctrl::Preset* preset, QQmlApplicationEngin
     editWindow->setParentItem(parent);
     editWindow->setVisible(false);
 
+    editWindow->childItems()[0]->findChild<QQuickItem*>(PRESET_HEADLINE)->setProperty(LABLE_TEXT, name);
+
     //setup effects
     int e_index = 0;
     for(auto e : this->preset->effects) {
@@ -66,25 +69,28 @@ Preset::Preset(QString name, hardware_ctrl::Preset* preset, QQmlApplicationEngin
         case 1:
             parent = editWindow->findChild<QQuickItem*>(EFFECT_1);
             break;
-        case 2:
+        case 3:
             parent = editWindow->findChild<QQuickItem*>(EFFECT_2);
             break;
-        case 3:
+        case 2:
             parent = editWindow->findChild<QQuickItem*>(EFFECT_3);
             break;
         case 4:
             parent = editWindow->findChild<QQuickItem*>(EFFECT_4);
             break;
-        case 5:
+        case 6:
             parent = editWindow->findChild<QQuickItem*>(EFFECT_5);
             break;
-        case 6:
+        case 5:
             parent = editWindow->findChild<QQuickItem*>(EFFECT_6);
             break;
         }
         Effect_gui* eg = new Effect_gui(e.second, parent, engine);
         effects.push_back(eg);
     }
+
+    //editTime = editWindow->childItems()[0]->childItems()[0]->findChild<QQuickItem*>(TIME_SLIDER);
+    //editResolution = editWindow->childItems()[0]->childItems()[0]->findChild<QQuickItem*>(RESOLUTION_SLIDER);
 }
 
 void Preset::Update()
@@ -96,6 +102,8 @@ void Preset::Update()
         }
         effect->state = e->ReadSwitch();
     }
+    //preset->time_ms = editTime->property(SLIDER_VALUE).toDouble() * 1000;
+    //preset->resolution = editResolution->property(SLIDER_VALUE).toInt();
 }
 
 void Preset::Show()
@@ -113,4 +121,6 @@ void Preset::Refresh()
     for(auto e : this->effects) {
         e->RefreshGui();
     }
+    //editTime->setProperty(SLIDER_VALUE, QVariant::fromValue(preset->time_ms * 1000));
+    //editResolution->setProperty(SLIDER_VALUE, QVariant::fromValue(preset->resolution * 1000));
 }

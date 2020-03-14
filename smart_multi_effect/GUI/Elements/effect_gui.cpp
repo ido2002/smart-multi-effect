@@ -23,10 +23,14 @@ Effect_gui::Effect_gui(hardware_ctrl::EffectInfo* effect, QQuickItem *parent, QQ
     QQuickItem *Instance = qobject_cast<QQuickItem *>(comp.create());
     engine->setObjectOwnership(Instance,QQmlEngine::JavaScriptOwnership);
     Instance->setParentItem(parent);
-    m_item = Instance;
+    item = Instance;
+
+    auto rect = item->childItems()[0]->findChild<QQuickItem*>(BACKGROUND_RECT);
+    rect->setProperty(COLOR, effect->colors.backGroundColor);
 
     //set name lable
     Instance->childItems()[0]->findChild<QQuickItem*>(EFFECT_LABLE_NAME)->setProperty(LABLE_TEXT, QString::fromStdString(effect->name));
+    Instance->childItems()[0]->findChild<QQuickItem*>(EFFECT_LABLE_NAME)->setProperty(COLOR, effect->colors.fontColor);
 
     //set dials
     {
@@ -56,14 +60,20 @@ Effect_gui::Effect_gui(hardware_ctrl::EffectInfo* effect, QQuickItem *parent, QQ
             if(dialName == "error") {
                 continue;
             }
-            m_dials.insert(std::pair<layoutElements, QQuickItem*>(p.first, m_item->childItems()[0]->findChild<QQuickItem*>(dialName)));
+            m_dials.insert(std::pair<layoutElements, QQuickItem*>(p.first, item->childItems()[0]->findChild<QQuickItem*>(dialName)));
             m_dials.find(p.first)->second->findChild<QQuickItem*>(TEXT_LABLE_NAME)->setProperty(LABLE_TEXT, QString::fromStdString(hardware_ctrl::Effect::LayoutEllementToString(p.first)));
+
+            m_dials.find(p.first)->second->findChild<QQuickItem*>(DIAL_NAME)->setProperty(COLOR, effect->colors.dialsColor);
+            m_dials.find(p.first)->second->findChild<QQuickItem*>(VALUE_LABLE_NAME)->setProperty(COLOR, effect->colors.fontColor);
+            m_dials.find(p.first)->second->findChild<QQuickItem*>(TEXT_LABLE_NAME)->setProperty(COLOR, effect->colors.fontColor);
+
             i++;
         }
     }
 
     //set switch
-    m_switch = m_item->childItems()[0]->findChild<QQuickItem*>(SWITCH_NAME);
+    m_switch = item->childItems()[0]->findChild<QQuickItem*>(SWITCH_NAME);
+
     RefreshGui();
 }
 

@@ -1,4 +1,5 @@
 import QtQuick 2.4
+import QtQuick.Controls 2.3
 
 Item {
     id: element
@@ -100,7 +101,79 @@ Item {
                 anchors.bottomMargin: 105
             }
 
+//            Slider {
+//                id: slider
+//                snapMode: Slider.SnapAlways
+//                stepSize: 1
+//                to: 100
+//                from: 1
+//                objectName: "resSlider"
+//                anchors.left: parent.left
+//                anchors.leftMargin: 297
+//                anchors.top: parent.top
+//                anchors.topMargin: 96
+//                value: 1
 
+//                Label {
+//                    id: label
+//                    y: 22
+//                    text: slider.value
+//                    font.pointSize: 18
+//                    verticalAlignment: Text.AlignVCenter
+//                    anchors.verticalCenter: parent.verticalCenter
+//                    anchors.left: parent.right
+//                    anchors.leftMargin: 0
+//                }
+
+//                Label {
+//                    id: labelT
+//                    y: 19
+//                    text: qsTr("jump size:")
+//                    anchors.right: parent.left
+//                    anchors.rightMargin: 0
+//                    font.pointSize: 18
+//                    verticalAlignment: Text.AlignVCenter
+//                    anchors.verticalCenter: parent.verticalCenter
+//                }
+//            }
+
+//            Slider {
+//                id: slider1
+//                snapMode: Slider.SnapAlways
+//                stepSize: 0.1
+//                to: 5
+//                objectName: "timeSlider"
+//                anchors.left: parent.left
+//                anchors.leftMargin: 297
+//                anchors.top: parent.top
+//                anchors.topMargin: 143
+//                value: 0
+
+//                Label {
+//                    id: label1
+//                    y: 19
+//                    text: slider1.value.toFixed(1)
+//                    font.pointSize: 18
+//                    verticalAlignment: Text.AlignVCenter
+//                    anchors.verticalCenter: parent.verticalCenter
+//                    anchors.left: parent.right
+//                    anchors.leftMargin: 0
+//                }
+
+//                Label {
+//                    id: label1T
+//                    x: -106
+//                    y: 19
+//                    width: 106
+//                    height: 29
+//                    text: qsTr("time[sec]:")
+//                    anchors.right: parent.left
+//                    anchors.rightMargin: 0
+//                    font.pointSize: 18
+//                    verticalAlignment: Text.AlignVCenter
+//                    anchors.verticalCenter: parent.verticalCenter
+//                }
+//            }
         }
 
         Text {
@@ -117,9 +190,6 @@ Item {
             horizontalAlignment: Text.AlignHCenter
             font.pixelSize: 59
         }
-
-
-
     }
 }
 
@@ -128,5 +198,7 @@ Designer {
     D{i:3;anchors_x:200;anchors_y:185}D{i:4;anchors_height:160;anchors_x:200;anchors_y:185}
 D{i:5;anchors_height:160;anchors_x:200;anchors_y:185}D{i:6;anchors_height:160;anchors_x:200;anchors_y:185}
 D{i:7;anchors_height:160;anchors_x:200;anchors_y:185}D{i:8;anchors_height:160;anchors_x:200;anchors_y:185}
+D{i:10;anchors_x:206}D{i:9;anchors_x:297;anchors_y:96}D{i:13;anchors_x:131}D{i:12;anchors_x:297;anchors_y:143}
 }
 ##^##*/
+
