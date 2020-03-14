@@ -41,6 +41,7 @@ GUI_elements::GuiManager::GuiManager()
     menu = new Menu(mainWindow);
     recordNotePage = new RecordNotePage(&engine, viewArea);
     recordOctavePage = new RecordOctavePage(&engine, viewArea);
+    trainingPage = new TrainingPage(&engine, viewArea);
 }
 
 GUI_elements::GuiButton *GUI_elements::GuiManager::getButtonByName(std::string name)
@@ -62,6 +63,7 @@ void GUI_elements::GuiManager::SetViewAreaTo(GUI_elements::GuiManager::ViewAreaC
     presetsPage->getCurrentPreset()->Hide();
     recordNotePage->Hide();
     recordOctavePage->Hide();
+    trainingPage->Hide();
 
     switch(content) {
     case nothing:
@@ -86,6 +88,7 @@ void GUI_elements::GuiManager::SetViewAreaTo(GUI_elements::GuiManager::ViewAreaC
         recordOctavePage->Show();
         break;
     case train:
+        trainingPage->Show();
         break;
     case manage:
         break;

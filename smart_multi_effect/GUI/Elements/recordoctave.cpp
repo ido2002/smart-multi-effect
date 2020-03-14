@@ -88,18 +88,19 @@ void RecordOctavePage::record(SoundProcessor *soundProcessor)
 {
     if(recordingThread == nullptr && octaves.size() > 0) {
         busyIndicator->setVisible(true);
-        std::vector<float> o = {0, 0, 0};
+        octavesVector = new std::vector<float>(3, 0);
         if(std::find(octaves.begin(), octaves.end(), Stroke::NoteOctave::Low) == octaves.end()) {
-            o[0] = 1;
+            (*octavesVector)[0] = 1;
         }
         if(std::find(octaves.begin(), octaves.end(), Stroke::NoteOctave::Mid) == octaves.end()) {
-            o[1] = 1;
+            (*octavesVector)[1] = 1;
         }
         if(std::find(octaves.begin(), octaves.end(), Stroke::NoteOctave::High) == octaves.end()) {
-            o[2] = 1;
+            (*octavesVector)[2] = 1;
         }
         recordingThread = new std::thread([&]() {
-            soundProcessor->RecordOctaveSample(o);
+            soundProcessor->RecordOctaveSample(*octavesVector);
+            delete octavesVector;
         });
     }
 }

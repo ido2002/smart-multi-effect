@@ -28,6 +28,7 @@ private:
     sound_processing::Stroke::NoteOctave currentOctave = sound_processing::Stroke::NoteOctave::Low;
 
     std::thread* recordingThread = nullptr;
+    std::vector<float>* octavesVector = nullptr;
 
     QQuickItem* window;
     QQuickItem* busyIndicator;

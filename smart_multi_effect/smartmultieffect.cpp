@@ -525,10 +525,13 @@ void SmartMultiEffect::SetButtonsFunctions()
             updateWindowFlag = true;
         });
         button2->AddFunction([&](){
+            guiManager->getTrainingPage()->up();
         });
         button3->AddFunction([&](){
+            guiManager->getTrainingPage()->down();
         });
         button4->AddFunction([&](){
+            guiManager->getTrainingPage()->learn(soundProcessor);
         });
         button5->AddFunction([&](){
             windowState = manage;
@@ -581,6 +584,9 @@ void SmartMultiEffect::ButtonsUpdate()
     }
     if(windowState == recordOctave) {
         guiManager->getRecordOctavePage()->update();
+    }
+    if(windowState == train) {
+        guiManager->getTrainingPage()->update();
     }
 
     controller->UpdateButtons();

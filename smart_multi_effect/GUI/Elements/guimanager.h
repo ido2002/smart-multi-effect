@@ -11,6 +11,7 @@
 #include "menu.h"
 #include "recordnote.h"
 #include "recordoctave.h"
+#include "train.h"
 
 namespace GUI_elements {
     class GuiManager
@@ -31,6 +32,7 @@ namespace GUI_elements {
         Menu* getMenu() { return menu; }
         RecordNotePage* getRecordNotePage() { return recordNotePage; }
         RecordOctavePage* getRecordOctavePage() { return recordOctavePage; }
+        TrainingPage* getTrainingPage() { return trainingPage; }
 
         QQmlApplicationEngine* getEngine() { return &engine; }
         QQuickItem* &getViewArea() { return viewArea; }
@@ -49,6 +51,7 @@ namespace GUI_elements {
         Menu* menu = nullptr;
         RecordNotePage* recordNotePage = nullptr;
         RecordOctavePage* recordOctavePage = nullptr;
+        TrainingPage* trainingPage = nullptr;
     };
 }
 #endif // GUIMANAGER_H

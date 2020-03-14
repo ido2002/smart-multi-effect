@@ -1,11 +1,34 @@
 #ifndef TRAIN_H
 #define TRAIN_H
 
+#include <QQuickItem>
+#include <QQmlApplicationEngine>
+#include "SoundProcessing/soundprocessor.h"
+#include <thread>
 
-class Train
+class TrainingPage
 {
 public:
-    Train();
+    TrainingPage(QQmlApplicationEngine *engine, QQuickItem *parent);
+
+    void Show();
+    void Hide();
+
+    void update();
+    void UpdateLable();
+
+    void up();
+    void down();
+    void learn(sound_processing::SoundProcessor* soundProcessor);
+
+private:
+    long repeats = 0;
+
+    std::thread* learningThread = nullptr;
+
+    QQuickItem* window;
+    QQuickItem* busyIndicator;
+    QQuickItem* repeatsLable;
 };
 
 #endif // TRAIN_H

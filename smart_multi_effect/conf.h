@@ -237,6 +237,15 @@ namespace GUI_PARAMETERS {
         const QString OCTAVES_LABLE_BASE_TEXT = "octaves";
     }
 
+    namespace TRAINING_PAGE {
+        const QUrl TRAINING_PAGE_URL("qrc:/SettingsPages/LearningPage.qml");
+
+        const QString BUSY_INDICATOR = "busyIndicator";
+        const QString REPEATS_LABLE = "repeatsLable";
+
+        const QString REPEATS_LABLE_BASE_TEXT = "repeats: ";
+    }
+
     namespace COLORS {
         const QString WHITE = "#ffffff";
         const QString GREY = "#383838";
