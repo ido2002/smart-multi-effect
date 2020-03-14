@@ -9,6 +9,8 @@
 #include "presetswindow.h"
 #include "songswindow.h"
 #include "menu.h"
+#include "recordnote.h"
+#include "recordoctave.h"
 
 namespace GUI_elements {
     class GuiManager
@@ -27,6 +29,8 @@ namespace GUI_elements {
         PresetsWindow* getPresetsWindow() { return presetsPage; }
         SongsWindow* getSongsWindow() { return songsPage; }
         Menu* getMenu() { return menu; }
+        RecordNotePage* getRecordNotePage() { return recordNotePage; }
+        RecordOctavePage* getRecordOctavePage() { return recordOctavePage; }
 
         QQmlApplicationEngine* getEngine() { return &engine; }
         QQuickItem* &getViewArea() { return viewArea; }
@@ -41,10 +45,10 @@ namespace GUI_elements {
         std::map<std::string, GuiButton*> buttons;
 
         SongsWindow* songsPage = nullptr;
-
         PresetsWindow* presetsPage = nullptr;
-
         Menu* menu = nullptr;
+        RecordNotePage* recordNotePage = nullptr;
+        RecordOctavePage* recordOctavePage = nullptr;
     };
 }
 #endif // GUIMANAGER_H

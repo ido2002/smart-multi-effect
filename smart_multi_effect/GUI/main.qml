@@ -1,7 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.5
 import "ButtonsArea"
-import "EffectEdit"
+import "SettingsPages"
 
 ApplicationWindow {
     objectName: "window"
@@ -102,6 +102,7 @@ ApplicationWindow {
             window.openDrawer_f();
         }
     }
+
 }
 
 

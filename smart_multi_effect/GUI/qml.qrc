@@ -24,5 +24,12 @@
         <file>EffectEdit/PresetEditPage.qml</file>
         <file>EffectEdit/PresetEditPageForm.ui.qml</file>
         <file>EffectEdit/PresetBackground.png</file>
+        <file>SettingsPages/RecordingNotePage.qml</file>
+        <file>SettingsPages/RecordingNotePageForm.ui.qml</file>
+        <file>SettingsPages/RecordingOctavePage.qml</file>
+        <file>SettingsPages/RecordingOctavePageForm.ui.qml</file>
+        <file>SettingsPages/LearningPage.qml</file>
+        <file>SettingsPages/LearningPageForm.ui.qml</file>
+        <file>SettingsPages/MenuBackground.png</file>
     </qresource>
 </RCC>

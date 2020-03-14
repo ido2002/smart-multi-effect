@@ -215,6 +215,28 @@ namespace GUI_PARAMETERS {
         const char COLOR[] = "color";
 }
 
+    namespace NOTE_RECORDING_PAGE {
+        const QUrl NOTE_RECORDING_PAGE_URL("qrc:/SettingsPages/RecordingNotePage.qml");
+
+        const QString BUSY_INDICATOR = "busyIndicator";
+        const QString NOTES_LABLE = "notesLable";
+        const QString NOTE_LABLE = "noteLable";
+
+        const QString NOTE_LABLE_BASE_TEXT = "NOTE: ";
+        const QString NOTES_LABLE_BASE_TEXT = "NOTES";
+    }
+
+    namespace OCTAVE_RECORDING_PAGE {
+        const QUrl OCTAVE_RECORDING_PAGE_URL("qrc:/SettingsPages/RecordingOctavePage.qml");
+
+        const QString BUSY_INDICATOR = "busyIndicator";
+        const QString OCTAVES_LABLE = "octavesLable";
+        const QString OCTAVE_LABLE = "octaveLable";
+
+        const QString OCTAVE_LABLE_BASE_TEXT = "octave: ";
+        const QString OCTAVES_LABLE_BASE_TEXT = "octaves";
+    }
+
     namespace COLORS {
         const QString WHITE = "#ffffff";
         const QString GREY = "#383838";

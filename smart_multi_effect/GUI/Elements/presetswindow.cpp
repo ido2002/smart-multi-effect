@@ -50,7 +50,7 @@ void PresetsWindow::UpdateIndex()
     using namespace CONF::GUI_PARAMETERS::SONG_FRAME;
     using namespace CONF::GUI_PARAMETERS::GENERAL_GUI_PROPERTIES_NAMES;
 
-    window->childItems()[0]->findChild<QQuickItem*>(PRESET_NAME)->setProperty(LABLE_TEXT, presetWindows[index]->getName());
+    window->findChild<QQuickItem*>(PRESET_NAME)->setProperty(LABLE_TEXT, presetWindows[index]->getName());
 }
 
 void PresetsWindow::AddPresetWindow(PresetWindow *presetWindow)

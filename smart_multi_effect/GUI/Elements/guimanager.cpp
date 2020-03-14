@@ -25,6 +25,10 @@ GUI_elements::GuiManager::GuiManager()
     viewArea = mainWindow->findChild<QQuickItem*>(MAIN_WINDOW::MAIN_VIEW_AREA);
     buttonsArea = mainWindow->findChild<QQuickItem*>(MAIN_WINDOW::BUTTONS_AREA);
 
+#ifndef RASPBERRY_PI
+    mainWindow->setProperty("visibility", "Windowed");
+#endif
+
     //get buttons
     for(auto b : CUSTON_BUTTON::BUTTONS) {
         auto buttonItem = buttonsArea->findChild<QQuickItem*>(b)->findChild<QQuickItem*>(CUSTON_BUTTON::BUTTON);
@@ -35,6 +39,8 @@ GUI_elements::GuiManager::GuiManager()
     presetsPage = new PresetsWindow(&engine, viewArea);
     songsPage = new SongsWindow(&engine, viewArea);
     menu = new Menu(mainWindow);
+    recordNotePage = new RecordNotePage(&engine, viewArea);
+    recordOctavePage = new RecordOctavePage(&engine, viewArea);
 }
 
 GUI_elements::GuiButton *GUI_elements::GuiManager::getButtonByName(std::string name)
@@ -54,6 +60,8 @@ void GUI_elements::GuiManager::SetViewAreaTo(GUI_elements::GuiManager::ViewAreaC
     presetsPage->Hide();
     songsPage->Hide();
     presetsPage->getCurrentPreset()->Hide();
+    recordNotePage->Hide();
+    recordOctavePage->Hide();
 
     switch(content) {
     case nothing:
@@ -72,8 +80,10 @@ void GUI_elements::GuiManager::SetViewAreaTo(GUI_elements::GuiManager::ViewAreaC
         break;
 
     case recordNote:
+        recordNotePage->Show();
         break;
     case recordOctave:
+        recordOctavePage->Show();
         break;
     case train:
         break;

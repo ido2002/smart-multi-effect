@@ -465,12 +465,16 @@ void SmartMultiEffect::SetButtonsFunctions()
             updateWindowFlag = true;
         });
         button2->AddFunction([&](){
+            guiManager->getRecordNotePage()->up();
         });
         button3->AddFunction([&](){
+            guiManager->getRecordNotePage()->add();
         });
         button4->AddFunction([&](){
+            guiManager->getRecordNotePage()->remove();
         });
         button5->AddFunction([&](){
+            guiManager->getRecordNotePage()->record(soundProcessor);
         });
         break;
 
@@ -491,12 +495,16 @@ void SmartMultiEffect::SetButtonsFunctions()
             updateWindowFlag = true;
         });
         button2->AddFunction([&](){
+            guiManager->getRecordOctavePage()->up();
         });
         button3->AddFunction([&](){
+            guiManager->getRecordOctavePage()->add();
         });
         button4->AddFunction([&](){
+            guiManager->getRecordOctavePage()->remove();
         });
         button5->AddFunction([&](){
+            guiManager->getRecordOctavePage()->record(soundProcessor);
         });
         break;
 
@@ -568,6 +576,13 @@ void SmartMultiEffect::BindHardwareButtonToGuiButton(std::string& hardwareButton
 
 void SmartMultiEffect::ButtonsUpdate()
 {
+    if(windowState == recordNote) {
+        guiManager->getRecordNotePage()->update();
+    }
+    if(windowState == recordOctave) {
+        guiManager->getRecordOctavePage()->update();
+    }
+
     controller->UpdateButtons();
     guiManager->UpdateButtons();
 

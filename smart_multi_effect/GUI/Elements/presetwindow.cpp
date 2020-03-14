@@ -58,7 +58,7 @@ Preset::Preset(QString name, hardware_ctrl::Preset* preset, QQmlApplicationEngin
     editWindow->setParentItem(parent);
     editWindow->setVisible(false);
 
-    editWindow->childItems()[0]->findChild<QQuickItem*>(PRESET_HEADLINE)->setProperty(LABLE_TEXT, name);
+    editWindow->findChild<QQuickItem*>(PRESET_HEADLINE)->setProperty(LABLE_TEXT, name);
 
     //setup effects
     int e_index = 0;
@@ -89,8 +89,8 @@ Preset::Preset(QString name, hardware_ctrl::Preset* preset, QQmlApplicationEngin
         effects.push_back(eg);
     }
 
-    //editTime = editWindow->childItems()[0]->childItems()[0]->findChild<QQuickItem*>(TIME_SLIDER);
-    //editResolution = editWindow->childItems()[0]->childItems()[0]->findChild<QQuickItem*>(RESOLUTION_SLIDER);
+    //editTime = editWindow->findChild<QQuickItem*>(TIME_SLIDER);
+    //editResolution = editWindow->findChild<QQuickItem*>(RESOLUTION_SLIDER);
 }
 
 void Preset::Update()
