@@ -56,8 +56,8 @@ namespace sound_processing {
 
             void BackProp(vector<float> expected);
 
-            void LoadFromJson(QString path);
-            void SaveToJson(QString path);
+            void LoadFromFile(QString path);
+            void SaveToFile(QString path);
 
         private:
             vector<size_t> layer;
@@ -99,8 +99,8 @@ namespace sound_processing {
         void LoadData(std::string path);
         void SaveData(std::string path);
 
-        void SaveNetwork(QString path) { m_net.SaveToJson(path); }
-        void LoadNetwork(QString path) { m_net.LoadFromJson(path); }
+        void SaveNetwork(QString path) { m_net.SaveToFile(path); }
+        void LoadNetwork(QString path) { m_net.LoadFromFile(path); }
 
         void ClearData();
         void ClearData(std::string category);

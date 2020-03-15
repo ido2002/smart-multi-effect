@@ -18,6 +18,12 @@ namespace sound_processing {
         void AddNoteDataSet(std::vector<float> FFT_output, std::vector<Stroke::Note> notes);
         void AddOctaveDataSet(std::vector<float> FFT_output, std::vector<float> octaves);
 
+        void Load(bool note_net, bool octave_net, bool note_data, bool octave_data);
+        void Save(bool note_net, bool octave_net, bool note_data, bool octave_data);
+
+        void Load();
+        void Save();
+
         void LoadNetwork();
         void SaveNetwork();
 
@@ -28,7 +34,7 @@ namespace sound_processing {
         void LearnNotes(size_t times = 500);
 
         double getSumOutput() { return sumOutput; }
-        double getVolumeLevel() { return volumeLevel; }
+        Stroke::VolumeLevel getVolumeLevel() { return volumeLevel; }
         std::string getVolumeLevelStr() { return Stroke::VolumeLevelToString(volumeLevel); }
 
         std::vector<float> getFFT() { return fftOutput; }
@@ -38,8 +44,8 @@ namespace sound_processing {
     private:
         NeuralNetwork* fftToNotesNet = nullptr;
         NeuralNetwork* fftToOctaveNet = nullptr;
-        double sumOutput;
-        Stroke::VolumeLevel volumeLevel;
+        double sumOutput = 0;
+        Stroke::VolumeLevel volumeLevel = Stroke::silence;
         std::vector<float> notesNetOutput;
         std::vector<float> fftOutput;
         std::vector<float> octaveNetOutput;

@@ -28,6 +28,14 @@ SoundProcessor::SoundProcessor()
     }, BUFFER_FILL_SIZE);
 }
 
+SoundProcessor::~SoundProcessor()
+{
+    if(m_soundCard)
+        delete m_soundCard;
+    if(m_noteRecognition)
+        delete m_noteRecognition;
+}
+
 void SoundProcessor::Start() { m_soundCard->Start(); }
 
 void SoundProcessor::Stop() { m_soundCard->Stop(); }
@@ -52,12 +60,13 @@ void SoundProcessor::RecordNoteSample(std::vector<Stroke::Note> notes)
     while(LastStroke == nullptr) {
         usleep(BUFFER_FILL_UTIME / 2);
     }
+
     while(LastStroke->volume < vol::medium) {
         usleep(BUFFER_FILL_UTIME / 2);
     }
 
     //record
-    for(uint i = 0; i < RECORDING_LIMIT && LastStroke->volume != vol::silence; i++) {
+    for(uint i = 0; i < RECORDING_LIMIT && LastStroke->volume > vol::very_low; i++) {
         m_noteRecognition->AddNoteDataSet(m_noteRecognition->getFFT(), notes);
     }
 

@@ -12,12 +12,13 @@
 #include "recordnote.h"
 #include "recordoctave.h"
 #include "train.h"
+#include "loadingpage.h"
 
 namespace GUI_elements {
     class GuiManager
     {
     public:
-        enum ViewAreaContent { nothing, songs, presets, song, preset, recordNote, recordOctave, train, manage};
+        enum ViewAreaContent { nothing, songs, presets, song, preset, recordNote, recordOctave, train, manage, loading};
     public:
         GuiManager();
 
@@ -52,6 +53,7 @@ namespace GUI_elements {
         RecordNotePage* recordNotePage = nullptr;
         RecordOctavePage* recordOctavePage = nullptr;
         TrainingPage* trainingPage = nullptr;
+        LoadingPage* loadingPage = nullptr;
     };
 }
 #endif // GUIMANAGER_H

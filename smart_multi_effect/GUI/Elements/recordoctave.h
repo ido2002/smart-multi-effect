@@ -30,6 +30,8 @@ private:
     std::thread* recordingThread = nullptr;
     std::vector<float>* octavesVector = nullptr;
 
+    sound_processing::SoundProcessor* soundProcessor = nullptr;
+
     QQuickItem* window;
     QQuickItem* busyIndicator;
     QQuickItem* octavesLable;

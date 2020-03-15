@@ -11,6 +11,7 @@ namespace sound_processing {
     {
     public:
         SoundProcessor();
+        ~SoundProcessor();
 
         void Start();
         void Stop();

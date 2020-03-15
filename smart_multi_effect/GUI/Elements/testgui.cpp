@@ -241,9 +241,9 @@ void TestGui::show_octave_test(SoundProcessor &soundProccessor, int width, int h
     octaveChart.chartView->setRenderHint(QPainter::Antialiasing);
 
     octaveChart.window = new QMainWindow;
-        octaveChart.window->setCentralWidget(octaveChart.chartView);
-        octaveChart.window->resize(width, height);
-        octaveChart.window->show();
+    octaveChart.window->setCentralWidget(octaveChart.chartView);
+    octaveChart.window->resize(width, height);
+    octaveChart.window->show();
 
     //add logic
     soundProccessor.AddFunctionOnBufferFill([&](int16_t*, size_t, Stroke){

@@ -11,6 +11,8 @@
 #include <QVariantList>
 #include "jsonreader.h"
 #include <iostream>
+#include <fstream>
+#include "tobinary.h"
 #include "conf.h"
 
 using namespace CONF::NOTE_RECOGNITION::NETWORK_DATA;
@@ -66,45 +68,62 @@ void neural_network_tools::Network::BackProp(vector<float> expected)
     }
 }
 
-void neural_network_tools::Network::LoadFromJson(QString path)
+void neural_network_tools::Network::LoadFromFile(QString path)
 {
-    QVariantMap map;
-    if(!JsonReader::readJsonFile(path, map)) return;
-
-    auto layer = map.find("layer").value().toList();
-    this->layer.clear();
-    this->layer.resize(layer.size());
-    for(int i = 0; i < layer.size(); i++) {
-        this->layer[i] = layer[i].toInt();
+    ifstream fin(path.toStdString(), ios::in | ios::binary);
+    if(fin.fail()) {
+        return;
     }
+    fin.seekg(ios::beg);
 
-    auto layers = map.find("layers").value().toList();
-    this->layers.clear();
-    this->layers.resize(layers.size());
+    BinaryToVector(fin, layer);
+    layers.resize(layer.size() - 1);
+    for(size_t i = 0; i < layers.size(); i++) {
+        layers[i] = new Layer(layer[i], layer[i+1]);
+        auto layer = layers[i];
+        BinaryToVector(fin, layer->biases);
 
-    for(int i = 0; i < layers.size(); i++) {
-        this->layers[i] = new Layer(this->layer[i], this->layer[i+1]);
-        this->layers[i]->MapToLayer(layers[i].toMap());
+        size_t weightsSize = 0;
+        fin.read((char*)&weightsSize, sizeof (size_t));
+        layer->weights.resize(weightsSize);
+
+        for(size_t j = 0; j < weightsSize; j++) {
+            BinaryToVector(fin, layer->weights[j]);
+        }
     }
+    fin.close();
 }
 
-void neural_network_tools::Network::SaveToJson(QString path)
+void neural_network_tools::Network::SaveToFile(QString path)
 {
-    QVariantMap map;
-
-    QVariantList layer;
-    for(size_t i = 0; i < this->layer.size(); i++) {
-        layer.push_back((quint64)this->layer[i]);
+    ofstream fout(path.toStdString(), ios::out | ios::binary);
+    if(fout.fail()) {
+        QDir dir;
+        dir.mkpath(path + "dir-to_delete");
+        fout.open(path.toStdString(), ios::out | ios::binary);
+        if(fout.fail()) {
+            return;
+        }
     }
-    map.insert("layer", layer);
+    fout.seekp(ios::beg);
 
-    QVariantList layers;
-    for(size_t i = 0; i < this->layers.size(); i++) {
-        layers.push_back(this->layers[i]->LayerToMap());
+    auto temp = VectorToBinary(fout, layer);
+    std::cout << temp << std::endl;
+    for(size_t i = 0; i < layers.size(); i++) {
+        auto layer = layers[i];
+        auto biases = layer->biases;
+        VectorToBinary(fout, biases);
+
+        auto weights = layer->weights;
+        size_t weightsSize = weights.size();
+        fout.write((char*)&weightsSize, sizeof (size_t));
+
+        for(size_t j = 0; j < weights.size(); j++) {
+            auto w = weights[j];
+            VectorToBinary(fout, w);
+        }
     }
-    map.insert("layers", layers);
-
-    JsonReader::writeJsonFile(map, path);
+    fout.close();
 }
 
 neural_network_tools::Layer::Layer(std::size_t numberOfInputs, std::size_t numberOfOutputs){

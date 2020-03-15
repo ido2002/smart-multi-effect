@@ -13,9 +13,10 @@
 class SmartMultiEffect
 {
 public:
-    enum WindowState { test, songs, presets, song, preset, menu, recordNote, recordOctave, train, manage};
+    enum WindowState { test, songs, presets, song, preset, menu, recordNote, recordOctave, train, manage, loading};
 public:
     SmartMultiEffect();
+    ~SmartMultiEffect();
 
     void Run();
 
@@ -33,7 +34,7 @@ private:
 
     void BindHardwareButtonToGuiButton(std::string& hardwareButtonName, std::string& guiButtonName);
 
-    void ButtonsUpdate();
+    void Update();
 
     void UpdateWindow();
 
@@ -44,8 +45,10 @@ private:
 
     MyTimer* buttonsTimer = nullptr;
 
-    WindowState windowState = presets;
+    WindowState windowState = loading;
     WindowState lastWindowState = presets;
+
+    std::thread* loadingThread = nullptr;
 
     bool updateWindowFlag = false;
 };

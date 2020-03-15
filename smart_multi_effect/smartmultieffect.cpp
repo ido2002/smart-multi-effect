@@ -19,6 +19,23 @@ SmartMultiEffect::SmartMultiEffect()
     UpdateWindow();
 }
 
+SmartMultiEffect::~SmartMultiEffect()
+{
+    if(controller)
+        delete controller;
+    if(guiManager)
+        delete guiManager;
+    if(soundProcessor)
+        delete soundProcessor;
+
+
+    if(buttonsTimer) {
+        if(buttonsTimer->isRunning())
+            buttonsTimer->stop();
+        delete buttonsTimer;
+    }
+}
+
 void SmartMultiEffect::Run()
 {
     soundProcessor->Start();
@@ -57,12 +74,13 @@ void SmartMultiEffect::InitializeButtons()
     BindHardwareButtonToGuiButton(*(new std::string(BUTTON_5.toStdString())), *(new std::string(BUTTON_5.toStdString())));
 
     buttonsTimer->AddFunction([&](){
-        ButtonsUpdate();
+        Update();
     });
 }
 
 void SmartMultiEffect::InitializeSoundProcessor()
 {
+    using namespace CONF::NOTE_RECOGNITION;
     soundProcessor = new sound_processing::SoundProcessor();
 }
 
@@ -513,7 +531,7 @@ void SmartMultiEffect::SetButtonsFunctions()
         button2->SetText("^");
         button3->SetText("v");
         button4->SetText("train");
-        button5->SetText("manage");
+        button5->SetText("save");
         button1->SetTextColor(CONF::GUI_PARAMETERS::COLORS::RED);
         button2->ResetTextColor();
         button3->ResetTextColor();
@@ -534,8 +552,7 @@ void SmartMultiEffect::SetButtonsFunctions()
             guiManager->getTrainingPage()->learn(soundProcessor);
         });
         button5->AddFunction([&](){
-            windowState = manage;
-            updateWindowFlag = true;
+            guiManager->getTrainingPage()->save(soundProcessor);
         });
         break;
 
@@ -564,6 +581,30 @@ void SmartMultiEffect::SetButtonsFunctions()
         button5->AddFunction([&](){
         });
         break;
+
+    case loading:
+        button1->SetText("");
+        button2->SetText("");
+        button3->SetText("");
+        button4->SetText("");
+        button5->SetText("");
+        button1->ResetTextColor();
+        button2->ResetTextColor();
+        button3->ResetTextColor();
+        button4->ResetTextColor();
+        button5->ResetTextColor();
+
+        button1->AddFunction([&](){
+        });
+        button2->AddFunction([&](){
+        });
+        button3->AddFunction([&](){
+        });
+        button4->AddFunction([&](){
+        });
+        button5->AddFunction([&](){
+        });
+        break;
     }
 }
 
@@ -577,8 +618,24 @@ void SmartMultiEffect::BindHardwareButtonToGuiButton(std::string& hardwareButton
     });
 }
 
-void SmartMultiEffect::ButtonsUpdate()
+void SmartMultiEffect::Update()
 {
+    if(windowState == loading) {
+        if(loadingThread == nullptr) {
+            soundProcessor->Stop();
+            loadingThread = new std::thread([&](){
+                soundProcessor->getNoteRecognition().Load();
+                usleep(CONF::GUI_PARAMETERS::LOAD_EXTRA_UTIME);
+                windowState = lastWindowState;
+        });
+        }
+    } else {
+        if(loadingThread != nullptr) {
+            loadingThread = nullptr;
+            soundProcessor->Start();
+            updateWindowFlag = true;
+        }
+    }
     if(windowState == recordNote) {
         guiManager->getRecordNotePage()->update();
     }
@@ -650,6 +707,10 @@ void SmartMultiEffect::UpdateWindow()
 
     case manage:
         guiManager->SetViewAreaTo(va_content::manage);
+        break;
+
+    case loading:
+        guiManager->SetViewAreaTo(va_content::loading);
         break;
     }
     SetButtonsFunctions();

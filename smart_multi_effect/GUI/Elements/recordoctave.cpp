@@ -98,8 +98,9 @@ void RecordOctavePage::record(SoundProcessor *soundProcessor)
         if(std::find(octaves.begin(), octaves.end(), Stroke::NoteOctave::High) == octaves.end()) {
             (*octavesVector)[2] = 1;
         }
+        this->soundProcessor = soundProcessor;
         recordingThread = new std::thread([&]() {
-            soundProcessor->RecordOctaveSample(*octavesVector);
+            this->soundProcessor->RecordOctaveSample(*octavesVector);
             delete octavesVector;
         });
     }

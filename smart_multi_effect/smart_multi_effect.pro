@@ -25,6 +25,7 @@ SOURCES += \
         GUI/Elements/effect_gui.cpp \
         GUI/Elements/guibutton.cpp \
         GUI/Elements/guimanager.cpp \
+        GUI/Elements/loadingpage.cpp \
         GUI/Elements/managedata.cpp \
         GUI/Elements/menu.cpp \
         GUI/Elements/presetswindow.cpp \
@@ -44,7 +45,8 @@ SOURCES += \
         jsonreader.cpp \
         main.cpp \
         mytimer.cpp \
-        smartmultieffect.cpp
+        smartmultieffect.cpp \
+        tobinary.cpp
 
 RESOURCES += GUI/qml.qrc
 
@@ -72,6 +74,7 @@ HEADERS += \
     GUI/Elements/effect_gui.h \
     GUI/Elements/guibutton.h \
     GUI/Elements/guimanager.h \
+    GUI/Elements/loadingpage.h \
     GUI/Elements/managedata.h \
     GUI/Elements/menu.h \
     GUI/Elements/presetswindow.h \
@@ -92,4 +95,5 @@ HEADERS += \
     conf.h \
     jsonreader.h \
     mytimer.h \
-    smartmultieffect.h
+    smartmultieffect.h \
+    tobinary.h

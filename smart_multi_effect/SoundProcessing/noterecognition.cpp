@@ -115,6 +115,42 @@ void sound_processing::NoteRecognition::AddOctaveDataSet(std::vector<float> FFT_
     fftToOctaveNet->AddData(category, NetworkDataSet(FFT_output, octaves));
 }
 
+void sound_processing::NoteRecognition::Load(bool note_net, bool octave_net, bool note_data, bool octave_data)
+{
+    using namespace NETWORK_DATA;
+    if(note_net) fftToNotesNet->LoadNetwork(FFT_TO_NOTE_NET_PATH);
+    if(octave_net) fftToOctaveNet->LoadNetwork(FFT_TO_OCTAVE_NET_PATH);
+    if(note_data) fftToNotesNet->LoadData(NOTES_DATASET_DIR_PATH.toStdString());
+    if(octave_data) fftToOctaveNet->LoadData(OCTAVES_DATASET_DIR_PATH.toStdString());
+}
+
+void sound_processing::NoteRecognition::Save(bool note_net, bool octave_net, bool note_data, bool octave_data)
+{
+    using namespace NETWORK_DATA;
+    if(note_net) fftToNotesNet->SaveNetwork(FFT_TO_NOTE_NET_PATH);
+    if(octave_net) fftToOctaveNet->SaveNetwork(FFT_TO_OCTAVE_NET_PATH);
+    if(note_data) fftToNotesNet->SaveData(NOTES_DATASET_DIR_PATH.toStdString());
+    if(octave_data) fftToOctaveNet->SaveData(OCTAVES_DATASET_DIR_PATH.toStdString());
+}
+
+void sound_processing::NoteRecognition::Load()
+{
+    using namespace NETWORK_DATA;
+    fftToNotesNet->LoadNetwork(FFT_TO_NOTE_NET_PATH);
+    fftToOctaveNet->LoadNetwork(FFT_TO_OCTAVE_NET_PATH);
+    fftToNotesNet->LoadData(NOTES_DATASET_DIR_PATH.toStdString());
+    fftToOctaveNet->LoadData(OCTAVES_DATASET_DIR_PATH.toStdString());
+}
+
+void sound_processing::NoteRecognition::Save()
+{
+    using namespace NETWORK_DATA;
+    fftToNotesNet->SaveNetwork(FFT_TO_NOTE_NET_PATH);
+    fftToOctaveNet->SaveNetwork(FFT_TO_OCTAVE_NET_PATH);
+    fftToNotesNet->SaveData(NOTES_DATASET_DIR_PATH.toStdString());
+    fftToOctaveNet->SaveData(OCTAVES_DATASET_DIR_PATH.toStdString());
+}
+
 void sound_processing::NoteRecognition::LoadNetwork()
 {
     using namespace NETWORK_DATA;

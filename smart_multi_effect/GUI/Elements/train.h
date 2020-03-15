@@ -20,11 +20,14 @@ public:
     void up();
     void down();
     void learn(sound_processing::SoundProcessor* soundProcessor);
+    void save(sound_processing::SoundProcessor* soundProcessor);
 
 private:
     long repeats = 0;
 
     std::thread* learningThread = nullptr;
+
+    sound_processing::SoundProcessor* soundProcessor = nullptr;
 
     QQuickItem* window;
     QQuickItem* busyIndicator;

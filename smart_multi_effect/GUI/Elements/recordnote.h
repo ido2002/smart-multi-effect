@@ -29,6 +29,8 @@ private:
 
     std::thread* recordingThread = nullptr;
 
+    sound_processing::SoundProcessor* soundProcessor = nullptr;
+
     QQuickItem* window;
     QQuickItem* busyIndicator;
     QQuickItem* notesLable;

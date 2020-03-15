@@ -115,11 +115,11 @@ namespace NOTE_RECOGNITION {
     const std::vector<size_t> FFT_TO_NOTE_NETWORK_STRUCTURE = {SOUND_PROCCESSING::FFT_SIZE, SOUND_PROCCESSING::FFT_SIZE * 2, NOTES_IN_OCTAVE};
     const std::vector<size_t> FFT_TO_OCTAVE_NETWORK_STRUCTURE = {SOUND_PROCCESSING::FFT_SIZE, SOUND_PROCCESSING::FFT_SIZE * 2, OCTAVE_LEVEL_COUNT};
 
-    const double VOLUMELEVEL_VERYLOW_THRESHOLD = 0.0005;
-    const double VOLUMELEVEL_LOW_THRESHOLD = 0.001;
-    const double VOLUMELEVEL_MID_THRESHOLD = 0.005;
-    const double VOLUMELEVEL_HIGH_THRESHOLD = 0.03;
-    const double VOLUMELEVEL_VERYHIGH_THRESHOLD = 0.08;
+    const double VOLUMELEVEL_VERYLOW_THRESHOLD = 0.01;
+    const double VOLUMELEVEL_LOW_THRESHOLD = 0.03;
+    const double VOLUMELEVEL_MID_THRESHOLD = 0.08;
+    const double VOLUMELEVEL_HIGH_THRESHOLD = 0.1;
+    const double VOLUMELEVEL_VERYHIGH_THRESHOLD = 0.5;
 
     namespace NETWORK_DATA {
         const QString NETWORK_DATASET_FILE = "data.data";
@@ -132,6 +132,8 @@ namespace NOTE_RECOGNITION {
 }
 
 namespace GUI_PARAMETERS {
+    const int LOAD_EXTRA_UTIME = 3 * 1000000;
+
     namespace MAIN_WINDOW {
         const QUrl MAIN_URL("qrc:/main.qml");
         const QString MAIN_WINDOW = "window";
@@ -244,6 +246,10 @@ namespace GUI_PARAMETERS {
         const QString REPEATS_LABLE = "repeatsLable";
 
         const QString REPEATS_LABLE_BASE_TEXT = "repeats: ";
+    }
+
+    namespace LOADING_PAGE {
+        const QUrl LOADING_PAGE_URL("qrc:/SettingsPages/LoadingPage.qml");
     }
 
     namespace COLORS {

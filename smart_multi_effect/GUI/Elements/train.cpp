@@ -91,8 +91,19 @@ void TrainingPage::learn(SoundProcessor *soundProcessor)
 {
     if(learningThread == nullptr && repeats > 0) {
         busyIndicator->setVisible(true);
+        this->soundProcessor = soundProcessor;
         learningThread = new std::thread([&]() {
-            soundProcessor->Learn(repeats, repeats);
+            this->soundProcessor->Learn(repeats, repeats);
         });
     }
 }
+
+void TrainingPage::save(SoundProcessor *soundProcessor)
+{
+    if(learningThread == nullptr && repeats > 0) {
+        busyIndicator->setVisible(true);
+        this->soundProcessor = soundProcessor;
+        learningThread = new std::thread([&]() {
+            this->soundProcessor->getNoteRecognition().Save();
+        });
+    }}

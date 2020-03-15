@@ -31,5 +31,7 @@
         <file>SettingsPages/LearningPage.qml</file>
         <file>SettingsPages/LearningPageForm.ui.qml</file>
         <file>SettingsPages/MenuBackground.png</file>
+        <file>SettingsPages/LoadingPage.qml</file>
+        <file>SettingsPages/LoadingPageForm.ui.qml</file>
     </qresource>
 </RCC>
