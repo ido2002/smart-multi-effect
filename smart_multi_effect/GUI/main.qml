@@ -1,7 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.5
 import "ButtonsArea"
-import "SettingsPages"
+import "Frames"
 
 ApplicationWindow {
     objectName: "window"
@@ -35,12 +35,15 @@ ApplicationWindow {
 
 
 
+
     Frame {
         id: frame
         objectName: "viewArea"
         anchors.bottomMargin: 100
         anchors.fill: parent
     }
+
+
 
     ButtonArea {
         objectName: "buttonsArea"
@@ -52,6 +55,26 @@ ApplicationWindow {
         anchors.rightMargin: 0
         anchors.left: parent.left
         anchors.leftMargin: 0
+    }
+
+    Button {
+        id: toolButton
+        text: "\u2630"
+
+        width: 50
+        height: 56
+
+        anchors.left: parent.left
+        anchors.leftMargin: 0
+        anchors.top: parent.top
+        anchors.topMargin: 0
+
+
+        font.pixelSize: Qt.application.font.pixelSize * 1.6
+
+        onClicked: {
+            window.openDrawer_f();
+        }
     }
 
     Drawer {
@@ -83,26 +106,11 @@ ApplicationWindow {
         }
     }
 
-    Button {
-        id: toolButton
-        text: "\u2630"
-
-        width: 50
-        height: 56
-
-        anchors.left: parent.left
-        anchors.leftMargin: 0
-        anchors.top: parent.top
-        anchors.topMargin: 0
 
 
-        font.pixelSize: Qt.application.font.pixelSize * 1.6
-
-        onClicked: {
-            window.openDrawer_f();
-        }
-    }
 
 }
+
+
 
 

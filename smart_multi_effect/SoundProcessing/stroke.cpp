@@ -119,11 +119,13 @@ std::string Stroke::NoteOctaveToString(Stroke::NoteOctave noteOctave)
     return "error";
 }
 
-Stroke::Stroke(TimePoint start, std::list<Note> notes, NoteOctave octave, VolumeLevel volume)
+Stroke::Stroke(TimePoint start, std::list<Stroke::Note> notes, float octaves[3], Stroke::VolumeLevel volume)
 {
     this->start = start;
     this->notes = notes;
-    this->octave = octave;
+    this->octaves[0] = octaves[0];
+    this->octaves[1] = octaves[1];
+    this->octaves[2] = octaves[2];
     this->volume = volume;
 }
 

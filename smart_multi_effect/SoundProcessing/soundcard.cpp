@@ -36,7 +36,28 @@ SoundCard::SoundCard(QAudioFormat::Endian byteOrder, int channelCount, QString c
 SoundCard::~SoundCard()
 {
     Stop();
-    delete m_audioInput;
+    if(m_audioInput) {
+        m_audioInput->stop();
+        delete m_audioInput ;
+    }
+    if(m_iodevice) {
+//        m_iodevice->close();
+//        delete m_iodevice;
+    }
+
+    if(m_rawBuffer)
+        delete m_rawBuffer;
+    if(m_ch1_buffer)
+        delete m_ch1_buffer;
+
+    if(m_readThread) {
+        m_readThread->join();
+        delete m_readThread;
+    }
+    if(m_onBufferFillThread) {
+        m_onBufferFillThread->join();
+        delete m_onBufferFillThread;
+    }
 }
 
 void SoundCard::SetOnBufferFill(std::function<void (int16_t *, size_t)> onBufferFill, qint64 bufferFillSize)
@@ -80,8 +101,8 @@ void SoundCard::Start()
 
             lastBufferPos = bufferPos;
 
-            if(bufferPos >= m_bufferSize) {
-                bufferPos = 0;
+            while(bufferPos >= m_bufferSize) {
+                bufferPos -= m_bufferSize;
             }
 
             //onBufferFill
@@ -96,7 +117,7 @@ void SoundCard::Start()
 
                 //read ch1 from the buffer
                 for(qint64 i = 0; i < m_bufferSize; i++) {
-                    m_ch1_buffer[i] = m_rawBuffer[i*m_audioFormat.channelCount() + CHANNEL];
+                    m_ch1_buffer[i] = m_rawBuffer[((bufferPos + i)%m_bufferSize)*m_audioFormat.channelCount() + CHANNEL];
                 }
 
                 //open thread

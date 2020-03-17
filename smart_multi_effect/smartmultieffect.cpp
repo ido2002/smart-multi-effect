@@ -9,11 +9,8 @@ SmartMultiEffect::SmartMultiEffect()
 
     InitializeEffects();
     InitializeGui();
-    InitializePresets();
     InitializeButtons();
     InitializeSoundProcessor();
-
-    InitializeSongs();
     InitializeMenu();
 
     UpdateWindow();
@@ -21,18 +18,27 @@ SmartMultiEffect::SmartMultiEffect()
 
 SmartMultiEffect::~SmartMultiEffect()
 {
-    if(controller)
-        delete controller;
-    if(guiManager)
-        delete guiManager;
-    if(soundProcessor)
-        delete soundProcessor;
-
-
     if(buttonsTimer) {
         if(buttonsTimer->isRunning())
             buttonsTimer->stop();
         delete buttonsTimer;
+    }
+
+    if(controller) {
+        delete controller;
+    }
+
+    if(guiManager) {
+        guiManager->getPresetsWindow()->SaveAll();
+        delete guiManager;
+    }
+
+    if(soundProcessor) {
+        delete soundProcessor;
+    }
+
+    if(riffRecognition) {
+        delete riffRecognition;
     }
 }
 
@@ -81,11 +87,8 @@ void SmartMultiEffect::InitializeButtons()
 void SmartMultiEffect::InitializeSoundProcessor()
 {
     using namespace CONF::NOTE_RECOGNITION;
-    soundProcessor = new sound_processing::SoundProcessor();
-}
-
-void SmartMultiEffect::InitializePresets()
-{
+    using namespace sound_processing;
+    using p_s = RiffRecognition::playingStyle;
     using element = hardware_ctrl::Effect::EffectControlLayoutEllements;
     using colors = hardware_ctrl::ColorSet;
     using namespace CONF::GUI_PARAMETERS::COLORS;
@@ -93,104 +96,194 @@ void SmartMultiEffect::InitializePresets()
     using map = std::map<element, int>;
     using pair = std::pair<element, int>;
 
-    PresetWindow* pw1 = new PresetWindow("rock");
-    pw1->setP1(new Preset("clean", new hardware_ctrl::Preset(
-    {new hardware_ctrl::EffectInfo(colors(BROWN, WHITE, WHITE), OVERDRIVE, false, map({
-         pair(element::Gain, 50),
-         pair(element::Tone, 50),
-         pair(element::Volume, 50)})),
-     new hardware_ctrl::EffectInfo(colors(DARK_MAGENTA, WHITE, WHITE), TREMOLO, true, map({
-              pair(element::Depth, 50),
-              pair(element::Speed, 50),
-              pair(element::Volume, 50)})),
-     new hardware_ctrl::EffectInfo(colors(DARK_GREEN, WHITE, WHITE), DELAY, true, map({
-              pair(element::Regen, 50),
-              pair(element::Mix, 50),
-              pair(element::Delay, 50)
-     }))}, 0, 0), guiManager->getEngine(), guiManager->getViewArea()));
+    riffRecognition = new RiffRecognition();
+    soundProcessor = new SoundProcessor();
+    soundProcessor->AddFunctionOnBufferFill([&](int16_t*, size_t, Stroke s){
+//        if(riffRecognition != nullptr) {
+//            p_s ps = riffRecognition->Update(s);
+//            if(ps != p_s::nothing) {
+//                std::cout << RiffRecognition::playingStyleToString(ps) << std::endl;
+//                if(ps == p_s::low_riff) {
+//                    controller->SetPreset(hardware_ctrl::Preset(
+//                    {new hardware_ctrl::EffectInfo(colors(BROWN, WHITE, WHITE), OVERDRIVE, true, map({
+//                         pair(element::Gain, 100),
+//                         pair(element::Tone, 70),
+//                         pair(element::Volume, 60)})),
+//                     new hardware_ctrl::EffectInfo(colors(DARK_MAGENTA, WHITE, WHITE), TREMOLO, false, map({
+//                              pair(element::Depth, 50),
+//                              pair(element::Speed, 50),
+//                              pair(element::Volume, 50)})),
+//                     new hardware_ctrl::EffectInfo(colors(DARK_GREEN, WHITE, WHITE), DELAY, true, map({
+//                              pair(element::Regen, 50),
+//                              pair(element::Mix, 50),
+//                              pair(element::Delay, 50)
+//                     }))}, 0, 0));
+//                }
+//                if(ps == p_s::high_solo) {
+//                    controller->SetPreset(hardware_ctrl::Preset(
+//                    {new hardware_ctrl::EffectInfo(colors(BROWN, WHITE, WHITE), OVERDRIVE, true, map({
+//                         pair(element::Gain, 100),
+//                         pair(element::Tone, 40),
+//                         pair(element::Volume, 70)})),
+//                     new hardware_ctrl::EffectInfo(colors(DARK_MAGENTA, WHITE, WHITE), TREMOLO, true, map({
+//                              pair(element::Depth, 50),
+//                              pair(element::Speed, 50),
+//                              pair(element::Volume, 50)})),
+//                     new hardware_ctrl::EffectInfo(colors(DARK_GREEN, WHITE, WHITE), DELAY, true, map({
+//                              pair(element::Regen, 50),
+//                              pair(element::Mix, 50),
+//                              pair(element::Delay, 50)
+//                     }))}, 0, 0));
+//                }
+//                if(ps == p_s::struming) {
+//                    controller->SetPreset(hardware_ctrl::Preset(
+//                    {new hardware_ctrl::EffectInfo(colors(BROWN, WHITE, WHITE), OVERDRIVE, false, map({
+//                         pair(element::Gain, 50),
+//                         pair(element::Tone, 50),
+//                         pair(element::Volume, 50)})),
+//                     new hardware_ctrl::EffectInfo(colors(DARK_MAGENTA, WHITE, WHITE), TREMOLO, true, map({
+//                              pair(element::Depth, 50),
+//                              pair(element::Speed, 50),
+//                              pair(element::Volume, 50)})),
+//                     new hardware_ctrl::EffectInfo(colors(DARK_GREEN, WHITE, WHITE), DELAY, true, map({
+//                              pair(element::Regen, 50),
+//                              pair(element::Mix, 50),
+//                              pair(element::Delay, 50)
+//                     }))}, 0, 0));
+//                }
+//            }
+//        }
+    });
+}
 
-    pw1->setP2(new Preset("low gain", new hardware_ctrl::Preset(
-    {new hardware_ctrl::EffectInfo(colors(BROWN, WHITE, WHITE), OVERDRIVE, true, map({
-         pair(element::Gain, 10),
-         pair(element::Tone, 50),
-         pair(element::Volume, 50)})),
-     new hardware_ctrl::EffectInfo(colors(DARK_MAGENTA, WHITE, WHITE), TREMOLO, false, map({
-              pair(element::Depth, 50),
-              pair(element::Speed, 50),
-              pair(element::Volume, 50)})),
-     new hardware_ctrl::EffectInfo(colors(DARK_GREEN, WHITE, WHITE), DELAY, true, map({
-              pair(element::Regen, 50),
-              pair(element::Mix, 50),
-              pair(element::Delay, 50)
-     }))}, 0, 0), guiManager->getEngine(), guiManager->getViewArea()));
+void SmartMultiEffect::InitializePresets()
+{
+    if (!guiManager->getPresetsWindow()->LoadAll()) {
+        using element = hardware_ctrl::Effect::EffectControlLayoutEllements;
+        using colors = hardware_ctrl::ColorSet;
+        using namespace CONF::GUI_PARAMETERS::COLORS;
+        using namespace CONF::NAMES;
+        using map = std::map<element, int>;
+        using pair = std::pair<element, int>;
 
-    pw1->setP3(new Preset("high gain", new hardware_ctrl::Preset(
-    {new hardware_ctrl::EffectInfo(colors(BROWN, WHITE, WHITE), OVERDRIVE, true, map({
-         pair(element::Gain, 100),
-         pair(element::Tone, 70),
-         pair(element::Volume, 50)})),
-     new hardware_ctrl::EffectInfo(colors(DARK_MAGENTA, WHITE, WHITE), TREMOLO, false, map({
-              pair(element::Depth, 50),
-              pair(element::Speed, 50),
-              pair(element::Volume, 50)})),
-     new hardware_ctrl::EffectInfo(colors(DARK_GREEN, WHITE, WHITE), DELAY, true, map({
-              pair(element::Regen, 50),
-              pair(element::Mix, 50),
-              pair(element::Delay, 50)
-     }))}, 0, 0), guiManager->getEngine(), guiManager->getViewArea()));
+        hardware_ctrl::Preset basicPreset(
+        {new hardware_ctrl::EffectInfo(colors(BROWN, WHITE, WHITE), OVERDRIVE, false, map({
+             pair(element::Gain, 50),
+             pair(element::Tone, 50),
+             pair(element::Volume, 50)})),
+         new hardware_ctrl::EffectInfo(colors(DARK_MAGENTA, WHITE, WHITE), TREMOLO, false, map({
+                  pair(element::Depth, 50),
+                  pair(element::Speed, 50),
+                  pair(element::Volume, 50)})),
+         new hardware_ctrl::EffectInfo(colors(DARK_GREEN, WHITE, WHITE), DELAY, false, map({
+                  pair(element::Regen, 50),
+                  pair(element::Mix, 50),
+                  pair(element::Delay, 50)
+         }))}, 0, 0);
 
-    pw1->setP4(new Preset("all off", new hardware_ctrl::Preset(
-    {new hardware_ctrl::EffectInfo(colors(BROWN, WHITE, WHITE), OVERDRIVE, false, map({
-         pair(element::Gain, 50),
-         pair(element::Tone, 50),
-         pair(element::Volume, 50)})),
-     new hardware_ctrl::EffectInfo(colors(DARK_MAGENTA, WHITE, WHITE), TREMOLO, false, map({
-              pair(element::Depth, 50),
-              pair(element::Speed, 50),
-              pair(element::Volume, 50)})),
-     new hardware_ctrl::EffectInfo(colors(DARK_GREEN, WHITE, WHITE), DELAY, false, map({
-              pair(element::Regen, 50),
-              pair(element::Mix, 50),
-              pair(element::Delay, 50)
-     }))}, 0, 0), guiManager->getEngine(), guiManager->getViewArea()));
-    guiManager->getPresetsWindow()->AddPresetWindow(pw1);
+        PresetWindow* pw1 = new PresetWindow("rock");
+        pw1->setP1(new Preset("rock", "clean", new hardware_ctrl::Preset(
+        {new hardware_ctrl::EffectInfo(colors(BROWN, WHITE, WHITE), OVERDRIVE, false, map({
+             pair(element::Gain, 50),
+             pair(element::Tone, 50),
+             pair(element::Volume, 50)})),
+         new hardware_ctrl::EffectInfo(colors(DARK_MAGENTA, WHITE, WHITE), TREMOLO, true, map({
+                  pair(element::Depth, 50),
+                  pair(element::Speed, 50),
+                  pair(element::Volume, 50)})),
+         new hardware_ctrl::EffectInfo(colors(DARK_GREEN, WHITE, WHITE), DELAY, true, map({
+                  pair(element::Regen, 50),
+                  pair(element::Mix, 50),
+                  pair(element::Delay, 50)
+         }))}, 0, 0), guiManager->getEngine(), guiManager->getViewArea()));
 
-    PresetWindow* pw2 = new PresetWindow("test");
-    pw2->setP1(new Preset("6 effects", new hardware_ctrl::Preset(
-    {new hardware_ctrl::EffectInfo(colors(BROWN, WHITE, WHITE), OVERDRIVE, false, map({
-         pair(element::Gain, 50),
-         pair(element::Tone, 50),
-         pair(element::Volume, 50)})),
-     new hardware_ctrl::EffectInfo(colors(DARK_MAGENTA, WHITE, WHITE), TREMOLO, false, map({
-              pair(element::Depth, 50),
-              pair(element::Speed, 50),
-              pair(element::Volume, 50)})),
-     new hardware_ctrl::EffectInfo(colors(DARK_GREEN, WHITE, WHITE), DELAY, false, map({
-              pair(element::Regen, 50),
-              pair(element::Mix, 50),
-              pair(element::Delay, 50)})),
-     new hardware_ctrl::EffectInfo(colors(DARK_RED, WHITE, WHITE), "comp", false, map({
-         pair(element::Gain, 50),
-         pair(element::Tone, 50),
-         pair(element::Volume, 50)})),
-     new hardware_ctrl::EffectInfo(colors(DARK_BLUE, WHITE, WHITE), "chorus", false, map({
-         pair(element::Gain, 50),
-         pair(element::Tone, 50),
-         pair(element::Volume, 50)})),
-     new hardware_ctrl::EffectInfo(colors(GREY, WHITE, WHITE), "deth Metal", false, map({
-         pair(element::Gain, 50),
-         pair(element::Tone, 50),
-         pair(element::Volume, 50)}))
-    }, 0, 0), guiManager->getEngine(), guiManager->getViewArea()));
+        pw1->setP2(new Preset("rock", "low gain", new hardware_ctrl::Preset(
+        {new hardware_ctrl::EffectInfo(colors(BROWN, WHITE, WHITE), OVERDRIVE, true, map({
+             pair(element::Gain, 10),
+             pair(element::Tone, 50),
+             pair(element::Volume, 50)})),
+         new hardware_ctrl::EffectInfo(colors(DARK_MAGENTA, WHITE, WHITE), TREMOLO, false, map({
+                  pair(element::Depth, 50),
+                  pair(element::Speed, 50),
+                  pair(element::Volume, 50)})),
+         new hardware_ctrl::EffectInfo(colors(DARK_GREEN, WHITE, WHITE), DELAY, true, map({
+                  pair(element::Regen, 50),
+                  pair(element::Mix, 50),
+                  pair(element::Delay, 50)
+         }))}, 0, 0), guiManager->getEngine(), guiManager->getViewArea()));
 
-    pw2->setP2(new Preset("empty", new hardware_ctrl::Preset(
-    {}, 0, 0), guiManager->getEngine(), guiManager->getViewArea()));
-    guiManager->getPresetsWindow()->AddPresetWindow(pw2);
+        pw1->setP3(new Preset("rock", "high gain", new hardware_ctrl::Preset(
+        {new hardware_ctrl::EffectInfo(colors(BROWN, WHITE, WHITE), OVERDRIVE, true, map({
+             pair(element::Gain, 100),
+             pair(element::Tone, 70),
+             pair(element::Volume, 50)})),
+         new hardware_ctrl::EffectInfo(colors(DARK_MAGENTA, WHITE, WHITE), TREMOLO, false, map({
+                  pair(element::Depth, 50),
+                  pair(element::Speed, 50),
+                  pair(element::Volume, 50)})),
+         new hardware_ctrl::EffectInfo(colors(DARK_GREEN, WHITE, WHITE), DELAY, true, map({
+                  pair(element::Regen, 50),
+                  pair(element::Mix, 50),
+                  pair(element::Delay, 50)
+         }))}, 0, 0), guiManager->getEngine(), guiManager->getViewArea()));
+
+        pw1->setP4(new Preset("rock", "all off", new hardware_ctrl::Preset(basicPreset),
+                              guiManager->getEngine(), guiManager->getViewArea()));
+        guiManager->getPresetsWindow()->AddPresetWindow(pw1);
+
+        PresetWindow* pw2 = new PresetWindow("test");
+        pw2->setP1(new Preset("test", "6 effects", new hardware_ctrl::Preset(
+        {new hardware_ctrl::EffectInfo(colors(BROWN, WHITE, WHITE), OVERDRIVE, false, map({
+             pair(element::Gain, 50),
+             pair(element::Tone, 50),
+             pair(element::Volume, 50)})),
+         new hardware_ctrl::EffectInfo(colors(DARK_MAGENTA, WHITE, WHITE), TREMOLO, false, map({
+                  pair(element::Depth, 50),
+                  pair(element::Speed, 50),
+                  pair(element::Volume, 50)})),
+         new hardware_ctrl::EffectInfo(colors(DARK_GREEN, WHITE, WHITE), DELAY, false, map({
+                  pair(element::Regen, 50),
+                  pair(element::Mix, 50),
+                  pair(element::Delay, 50)})),
+         new hardware_ctrl::EffectInfo(colors(DARK_RED, WHITE, WHITE), "comp", false, map({
+             pair(element::Gain, 50),
+             pair(element::Tone, 50),
+             pair(element::Volume, 50)})),
+         new hardware_ctrl::EffectInfo(colors(DARK_BLUE, WHITE, WHITE), "chorus", false, map({
+             pair(element::Gain, 50),
+             pair(element::Tone, 50),
+             pair(element::Volume, 50)})),
+         new hardware_ctrl::EffectInfo(colors(GREY, WHITE, WHITE), "deth Metal", false, map({
+             pair(element::Gain, 50),
+             pair(element::Tone, 50),
+             pair(element::Volume, 50)}))
+        }, 0, 0), guiManager->getEngine(), guiManager->getViewArea()));
+
+        pw2->setP2(new Preset("test", "empty", new hardware_ctrl::Preset(
+        {}, 0, 0), guiManager->getEngine(), guiManager->getViewArea()));
+        guiManager->getPresetsWindow()->AddPresetWindow(pw2);
+
+        for(int i = 2; i <= 99; i++) {
+            PresetWindow* pw = new PresetWindow(QString::number(i));
+            pw->setP1(new Preset(QString::number(i), "1", new hardware_ctrl::Preset(basicPreset),
+                                  guiManager->getEngine(), guiManager->getViewArea()));
+            pw->setP2(new Preset(QString::number(i), "2", new hardware_ctrl::Preset(basicPreset),
+                                  guiManager->getEngine(), guiManager->getViewArea()));
+            pw->setP3(new Preset(QString::number(i), "3", new hardware_ctrl::Preset(basicPreset),
+                                  guiManager->getEngine(), guiManager->getViewArea()));
+            pw->setP4(new Preset(QString::number(i), "4", new hardware_ctrl::Preset(basicPreset),
+                                  guiManager->getEngine(), guiManager->getViewArea()));
+            guiManager->getPresetsWindow()->AddPresetWindow(pw);
+        }
+        guiManager->getPresetsWindow()->SaveAll();
+    }
 }
 
 void SmartMultiEffect::InitializeSongs()
 {
-
+    guiManager->getSongsWindow()->AddSet(new AutoSwitchSetWindowEdit("sweet child O' mine", guiManager->getEngine(), guiManager->getViewArea()));
+    guiManager->getSongsWindow()->AddSet(new AutoSwitchSetWindowEdit("fade to black", guiManager->getEngine(), guiManager->getViewArea()));
+    guiManager->getSongsWindow()->AddSet(new AutoSwitchSetWindowEdit("test", guiManager->getEngine(), guiManager->getViewArea()));
 }
 
 void SmartMultiEffect::InitializeMenu()
@@ -199,13 +292,13 @@ void SmartMultiEffect::InitializeMenu()
         return (int)WindowState::test;
     }));
 
-    guiManager->getMenu()->AddItem(new MenuItem("rec-n", [&](){
+    guiManager->getMenu()->AddItem(new MenuItem("record", [&](){
         return (int)WindowState::recordNote;
     }));
 
-    guiManager->getMenu()->AddItem(new MenuItem("rec-o", [&](){
-        return (int)WindowState::recordOctave;
-    }));
+//    guiManager->getMenu()->AddItem(new MenuItem("rec-o", [&](){
+//        return (int)WindowState::recordOctave;
+//    }));
 
     guiManager->getMenu()->AddItem(new MenuItem("train", [&](){
         return (int)WindowState::train;
@@ -254,16 +347,16 @@ void SmartMultiEffect::SetButtonsFunctions()
             updateWindowFlag = true;
         });
         button2->AddFunction([&](){
-           TestGui::show_volume_test(*soundProcessor, 200, 400);
+           TestGui::show_volume_test(*soundProcessor, 300, 400);
         });
         button3->AddFunction([&](){
-           TestGui::show_fft_test(*soundProcessor, 800, 400, 0, 0.02, 8);
+           TestGui::show_fft_test(*soundProcessor, 800, 400, 0, 0.05, 8);
         });
         button4->AddFunction([&](){
-           TestGui::show_notes_test(*soundProcessor, 400, 400);
+           TestGui::show_notes_test(*soundProcessor, 600, 400);
         });
         button5->AddFunction([&](){
-           TestGui::show_octave_test(*soundProcessor, 200, 400);
+           TestGui::show_octave_test(*soundProcessor, 400, 400);
         });
         break;
 
@@ -336,36 +429,40 @@ void SmartMultiEffect::SetButtonsFunctions()
         break;
 
     case song:
-        if(guiManager->getSongsWindow()->getCurrentSong() == nullptr) {
+        if(guiManager->getSongsWindow()->getCurrentSet() == nullptr) {
             windowState = songs;
             UpdateWindow();
             return;
         }
-        button1->SetText("reset");
-        button2->SetText("hold");
-        button3->SetText("skip");
-        button4->SetText("start");
+        button1->SetText("style1");
+        button2->SetText("style2");
+        button3->SetText("style3");
+        button4->SetText("auto");
         button5->SetText("back");
         button1->SetTextColor(CONF::GUI_PARAMETERS::COLORS::ORANGE);
         button2->SetTextColor(CONF::GUI_PARAMETERS::COLORS::ORANGE);
         button3->SetTextColor(CONF::GUI_PARAMETERS::COLORS::ORANGE);
-        button4->SetTextColor(CONF::GUI_PARAMETERS::COLORS::ORANGE);
+        button4->SetTextColor(CONF::GUI_PARAMETERS::COLORS::GREEN);
         button5->SetTextColor(CONF::GUI_PARAMETERS::COLORS::RED);
 
         button1->AddFunction([&](){
-            guiManager->getButtonByName(BUTTON_4.toStdString())->SetText("start");
+            guiManager->getSongsWindow()->getCurrentSet()->activate_1(controller, guiManager->getPresetsWindow());
         });
         button2->AddFunction([&](){
+            guiManager->getSongsWindow()->getCurrentSet()->activate_2(controller, guiManager->getPresetsWindow());
         });
         button3->AddFunction([&](){
+            guiManager->getSongsWindow()->getCurrentSet()->activate_3(controller, guiManager->getPresetsWindow());
         });
         button4->AddFunction([&](){
             if(guiManager->getButtonByName(BUTTON_4.toStdString())->getText() == "stop") {
-                guiManager->getButtonByName(BUTTON_4.toStdString())->SetText("resume");
-            } else if (guiManager->getButtonByName(BUTTON_4.toStdString())->getText() == "start") {
+                guiManager->getButtonByName(BUTTON_4.toStdString())->SetText("auto");
+                //button4->SetTextColor(CONF::GUI_PARAMETERS::COLORS::GREEN);
+                guiManager->getSongsWindow()->getCurrentSet()->autoMod(false);
+            } else if (guiManager->getButtonByName(BUTTON_4.toStdString())->getText() == "auto") {
                 guiManager->getButtonByName(BUTTON_4.toStdString())->SetText("stop");
-            } else if (guiManager->getButtonByName(BUTTON_4.toStdString())->getText() == "resume") {
-                guiManager->getButtonByName(BUTTON_4.toStdString())->SetText("stop");
+                //button4->SetTextColor(CONF::GUI_PARAMETERS::COLORS::RED);
+                guiManager->getSongsWindow()->getCurrentSet()->autoMod(true);
             }
         });
         button5->AddFunction([&](){
@@ -427,6 +524,7 @@ void SmartMultiEffect::SetButtonsFunctions()
                 updateWindowFlag = true;
             });
         button5->AddFunction([&](){
+            guiManager->getPresetsWindow()->getCurrentPreset()->getActivePreset()->Save();
             windowState = presets;
             updateWindowFlag = true;
         });
@@ -632,6 +730,9 @@ void SmartMultiEffect::Update()
     } else {
         if(loadingThread != nullptr) {
             loadingThread = nullptr;
+            InitializePresets();
+            InitializeSongs();
+            guiManager->getSongsWindow()->UpdatePresets(guiManager->getPresetsWindow());
             soundProcessor->Start();
             updateWindowFlag = true;
         }
@@ -648,6 +749,10 @@ void SmartMultiEffect::Update()
 
     controller->UpdateButtons();
     guiManager->UpdateButtons();
+
+    if(windowState == song) {
+        guiManager->getSongsWindow()->getCurrentSet()->Update(controller, soundProcessor, guiManager->getPresetsWindow());
+    }
 
     if(updateWindowFlag) {
         UpdateWindow();

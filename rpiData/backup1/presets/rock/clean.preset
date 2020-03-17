@@ -1,0 +1,48 @@
+{
+    "effects": {
+        "Delay": {
+            "colors": {
+                "backGroundColor": "#005010",
+                "dialsColor": "#ffffff",
+                "fontColor": "#ffffff"
+            },
+            "name": "Delay",
+            "potentiometers": {
+                "128": 50,
+                "256": 50,
+                "32": 50
+            },
+            "state": true
+        },
+        "OverDrive": {
+            "colors": {
+                "backGroundColor": "#613c00",
+                "dialsColor": "#ffffff",
+                "fontColor": "#ffffff"
+            },
+            "name": "OverDrive",
+            "potentiometers": {
+                "1": 50,
+                "2": 50,
+                "64": 50
+            },
+            "state": false
+        },
+        "Tremolo": {
+            "colors": {
+                "backGroundColor": "#39004a",
+                "dialsColor": "#ffffff",
+                "fontColor": "#ffffff"
+            },
+            "name": "Tremolo",
+            "potentiometers": {
+                "128": 50,
+                "256": 50,
+                "64": 50
+            },
+            "state": true
+        }
+    },
+    "resolution": 0,
+    "time": 0
+}

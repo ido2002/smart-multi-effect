@@ -3,6 +3,7 @@
 
 #include <cmath>
 
+
 namespace sound_processing {
 
 /**

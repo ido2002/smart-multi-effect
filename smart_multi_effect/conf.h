@@ -84,6 +84,17 @@ namespace HARDWARE {
     const std::string EFFECT_3_NAME = NAMES::OVERDRIVE;
 }
 
+namespace PRESETS_AND_SONGS_DATA {
+    const QString PRESETS_SAVE_DIRECTORY = MAIN_DIR + "presets/";
+    const QString SONGS_SAVE_DIRECTORY = MAIN_DIR + "songs/";
+
+    const QString PRESETS_FILE = "presets.data";
+    const QString SONGS_FILE = "songs.data";
+
+    const QString PRESET_FILE_ENDING = ".preset";
+    const QString SONG_FILE_ENDING = ".song";
+}
+
 namespace SOUND_CARD {
     const size_t BUFFER_SIZE = 1024 * 1;
     const auto SAMPLE_BYTE_ORDER = QAudioFormat::LittleEndian;
@@ -102,11 +113,13 @@ namespace SOUND_PROCCESSING {
     const double RECORDING_VOLUME_FACTOR = std::pow(2, -(SOUND_CARD::SAMPLE_SIZE - 1));
     const uint RECORDING_WAIT_UTIME = BUFFER_FILL_UTIME * 1;
     const uint RECORDING_START_WAIT_UTIME = BUFFER_FILL_UTIME * 0;
-    const size_t RECORDING_LIMIT = 10;
+    const size_t RECORDING_LIMIT = 5;
+    const double FFT_RES = (SOUND_CARD::SAMPLE_RATE / 2) / FFT_SIZE;
+    const double FFT_MIN_FREQ = 60;
 }
 
 namespace NOTE_RECOGNITION {
-    const float NOTE_THRESHOLD = 0.5f;
+    const float NOTE_THRESHOLD = 0.7f;
     const float OCTAVE_THRESHOLD = 0.5f;
 
     const uint8_t NOTES_IN_OCTAVE = 12;
@@ -121,6 +134,21 @@ namespace NOTE_RECOGNITION {
     const double VOLUMELEVEL_HIGH_THRESHOLD = 0.1;
     const double VOLUMELEVEL_VERYHIGH_THRESHOLD = 0.5;
 
+    const double FFT_BASS_MIN_FREQ = 60;
+    const double FFT_BASS_TOP_FREQ = 170;
+    const double FFT_BASS_THRESHOLD = 0.4;
+    const double FFT_BASS_FACTOR = 15;
+
+    const double FFT_MID_MIN_FREQ = 350;
+    const double FFT_MID_TOP_FREQ = 500;
+    const double FFT_MID_THRESHOLD = 0.1;
+    const double FFT_MID_FACTOR = 0;
+
+    const double FFT_HIGH_MIN_FREQ = 750;
+    const double FFT_HIGH_TOP_FREQ = 1500;
+    const double FFT_HIGH_THRESHOLD = 0.4;
+    const double FFT_HIGH_FACTOR = 24;
+
     namespace NETWORK_DATA {
         const QString NETWORK_DATASET_FILE = "data.data";
         const QString NETWORK_DATA_ENDING = ".data";
@@ -131,8 +159,24 @@ namespace NOTE_RECOGNITION {
     }
 }
 
+namespace RIFF_RECOGNITION {
+    const double VOLUME_MATCH_FACTOR = 0.2;
+    const double VOLUME_MATCH_WHEIGTH = 0.1;
+
+    const double NOTES_COUNT_MATCH_FACTOR = 1;
+    const double NOTES_COUNT_MATCH_WHEIGTH = 0.2;
+
+    const double NOTES_MATCH_WHEIGTH = 0.4;
+
+    const double BASS_MATCH_FACTOR = 1.2;
+    const double BASS_MATCH_WHEIGTH = 0.15;
+
+    const double HIGH_MATCH_FACTOR = 0.8;
+    const double HIGH_MATCH_WHEIGTH = 0.15;
+}
+
 namespace GUI_PARAMETERS {
-    const int LOAD_EXTRA_UTIME = 3 * 1000000;
+    const int LOAD_EXTRA_UTIME = 3 * 1;
 
     namespace MAIN_WINDOW {
         const QUrl MAIN_URL("qrc:/main.qml");
@@ -143,8 +187,33 @@ namespace GUI_PARAMETERS {
 
     namespace SONGS_PAGE {
         const QUrl SONGS_URL("qrc:/Pages/SongsPage.qml");
-        const QString SONG_FRAME_CONTANER = "SongPreset";
+        const QString SONG_NAME = "SongText";
 
+    }
+
+    namespace SONG_EDIT_PAGE {
+        const QUrl SONG_EDIT_URL("qrc:/Frames/SongEditPageForm.ui.qml");
+        const QString SONG_HEADLINE = "headLine";
+
+        const QString STYLE_EDIT_1 = "styleEdit_1";
+        const QString STYLE_EDIT_2 = "styleEdit_2";
+        const QString STYLE_EDIT_3 = "styleEdit_3";
+
+        const QString STYLE_BACKGROUND = "rectangle";
+
+        const QString STYLE_THRESHOLD_PROGRESS_BAR = "progressBar";
+        const QString STYLE_THRESHOLD_SLIDER = "sliderThreashold";
+
+        const QString STYLE_PRESET_SET_COMBO_BOX = "comboBoxSet";
+        const QString STYLE_PRESET_NAME_COMBO_BOX = "comboBoxPreset";
+
+        const QString STYLE_BASS_TARGET_DIAL = "dialBase";
+        const QString STYLE_BASS_TOP_SLIDER = "sliderBass";
+        const QString STYLE_BASS_FACTOR_SLIDER = "sliderHighFactor";
+
+        const QString STYLE_HIGH_TARGET_DIAL = "dialHigh";
+        const QString STYLE_HIGH_BOTTOM_SLIDER = "sliderHigh";
+        const QString STYLE_HIGH_FACTOR_SLIDER = "sliderBassFactor";
     }
 
     namespace PRESETS_PAGE {
@@ -167,10 +236,6 @@ namespace GUI_PARAMETERS {
         const QString TIME_SLIDER = "timeSlider";
         const QString RESOLUTION_SLIDER = "resSlider";
 
-    }
-
-    namespace SONG_FRAME {
-        const QUrl SONG_FRAME_URL("qrc:/Frames/SongFrame");
     }
 
     namespace CUSTON_BUTTON {
@@ -201,51 +266,55 @@ namespace GUI_PARAMETERS {
         const QString SWITCH_NAME = "switch";
 
         const QString DIAL_NAME = "dial";
-        const QString VALUE_LABLE_NAME = "valueLable";
-        const QString TEXT_LABLE_NAME = "textLable";
+        const QString VALUE_LABEL_NAME = "valueLabel";
+        const QString TEXT_LABEL_NAME = "textLabel";
 
-        const QString EFFECT_LABLE_NAME = "effectNameLable";
+        const QString EFFECT_LABEL_NAME = "effectNameLabel";
 
         const QString BACKGROUND_RECT = "rect";
     }
 
     namespace GENERAL_GUI_PROPERTIES_NAMES {
-        const char LABLE_TEXT[] = "text";
+        const char LABEL_TEXT[] = "text";
         const char SWITCH_STATE[] = "checked";
         const char DIAL_VALUE[] = "value";
         const char SLIDER_VALUE[] = "value";
+        const char PROGRESS_BAR_VALUE[] = "value";
+        const char COMBOBOX_VALUE[] = "currentText";
+        const char COMBOBOX_LIST[] = "model";
         const char COLOR[] = "color";
+        const char OPACITY[] = "opacity";
 }
 
     namespace NOTE_RECORDING_PAGE {
         const QUrl NOTE_RECORDING_PAGE_URL("qrc:/SettingsPages/RecordingNotePage.qml");
 
         const QString BUSY_INDICATOR = "busyIndicator";
-        const QString NOTES_LABLE = "notesLable";
-        const QString NOTE_LABLE = "noteLable";
+        const QString NOTES_LABEL = "notesLabel";
+        const QString NOTE_LABEL = "noteLabel";
 
-        const QString NOTE_LABLE_BASE_TEXT = "NOTE: ";
-        const QString NOTES_LABLE_BASE_TEXT = "NOTES";
+        const QString NOTE_LABEL_BASE_TEXT = "NOTE: ";
+        const QString NOTES_LABEL_BASE_TEXT = "NOTES";
     }
 
     namespace OCTAVE_RECORDING_PAGE {
         const QUrl OCTAVE_RECORDING_PAGE_URL("qrc:/SettingsPages/RecordingOctavePage.qml");
 
         const QString BUSY_INDICATOR = "busyIndicator";
-        const QString OCTAVES_LABLE = "octavesLable";
-        const QString OCTAVE_LABLE = "octaveLable";
+        const QString OCTAVES_LABEL = "octavesLabel";
+        const QString OCTAVE_LABEL = "octaveLabel";
 
-        const QString OCTAVE_LABLE_BASE_TEXT = "octave: ";
-        const QString OCTAVES_LABLE_BASE_TEXT = "octaves";
+        const QString OCTAVE_LABEL_BASE_TEXT = "octave: ";
+        const QString OCTAVES_LABEL_BASE_TEXT = "octaves";
     }
 
     namespace TRAINING_PAGE {
         const QUrl TRAINING_PAGE_URL("qrc:/SettingsPages/LearningPage.qml");
 
         const QString BUSY_INDICATOR = "busyIndicator";
-        const QString REPEATS_LABLE = "repeatsLable";
+        const QString REPEATS_LABEL = "repeatsLabel";
 
-        const QString REPEATS_LABLE_BASE_TEXT = "repeats: ";
+        const QString REPEATS_LABEL_BASE_TEXT = "repeats: ";
     }
 
     namespace LOADING_PAGE {

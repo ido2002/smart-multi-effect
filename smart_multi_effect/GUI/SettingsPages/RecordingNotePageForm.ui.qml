@@ -36,8 +36,8 @@ Item {
     }
 
     Text {
-        id: noteLable
-        objectName: "noteLable"
+        id: noteLabel
+        objectName: "noteLabel"
         y: 0
         width: 291
         color: "#f4f1f1"
@@ -55,8 +55,8 @@ Item {
     }
 
     Text {
-        id: notesLable
-        objectName: "notesLable"
+        id: notesLabel
+        objectName: "notesLabel"
         x: 1
         y: -8
         width: 291
@@ -71,7 +71,7 @@ Item {
         anchors.topMargin: 0
         styleColor: "#f4f1f1"
         anchors.left: parent.left
-        anchors.top: noteLable.top
+        anchors.top: noteLabel.top
     }
 
     BusyIndicator {

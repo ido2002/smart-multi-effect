@@ -22,7 +22,7 @@ Item {
 
         Label {
             id: label
-            objectName: "effectNameLable"
+            objectName: "effectNameLabel"
             y: 102
             width: 258
             height: 51

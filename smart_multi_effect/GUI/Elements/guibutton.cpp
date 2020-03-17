@@ -33,13 +33,13 @@ void GUI_elements::GuiButton::Update()
 void GUI_elements::GuiButton::SetText(QString text)
 {
     buttonItem->findChild<QQuickItem*>(CUSTON_BUTTON::BUTTON_TEXT)->
-            setProperty(GENERAL_GUI_PROPERTIES_NAMES::LABLE_TEXT, text);
+            setProperty(GENERAL_GUI_PROPERTIES_NAMES::LABEL_TEXT, text);
 }
 
 QString GUI_elements::GuiButton::getText()
 {
     return buttonItem->findChild<QQuickItem*>(CUSTON_BUTTON::BUTTON_TEXT)->
-            property(GENERAL_GUI_PROPERTIES_NAMES::LABLE_TEXT).toString();
+            property(GENERAL_GUI_PROPERTIES_NAMES::LABEL_TEXT).toString();
 }
 
 void GUI_elements::GuiButton::SetPressed(bool pressed)

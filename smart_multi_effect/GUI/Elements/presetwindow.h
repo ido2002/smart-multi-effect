@@ -11,21 +11,27 @@
 class Preset
 {
 public:
-    Preset(QString name, hardware_ctrl::Preset* preset, QQmlApplicationEngine* engine, QQuickItem* parent);
+    Preset(QString setName, QString name, hardware_ctrl::Preset* preset, QQmlApplicationEngine* engine, QQuickItem* parent);
+    Preset(QString setName, QString name, QQmlApplicationEngine* engine, QQuickItem* parent);
 
     void Update();
 
     void Show();
     void Hide();
 
+    void Save();
+
+    QString GenFilePath();
+
     void Refresh();
 
-    QString getName() { return name; }
+    QString getName();
 
     hardware_ctrl::Preset* getPreset() { return preset; };
 
 private:
     QString name;
+    QString setName;
     hardware_ctrl::Preset* preset;
     QQuickItem* editWindow = nullptr;
     //QQuickItem* editTime = nullptr;

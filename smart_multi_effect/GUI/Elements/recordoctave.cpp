@@ -20,8 +20,8 @@ RecordOctavePage::RecordOctavePage(QQmlApplicationEngine *engine, QQuickItem *pa
 
     busyIndicator = window->findChild<QQuickItem*>(BUSY_INDICATOR);
     busyIndicator->setVisible(false);
-    octavesLable = window->findChild<QQuickItem*>(OCTAVES_LABLE);
-    octaveLable = window->findChild<QQuickItem*>(OCTAVE_LABLE);
+    octavesLabel = window->findChild<QQuickItem*>(OCTAVES_LABEL);
+    octaveLabel = window->findChild<QQuickItem*>(OCTAVE_LABEL);
 }
 
 void RecordOctavePage::Show()
@@ -34,25 +34,32 @@ void RecordOctavePage::Hide()
     window->setVisible(false);
 }
 
+int RecordOctavePage_counter = 0;
+
 void RecordOctavePage::update()
 {
     if(recordingThread == nullptr) {
         busyIndicator->setVisible(false);
     } else {
-       recordingThread->join();
-       recordingThread = nullptr;
-       octaves.clear();
-       UpdateList();
+        if(RecordOctavePage_counter < 2){
+            RecordOctavePage_counter++;
+            return;
+        }
+        RecordOctavePage_counter = 0;
+        recordingThread->join();
+        recordingThread = nullptr;
+        //octaves.clear();
+        UpdateList();
     }
 }
 
 void RecordOctavePage::UpdateList()
 {
-    QString str = OCTAVES_LABLE_BASE_TEXT;
+    QString str = OCTAVES_LABEL_BASE_TEXT;
     for(auto o : octaves) {
         str += "\n" + QString::fromStdString(Stroke::NoteOctaveToString(o));
     }
-    octavesLable->setProperty(LABLE_TEXT, str);
+    octavesLabel->setProperty(LABEL_TEXT, str);
 }
 
 void RecordOctavePage::up()
@@ -62,7 +69,7 @@ void RecordOctavePage::up()
     } else {
         currentOctave = (Stroke::NoteOctave)((int)currentOctave + 1);
     }
-    octaveLable->setProperty(LABLE_TEXT, OCTAVE_LABLE_BASE_TEXT +
+    octaveLabel->setProperty(LABEL_TEXT, OCTAVE_LABEL_BASE_TEXT +
                            QString::fromStdString(Stroke::NoteOctaveToString(currentOctave)));
 }
 

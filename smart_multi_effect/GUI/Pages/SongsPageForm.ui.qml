@@ -5,10 +5,23 @@ Item {
     width: 1024
     height: 500
 
-    MouseArea {
-        anchors.fill: parent
-        enabled: true
-        cursorShape: Qt.BlankCursor
+    Image {
+        id: image1
+        objectName: "navigationButton_Right"
+        x: 654
+        y: 236
+        source: "triangleButton.png"
+        fillMode: Image.PreserveAspectFit
+    }
+
+    Image {
+        id: image2
+        objectName: "navigationButton_Left"
+        x: 313
+        y: 236
+        rotation: 180
+        source: "triangleButton.png"
+        fillMode: Image.PreserveAspectFit
     }
 
     Rectangle {
@@ -22,20 +35,26 @@ Item {
 
     Image {
         id: image
-        anchors.rightMargin: -49
+        scale: 1
+        anchors.rightMargin: 0
         anchors.fill: parent
         source: "SongBackground.png"
         fillMode: Image.PreserveAspectCrop
     }
 
-    Item {
+    Text {
         id: element1
-        objectName: "SongPreset"
-        x: 512
-        y: 170
-        width: 250
-        height: 250
-        anchors.horizontalCenter: parent.horizontalCenter
+        objectName: "SongText"
+        x: 361
+        y: 236
+        width: 302
+        height: 127
+        color: "#efeeee"
+        text: qsTr("")
+        font.bold: true
+        verticalAlignment: Text.AlignVCenter
+        horizontalAlignment: Text.AlignHCenter
+        font.pixelSize: 59
     }
 
     Text {
@@ -45,29 +64,12 @@ Item {
         width: 302
         height: 80
         color: "#efeeee"
-        text: qsTr("Songs")
+        text: qsTr("Auto Switching")
         font.bold: true
         verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignHCenter
         font.pixelSize: 59
     }
 
-    Image {
-        id: image2
-        objectName: "navigationButton_Left"
-        x: 313
-        y: 236
-        rotation: 180
-        source: "triangleButton.png"
-        fillMode: Image.PreserveAspectFit
-    }
 
-    Image {
-        id: image1
-        objectName: "navigationButton_Right"
-        x: 654
-        y: 236
-        source: "triangleButton.png"
-        fillMode: Image.PreserveAspectFit
-    }
 }

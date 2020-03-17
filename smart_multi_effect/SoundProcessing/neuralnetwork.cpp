@@ -83,8 +83,8 @@ void neural_network_tools::Network::LoadFromFile(QString path)
         auto layer = layers[i];
         BinaryToVector(fin, layer->biases);
 
-        size_t weightsSize = 0;
-        fin.read((char*)&weightsSize, sizeof (size_t));
+        uint64_t weightsSize = 0;
+        fin.read((char*)&weightsSize, sizeof (uint64_t));
         layer->weights.resize(weightsSize);
 
         for(size_t j = 0; j < weightsSize; j++) {
@@ -115,8 +115,8 @@ void neural_network_tools::Network::SaveToFile(QString path)
         VectorToBinary(fout, biases);
 
         auto weights = layer->weights;
-        size_t weightsSize = weights.size();
-        fout.write((char*)&weightsSize, sizeof (size_t));
+        uint64_t weightsSize = weights.size();
+        fout.write((char*)&weightsSize, sizeof (uint64_t));
 
         for(size_t j = 0; j < weights.size(); j++) {
             auto w = weights[j];
@@ -392,11 +392,12 @@ void NeuralNetwork::LoadData(std::string path)
     _path = QString::fromStdString(path) + NETWORK_DATASET_FILE;
     if(!JsonReader::readJsonFile(_path, map)) return;
 
-    for(auto paths : map) {
+    for(auto key : map.keys()) {
+        auto paths = map[key];
         for (int i = 0; i < paths.toList().size(); i++) {
             NetworkDataSet data({}, {});
             data.LoadFromJson(paths.toList()[i].toString());
-            this->AddData(paths.toList()[i].toString().toStdString(), data);
+            this->AddData(key.toStdString(), data);
         }
     }
 }

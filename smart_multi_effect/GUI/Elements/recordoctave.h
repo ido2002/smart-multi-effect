@@ -34,8 +34,8 @@ private:
 
     QQuickItem* window;
     QQuickItem* busyIndicator;
-    QQuickItem* octavesLable;
-    QQuickItem* octaveLable;
+    QQuickItem* octavesLabel;
+    QQuickItem* octaveLabel;
 };
 
 #endif // RECORDOCTAVE_H

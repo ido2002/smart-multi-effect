@@ -15,6 +15,10 @@ namespace sound_processing {
 
         Stroke BufferToStroke(int16_t* buffer, size_t bufferSize);
 
+        void updpateFFT(int16_t* buffer, size_t bufferSize);
+        void updateNotes();
+        void updateOctave();
+
         void AddNoteDataSet(std::vector<float> FFT_output, std::vector<Stroke::Note> notes);
         void AddOctaveDataSet(std::vector<float> FFT_output, std::vector<float> octaves);
 
@@ -39,16 +43,16 @@ namespace sound_processing {
 
         std::vector<float> getFFT() { return fftOutput; }
         std::vector<float> getNotes() { return notesNetOutput; }
-        std::vector<float> getOctave() { return octaveNetOutput; }
+        std::vector<float> getOctave() { return octaveOutput; }
 
     private:
         NeuralNetwork* fftToNotesNet = nullptr;
-        NeuralNetwork* fftToOctaveNet = nullptr;
+        //NeuralNetwork* fftToOctaveNet = nullptr;
         double sumOutput = 0;
         Stroke::VolumeLevel volumeLevel = Stroke::silence;
         std::vector<float> notesNetOutput;
         std::vector<float> fftOutput;
-        std::vector<float> octaveNetOutput;
+        std::vector<float> octaveOutput;
     };
 }
 

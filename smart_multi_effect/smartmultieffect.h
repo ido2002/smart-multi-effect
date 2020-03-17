@@ -5,7 +5,7 @@
 #include "GUI/Elements/guimanager.h"
 #include "GUI/Elements/testgui.h"
 #include "SoundProcessing/soundprocessor.h"
-//#include "RiffRecognition/riff.h"
+#include "RiffRecognition/riffrecognition.h"
 
 #include "mytimer.h"
 #include <thread>
@@ -42,6 +42,7 @@ private:
     hardware_ctrl::EffectController* controller = nullptr;
     GUI_elements::GuiManager* guiManager = nullptr;
     sound_processing::SoundProcessor* soundProcessor = nullptr;
+    RiffRecognition* riffRecognition = nullptr;
 
     MyTimer* buttonsTimer = nullptr;
 

@@ -22,6 +22,8 @@ SOURCES += \
         EffectController/gpioread.cpp \
         EffectController/potentiometer.cpp \
         EffectController/preset.cpp \
+        GUI/Elements/autoswitchsetswindow.cpp \
+        GUI/Elements/autoswitchsetwindowedit.cpp \
         GUI/Elements/effect_gui.cpp \
         GUI/Elements/guibutton.cpp \
         GUI/Elements/guimanager.cpp \
@@ -32,11 +34,10 @@ SOURCES += \
         GUI/Elements/presetwindow.cpp \
         GUI/Elements/recordnote.cpp \
         GUI/Elements/recordoctave.cpp \
-        GUI/Elements/songframe.cpp \
-        GUI/Elements/songswindow.cpp \
         GUI/Elements/testgui.cpp \
         GUI/Elements/train.cpp \
         RiffRecognition/riff.cpp \
+        RiffRecognition/riffrecognition.cpp \
         SoundProcessing/neuralnetwork.cpp \
         SoundProcessing/noterecognition.cpp \
         SoundProcessing/soundcard.cpp \
@@ -71,6 +72,8 @@ HEADERS += \
     EffectController/gpioread.h \
     EffectController/potentiometer.h \
     EffectController/preset.h \
+    GUI/Elements/autoswitchsetswindow.h \
+    GUI/Elements/autoswitchsetwindowedit.h \
     GUI/Elements/effect_gui.h \
     GUI/Elements/guibutton.h \
     GUI/Elements/guimanager.h \
@@ -81,11 +84,10 @@ HEADERS += \
     GUI/Elements/presetwindow.h \
     GUI/Elements/recordnote.h \
     GUI/Elements/recordoctave.h \
-    GUI/Elements/songframe.h \
-    GUI/Elements/songswindow.h \
     GUI/Elements/testgui.h \
     GUI/Elements/train.h \
     RiffRecognition/riff.h \
+    RiffRecognition/riffrecognition.h \
     SoundProcessing/FFT.h \
     SoundProcessing/neuralnetwork.h \
     SoundProcessing/noterecognition.h \

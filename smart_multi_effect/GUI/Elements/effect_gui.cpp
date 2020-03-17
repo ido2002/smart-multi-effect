@@ -28,9 +28,9 @@ Effect_gui::Effect_gui(hardware_ctrl::EffectInfo* effect, QQuickItem *parent, QQ
     auto rect = item->childItems()[0]->findChild<QQuickItem*>(BACKGROUND_RECT);
     rect->setProperty(COLOR, effect->colors.backGroundColor);
 
-    //set name lable
-    Instance->childItems()[0]->findChild<QQuickItem*>(EFFECT_LABLE_NAME)->setProperty(LABLE_TEXT, QString::fromStdString(effect->name));
-    Instance->childItems()[0]->findChild<QQuickItem*>(EFFECT_LABLE_NAME)->setProperty(COLOR, effect->colors.fontColor);
+    //set name label
+    Instance->childItems()[0]->findChild<QQuickItem*>(EFFECT_LABEL_NAME)->setProperty(LABEL_TEXT, QString::fromStdString(effect->name));
+    Instance->childItems()[0]->findChild<QQuickItem*>(EFFECT_LABEL_NAME)->setProperty(COLOR, effect->colors.fontColor);
 
     //set dials
     {
@@ -61,11 +61,11 @@ Effect_gui::Effect_gui(hardware_ctrl::EffectInfo* effect, QQuickItem *parent, QQ
                 continue;
             }
             m_dials.insert(std::pair<layoutElements, QQuickItem*>(p.first, item->childItems()[0]->findChild<QQuickItem*>(dialName)));
-            m_dials.find(p.first)->second->findChild<QQuickItem*>(TEXT_LABLE_NAME)->setProperty(LABLE_TEXT, QString::fromStdString(hardware_ctrl::Effect::LayoutEllementToString(p.first)));
+            m_dials.find(p.first)->second->findChild<QQuickItem*>(TEXT_LABEL_NAME)->setProperty(LABEL_TEXT, QString::fromStdString(hardware_ctrl::Effect::LayoutEllementToString(p.first)));
 
             m_dials.find(p.first)->second->findChild<QQuickItem*>(DIAL_NAME)->setProperty(COLOR, effect->colors.dialsColor);
-            m_dials.find(p.first)->second->findChild<QQuickItem*>(VALUE_LABLE_NAME)->setProperty(COLOR, effect->colors.fontColor);
-            m_dials.find(p.first)->second->findChild<QQuickItem*>(TEXT_LABLE_NAME)->setProperty(COLOR, effect->colors.fontColor);
+            m_dials.find(p.first)->second->findChild<QQuickItem*>(VALUE_LABEL_NAME)->setProperty(COLOR, effect->colors.fontColor);
+            m_dials.find(p.first)->second->findChild<QQuickItem*>(TEXT_LABEL_NAME)->setProperty(COLOR, effect->colors.fontColor);
 
             i++;
         }
@@ -113,3 +113,8 @@ void Effect_gui::SetSwitch(bool value)
     m_switch->setProperty(SWITCH_STATE, value);
 }
 
+
+std::string GUI_elements::Effect_gui::getName()
+{
+    return name;
+}

@@ -5,6 +5,25 @@ Item {
     width: 1024
     height: 500
 
+    Image {
+        id: image1
+        objectName: "navigationButton_Right"
+        x: 654
+        y: 236
+        source: "triangleButtonPreset.png"
+        fillMode: Image.PreserveAspectFit
+    }
+
+    Image {
+        id: image2
+        objectName: "navigationButton_Left"
+        x: 313
+        y: 236
+        rotation: 180
+        source: "triangleButtonPreset.png"
+        fillMode: Image.PreserveAspectFit
+    }
+
     Rectangle {
         id: rectangle
         x: 0
@@ -49,24 +68,7 @@ Item {
         font.pixelSize: 59
     }
 
-    Image {
-        id: image2
-        objectName: "navigationButton_Left"
-        x: 313
-        y: 236
-        rotation: 180
-        source: "triangleButtonPreset.png"
-        fillMode: Image.PreserveAspectFit
-    }
 
-    Image {
-        id: image1
-        objectName: "navigationButton_Right"
-        x: 654
-        y: 236
-        source: "triangleButtonPreset.png"
-        fillMode: Image.PreserveAspectFit
-    }
 }
 
 /*##^##

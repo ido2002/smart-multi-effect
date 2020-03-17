@@ -19,8 +19,8 @@ TrainingPage::TrainingPage(QQmlApplicationEngine *engine, QQuickItem *parent)
 
     busyIndicator = window->findChild<QQuickItem*>(BUSY_INDICATOR);
     busyIndicator->setVisible(false);
-    repeatsLable = window->findChild<QQuickItem*>(REPEATS_LABLE);
-    UpdateLable();
+    repeatsLabel = window->findChild<QQuickItem*>(REPEATS_LABEL);
+    UpdateLabel();
 }
 
 void TrainingPage::Show()
@@ -43,10 +43,10 @@ void TrainingPage::update()
     }
 }
 
-void TrainingPage::UpdateLable()
+void TrainingPage::UpdateLabel()
 {
-    QString str = REPEATS_LABLE_BASE_TEXT + QString::number(repeats);
-    repeatsLable->setProperty(LABLE_TEXT, str);
+    QString str = REPEATS_LABEL_BASE_TEXT + QString::number(repeats);
+    repeatsLabel->setProperty(LABEL_TEXT, str);
 }
 
 void TrainingPage::up()
@@ -64,7 +64,7 @@ void TrainingPage::up()
     } else if(repeats < 50000) {
         repeats += 5000;
     }
-    UpdateLable();
+    UpdateLabel();
 }
 
 void TrainingPage::down()
@@ -84,7 +84,7 @@ void TrainingPage::down()
     } else if(repeats <= 50000) {
         repeats -= 5000;
     }
-    UpdateLable();
+    UpdateLabel();
 }
 
 void TrainingPage::learn(SoundProcessor *soundProcessor)
@@ -100,10 +100,11 @@ void TrainingPage::learn(SoundProcessor *soundProcessor)
 
 void TrainingPage::save(SoundProcessor *soundProcessor)
 {
-    if(learningThread == nullptr && repeats > 0) {
+    if(learningThread == nullptr) {
         busyIndicator->setVisible(true);
         this->soundProcessor = soundProcessor;
         learningThread = new std::thread([&]() {
             this->soundProcessor->getNoteRecognition().Save();
         });
-    }}
+    }
+}

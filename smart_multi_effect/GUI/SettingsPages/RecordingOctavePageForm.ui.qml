@@ -36,8 +36,8 @@ Item {
     }
 
     Text {
-        id: octaveLable
-        objectName: "octaveLable"
+        id: octaveLabel
+        objectName: "octaveLabel"
         y: 0
         width: 291
         height: 325
@@ -56,8 +56,8 @@ Item {
     }
 
     Text {
-        id: octavesLable
-        objectName: "octavesLable"
+        id: octavesLabel
+        objectName: "octavesLabel"
         x: 1
         y: 144
         width: 291
@@ -73,7 +73,7 @@ Item {
         anchors.topMargin: 0
         styleColor: "#f4f1f1"
         anchors.left: parent.left
-        anchors.top: noteLable.top
+        anchors.top: noteLabel.top
     }
 
     BusyIndicator {

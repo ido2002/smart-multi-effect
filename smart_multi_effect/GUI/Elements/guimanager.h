@@ -7,7 +7,7 @@
 #include "guibutton.h"
 #include "effect_gui.h"
 #include "presetswindow.h"
-#include "songswindow.h"
+#include "autoswitchsetswindow.h"
 #include "menu.h"
 #include "recordnote.h"
 #include "recordoctave.h"
@@ -29,7 +29,7 @@ namespace GUI_elements {
         void SetViewAreaTo(ViewAreaContent content);
 
         PresetsWindow* getPresetsWindow() { return presetsPage; }
-        SongsWindow* getSongsWindow() { return songsPage; }
+        AutoSwitchSetsWindow* getSongsWindow() { return autoSwitchSetsWindow; }
         Menu* getMenu() { return menu; }
         RecordNotePage* getRecordNotePage() { return recordNotePage; }
         RecordOctavePage* getRecordOctavePage() { return recordOctavePage; }
@@ -47,7 +47,7 @@ namespace GUI_elements {
         QQuickItem* buttonsArea = nullptr;
         std::map<std::string, GuiButton*> buttons;
 
-        SongsWindow* songsPage = nullptr;
+        AutoSwitchSetsWindow* autoSwitchSetsWindow = nullptr;
         PresetsWindow* presetsPage = nullptr;
         Menu* menu = nullptr;
         RecordNotePage* recordNotePage = nullptr;

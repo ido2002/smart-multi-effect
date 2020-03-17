@@ -9,31 +9,20 @@ using namespace sound_processing;
 
 RecordNotePage::RecordNotePage(QQmlApplicationEngine *engine, QQuickItem *parent)
 {
-    std::cout << "1" << std::endl;
     //create component
     QQmlComponent comp(engine, parent);
-    std::cout << "2" << std::endl;
     comp.loadUrl(NOTE_RECORDING_PAGE_URL);
-    std::cout << "3" << std::endl;
 
     //add element
     window = qobject_cast<QQuickItem *>(comp.create());
-    std::cout << "4" << std::endl;
     engine->setObjectOwnership(window, QQmlEngine::JavaScriptOwnership);
-    std::cout << "5" << std::endl;
     window->setParentItem(parent);
-    std::cout << "6" << std::endl;
     window->setVisible(false);
-    std::cout << "7" << std::endl;
 
     busyIndicator = window->findChild<QQuickItem*>(BUSY_INDICATOR);
-    std::cout << "8" << std::endl;
     busyIndicator->setVisible(false);
-    std::cout << "9" << std::endl;
-    notesLable = window->findChild<QQuickItem*>(NOTES_LABLE);
-    std::cout << "10" << std::endl;
-    noteLable = window->findChild<QQuickItem*>(NOTE_LABLE);
-    std::cout << "11" << std::endl;
+    notesLabel = window->findChild<QQuickItem*>(NOTES_LABEL);
+    noteLabel = window->findChild<QQuickItem*>(NOTE_LABEL);
 }
 
 void RecordNotePage::Show()
@@ -46,25 +35,31 @@ void RecordNotePage::Hide()
     window->setVisible(false);
 }
 
+int RecordNotePage_counter = 0;
 void RecordNotePage::update()
 {
     if(recordingThread == nullptr) {
         busyIndicator->setVisible(false);
     } else {
-       recordingThread->join();
-       recordingThread = nullptr;
-       notes.clear();
-       UpdateList();
+        if(RecordNotePage_counter < 2){
+            RecordNotePage_counter++;
+            return;
+        }
+        RecordNotePage_counter = 0;
+        recordingThread->join();
+        recordingThread = nullptr;
+        //notes.clear();
+        UpdateList();
     }
 }
 
 void RecordNotePage::UpdateList()
 {
-    QString str = NOTES_LABLE_BASE_TEXT;
+    QString str = NOTES_LABEL_BASE_TEXT;
     for(auto n : notes) {
         str += "\n" + QString::fromStdString(Stroke::NoteToString(n));
     }
-    notesLable->setProperty(LABLE_TEXT, str);
+    notesLabel->setProperty(LABEL_TEXT, str);
 }
 
 void RecordNotePage::up()
@@ -74,7 +69,7 @@ void RecordNotePage::up()
     } else {
         currentNote = (Stroke::Note)((int)currentNote + 1);
     }
-    noteLable->setProperty(LABLE_TEXT, NOTE_LABLE_BASE_TEXT +
+    noteLabel->setProperty(LABEL_TEXT, NOTE_LABEL_BASE_TEXT +
                            QString::fromStdString(Stroke::NoteToString(currentNote)));
 }
 

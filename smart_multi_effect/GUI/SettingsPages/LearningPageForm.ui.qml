@@ -36,8 +36,8 @@ Item {
     }
 
     Text {
-        id: repeatsLable
-        objectName: "repeatsLable"
+        id: repeatsLabel
+        objectName: "repeatsLabel"
         y: 0
         width: 377
         height: 61

@@ -6,8 +6,8 @@
         <file>EffectEdit/EffectDialForm.ui.qml</file>
         <file>EffectEdit/EffectEdit.qml</file>
         <file>EffectEdit/EffectEditForm.ui.qml</file>
-        <file>Frames/SongFrame.qml</file>
-        <file>Frames/SongFrameForm.ui.qml</file>
+        <file>Frames/SongEditPage.qml</file>
+        <file>Frames/SongEditPageForm.ui.qml</file>
         <file>Pages/SongsPage.qml</file>
         <file>Pages/SongsPageForm.ui.qml</file>
         <file>ButtonsArea/ButtonArea.qml</file>
@@ -33,5 +33,8 @@
         <file>SettingsPages/MenuBackground.png</file>
         <file>SettingsPages/LoadingPage.qml</file>
         <file>SettingsPages/LoadingPageForm.ui.qml</file>
+        <file>Frames/StyleEdit.qml</file>
+        <file>Frames/StyleEditForm.ui.qml</file>
+        <file>Frames/SongBackground.png</file>
     </qresource>
 </RCC>

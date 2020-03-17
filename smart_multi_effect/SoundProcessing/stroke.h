@@ -22,14 +22,14 @@ namespace sound_processing {
         static std::string NoteOctaveToString(NoteOctave noteOctave);
 
     public:
-        Stroke(TimePoint start, std::list<Note> notes, NoteOctave octave, VolumeLevel volume);
+        Stroke(TimePoint start, std::list<Note> notes, float octaves[3], VolumeLevel volume);
 
         static bool CompareNotes(Stroke& s1, Stroke& s2);
 
     public:
         TimePoint start;
         std::list<Note> notes;
-        NoteOctave octave;
+        float octaves[3];
         VolumeLevel volume;
     };
 }

@@ -30,10 +30,13 @@ SoundProcessor::SoundProcessor()
 
 SoundProcessor::~SoundProcessor()
 {
-    if(m_soundCard)
+    if(m_soundCard) {
+        m_soundCard->Stop();
         delete m_soundCard;
-    if(m_noteRecognition)
+    }
+    if(m_noteRecognition) {
         delete m_noteRecognition;
+    }
 }
 
 void SoundProcessor::Start() { m_soundCard->Start(); }

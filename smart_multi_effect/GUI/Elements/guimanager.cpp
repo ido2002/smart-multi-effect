@@ -40,21 +40,13 @@ GUI_elements::GuiManager::GuiManager()
         buttons[b.toStdString()]->SetText(b);
     }
 
-    std::cout << "start PresetsWindow" << std::endl;
     presetsPage = new PresetsWindow(&engine, viewArea);
-    std::cout << "start SongsWindow" << std::endl;
-    songsPage = new SongsWindow(&engine, viewArea);
-    std::cout << "start Menu" << std::endl;
+    autoSwitchSetsWindow = new AutoSwitchSetsWindow(&engine, viewArea);
     menu = new Menu(mainWindow);
-    std::cout << "start RecordNotePage" << std::endl;
     recordNotePage = new RecordNotePage(&engine, viewArea);
-    std::cout << "start RecordOctavePage" << std::endl;
     recordOctavePage = new RecordOctavePage(&engine, viewArea);
-    std::cout << "start TrainingPage" << std::endl;
     trainingPage = new TrainingPage(&engine, viewArea);
-    std::cout << "start LoadingPage" << std::endl;
     loadingPage = new LoadingPage(&engine, viewArea);
-    std::cout << "### end ###" << std::endl;
 }
 
 GUI_elements::GuiButton *GUI_elements::GuiManager::getButtonByName(std::string name)
@@ -72,8 +64,13 @@ void GUI_elements::GuiManager::UpdateButtons()
 void GUI_elements::GuiManager::SetViewAreaTo(GUI_elements::GuiManager::ViewAreaContent content)
 {
     presetsPage->Hide();
-    songsPage->Hide();
-    presetsPage->getCurrentPreset()->Hide();
+    autoSwitchSetsWindow->Hide();
+    if(presetsPage->getCurrentPreset()) {
+        presetsPage->getCurrentPreset()->Hide();
+    }
+    if(autoSwitchSetsWindow->getCurrentSet()) {
+        autoSwitchSetsWindow->getCurrentSet()->Hide();
+    }
     recordNotePage->Hide();
     recordOctavePage->Hide();
     trainingPage->Hide();
@@ -83,13 +80,16 @@ void GUI_elements::GuiManager::SetViewAreaTo(GUI_elements::GuiManager::ViewAreaC
     case nothing:
         break;
     case songs:
-        songsPage->Show();
+        autoSwitchSetsWindow->Show();
         break;
     case presets:
         presetsPage->UpdateIndex();
         presetsPage->Show();
         break;
     case song:
+        if(autoSwitchSetsWindow->getCurrentSet()) {
+            autoSwitchSetsWindow->getCurrentSet()->Show();
+        }
         break;
     case preset:
         presetsPage->getCurrentPreset()->ShowActivePreset();

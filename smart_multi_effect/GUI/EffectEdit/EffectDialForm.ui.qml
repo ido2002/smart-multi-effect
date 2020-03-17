@@ -22,7 +22,7 @@ Item {
 
     Label {
         id: labelname
-        objectName: "textLable"
+        objectName: "textLabel"
         x: 64
         y: 106
         width: 144
@@ -40,7 +40,7 @@ Item {
 
     Label {
         id: labelval
-        objectName: "valueLable"
+        objectName: "valueLabel"
         x: -6
         y: 43
         text: (dial.position * 100).toFixed(0)

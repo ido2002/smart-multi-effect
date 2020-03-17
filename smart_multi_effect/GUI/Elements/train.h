@@ -15,7 +15,7 @@ public:
     void Hide();
 
     void update();
-    void UpdateLable();
+    void UpdateLabel();
 
     void up();
     void down();
@@ -31,7 +31,7 @@ private:
 
     QQuickItem* window;
     QQuickItem* busyIndicator;
-    QQuickItem* repeatsLable;
+    QQuickItem* repeatsLabel;
 };
 
 #endif // TRAIN_H

@@ -1,17 +1,16 @@
 #ifndef RIFF_H
 #define RIFF_H
 
-#include <QObject>
+#include "SoundProcessing/stroke.h"
+#include <vector>
+#include <QString>
 
-class Riff : public QObject
+struct Riff
 {
-    Q_OBJECT
-public:
-    explicit Riff(QObject *parent = nullptr);
+    Riff();
 
-signals:
-
-public slots:
+    std::vector<sound_processing::Stroke> strokes;
+    QString name;
 };
 
 #endif // RIFF_H

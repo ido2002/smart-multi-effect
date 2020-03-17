@@ -33,8 +33,8 @@ private:
 
     QQuickItem* window;
     QQuickItem* busyIndicator;
-    QQuickItem* notesLable;
-    QQuickItem* noteLable;
+    QQuickItem* notesLabel;
+    QQuickItem* noteLabel;
 };
 
 #endif // RECORDNOTE_H

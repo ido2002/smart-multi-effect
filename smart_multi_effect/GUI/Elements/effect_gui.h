@@ -22,7 +22,7 @@ namespace GUI_elements {
         bool ReadSwitch();
         void SetSwitch(bool value);
 
-        std::string getName() { return name; }
+        std::string getName();
 
     private:
         hardware_ctrl::EffectInfo* effect = nullptr;
