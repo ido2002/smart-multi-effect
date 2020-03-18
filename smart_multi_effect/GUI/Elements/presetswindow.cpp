@@ -99,12 +99,12 @@ bool PresetsWindow::LoadAll()
     return true;
 }
 
-std::map<QString, std::vector<QString>> PresetsWindow::GenPresetsMap()
+std::vector<std::pair<QString, std::vector<QString>>> PresetsWindow::GenPresetsMap()
 {
     using pair = std::pair<QString, std::vector<QString>>;
 
     for(auto pw : presetWindows) {
-        presetsMap.insert(pair(pw->getName(), {
+        presetsMap.push_back(pair(pw->getName(), {
                             pw->getP1()->getName(),
                             pw->getP2()->getName(),
                             pw->getP3()->getName(),

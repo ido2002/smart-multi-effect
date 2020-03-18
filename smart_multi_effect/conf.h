@@ -209,11 +209,11 @@ namespace GUI_PARAMETERS {
 
         const QString STYLE_BASS_TARGET_DIAL = "dialBase";
         const QString STYLE_BASS_TOP_SLIDER = "sliderBass";
-        const QString STYLE_BASS_FACTOR_SLIDER = "sliderHighFactor";
+        const QString STYLE_BASS_FACTOR_SLIDER = "sliderBassFactor";
 
         const QString STYLE_HIGH_TARGET_DIAL = "dialHigh";
         const QString STYLE_HIGH_BOTTOM_SLIDER = "sliderHigh";
-        const QString STYLE_HIGH_FACTOR_SLIDER = "sliderBassFactor";
+        const QString STYLE_HIGH_FACTOR_SLIDER = "sliderHighFactor";
     }
 
     namespace PRESETS_PAGE {
@@ -281,6 +281,7 @@ namespace GUI_PARAMETERS {
         const char SLIDER_VALUE[] = "value";
         const char PROGRESS_BAR_VALUE[] = "value";
         const char COMBOBOX_VALUE[] = "currentText";
+        const char COMBOBOX_INDEX[] = "currentIndex";
         const char COMBOBOX_LIST[] = "model";
         const char COLOR[] = "color";
         const char OPACITY[] = "opacity";

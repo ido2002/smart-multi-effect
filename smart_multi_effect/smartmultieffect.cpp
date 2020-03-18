@@ -30,6 +30,7 @@ SmartMultiEffect::~SmartMultiEffect()
 
     if(guiManager) {
         guiManager->getPresetsWindow()->SaveAll();
+        guiManager->getSongsWindow()->SaveAll();
         delete guiManager;
     }
 
@@ -86,79 +87,15 @@ void SmartMultiEffect::InitializeButtons()
 
 void SmartMultiEffect::InitializeSoundProcessor()
 {
-    using namespace CONF::NOTE_RECOGNITION;
     using namespace sound_processing;
-    using p_s = RiffRecognition::playingStyle;
-    using element = hardware_ctrl::Effect::EffectControlLayoutEllements;
-    using colors = hardware_ctrl::ColorSet;
-    using namespace CONF::GUI_PARAMETERS::COLORS;
-    using namespace CONF::NAMES;
-    using map = std::map<element, int>;
-    using pair = std::pair<element, int>;
 
     riffRecognition = new RiffRecognition();
     soundProcessor = new SoundProcessor();
-    soundProcessor->AddFunctionOnBufferFill([&](int16_t*, size_t, Stroke s){
-//        if(riffRecognition != nullptr) {
-//            p_s ps = riffRecognition->Update(s);
-//            if(ps != p_s::nothing) {
-//                std::cout << RiffRecognition::playingStyleToString(ps) << std::endl;
-//                if(ps == p_s::low_riff) {
-//                    controller->SetPreset(hardware_ctrl::Preset(
-//                    {new hardware_ctrl::EffectInfo(colors(BROWN, WHITE, WHITE), OVERDRIVE, true, map({
-//                         pair(element::Gain, 100),
-//                         pair(element::Tone, 70),
-//                         pair(element::Volume, 60)})),
-//                     new hardware_ctrl::EffectInfo(colors(DARK_MAGENTA, WHITE, WHITE), TREMOLO, false, map({
-//                              pair(element::Depth, 50),
-//                              pair(element::Speed, 50),
-//                              pair(element::Volume, 50)})),
-//                     new hardware_ctrl::EffectInfo(colors(DARK_GREEN, WHITE, WHITE), DELAY, true, map({
-//                              pair(element::Regen, 50),
-//                              pair(element::Mix, 50),
-//                              pair(element::Delay, 50)
-//                     }))}, 0, 0));
-//                }
-//                if(ps == p_s::high_solo) {
-//                    controller->SetPreset(hardware_ctrl::Preset(
-//                    {new hardware_ctrl::EffectInfo(colors(BROWN, WHITE, WHITE), OVERDRIVE, true, map({
-//                         pair(element::Gain, 100),
-//                         pair(element::Tone, 40),
-//                         pair(element::Volume, 70)})),
-//                     new hardware_ctrl::EffectInfo(colors(DARK_MAGENTA, WHITE, WHITE), TREMOLO, true, map({
-//                              pair(element::Depth, 50),
-//                              pair(element::Speed, 50),
-//                              pair(element::Volume, 50)})),
-//                     new hardware_ctrl::EffectInfo(colors(DARK_GREEN, WHITE, WHITE), DELAY, true, map({
-//                              pair(element::Regen, 50),
-//                              pair(element::Mix, 50),
-//                              pair(element::Delay, 50)
-//                     }))}, 0, 0));
-//                }
-//                if(ps == p_s::struming) {
-//                    controller->SetPreset(hardware_ctrl::Preset(
-//                    {new hardware_ctrl::EffectInfo(colors(BROWN, WHITE, WHITE), OVERDRIVE, false, map({
-//                         pair(element::Gain, 50),
-//                         pair(element::Tone, 50),
-//                         pair(element::Volume, 50)})),
-//                     new hardware_ctrl::EffectInfo(colors(DARK_MAGENTA, WHITE, WHITE), TREMOLO, true, map({
-//                              pair(element::Depth, 50),
-//                              pair(element::Speed, 50),
-//                              pair(element::Volume, 50)})),
-//                     new hardware_ctrl::EffectInfo(colors(DARK_GREEN, WHITE, WHITE), DELAY, true, map({
-//                              pair(element::Regen, 50),
-//                              pair(element::Mix, 50),
-//                              pair(element::Delay, 50)
-//                     }))}, 0, 0));
-//                }
-//            }
-//        }
-    });
 }
 
 void SmartMultiEffect::InitializePresets()
 {
-    if (!guiManager->getPresetsWindow()->LoadAll()) {
+    if(!guiManager->getPresetsWindow()->LoadAll()) {
         using element = hardware_ctrl::Effect::EffectControlLayoutEllements;
         using colors = hardware_ctrl::ColorSet;
         using namespace CONF::GUI_PARAMETERS::COLORS;
@@ -281,9 +218,16 @@ void SmartMultiEffect::InitializePresets()
 
 void SmartMultiEffect::InitializeSongs()
 {
-    guiManager->getSongsWindow()->AddSet(new AutoSwitchSetWindowEdit("sweet child O' mine", guiManager->getEngine(), guiManager->getViewArea()));
-    guiManager->getSongsWindow()->AddSet(new AutoSwitchSetWindowEdit("fade to black", guiManager->getEngine(), guiManager->getViewArea()));
-    guiManager->getSongsWindow()->AddSet(new AutoSwitchSetWindowEdit("test", guiManager->getEngine(), guiManager->getViewArea()));
+    if(!guiManager->getSongsWindow()->LoadAll()) {
+        guiManager->getSongsWindow()->AddSet(new AutoSwitchSetWindowEdit("sweet child O' mine", guiManager->getEngine(), guiManager->getViewArea()));
+        guiManager->getSongsWindow()->AddSet(new AutoSwitchSetWindowEdit("fade to black", guiManager->getEngine(), guiManager->getViewArea()));
+        guiManager->getSongsWindow()->AddSet(new AutoSwitchSetWindowEdit("test", guiManager->getEngine(), guiManager->getViewArea()));
+
+        for(int i = 4; i < 10; i++) {
+            guiManager->getSongsWindow()->AddSet(new AutoSwitchSetWindowEdit(QString::number(i), guiManager->getEngine(), guiManager->getViewArea()));
+        }
+        guiManager->getSongsWindow()->SaveAll();
+    }
 }
 
 void SmartMultiEffect::InitializeMenu()
@@ -434,9 +378,9 @@ void SmartMultiEffect::SetButtonsFunctions()
             UpdateWindow();
             return;
         }
-        button1->SetText("style1");
-        button2->SetText("style2");
-        button3->SetText("style3");
+        button1->SetText(guiManager->getSongsWindow()->getCurrentSet()->getName_1());
+        button2->SetText(guiManager->getSongsWindow()->getCurrentSet()->getName_2());
+        button3->SetText(guiManager->getSongsWindow()->getCurrentSet()->getName_3());
         button4->SetText("auto");
         button5->SetText("back");
         button1->SetTextColor(CONF::GUI_PARAMETERS::COLORS::ORANGE);

@@ -22,7 +22,7 @@ PlayStyleEdit::PlayStyleEdit(QString name, QQuickItem *item)
     slider_bassFreq = item->findChild<QQuickItem*>(STYLE_BASS_TOP_SLIDER);
     slider_highFreq = item->findChild<QQuickItem*>(STYLE_HIGH_BOTTOM_SLIDER);
 
-    slider_bassFactor = item->findChild<QQuickItem*>(STYLE_HIGH_FACTOR_SLIDER);
+    slider_bassFactor = item->findChild<QQuickItem*>(STYLE_BASS_FACTOR_SLIDER);
     slider_highFactor = item->findChild<QQuickItem*>(STYLE_HIGH_FACTOR_SLIDER);
 
     dial_bassTarget = item->findChild<QQuickItem*>(STYLE_BASS_TARGET_DIAL);
@@ -30,6 +30,69 @@ PlayStyleEdit::PlayStyleEdit(QString name, QQuickItem *item)
 
     slider_threshold = item->findChild<QQuickItem*>(STYLE_THRESHOLD_SLIDER);
     progressBar_threshold = item->findChild<QQuickItem*>(STYLE_THRESHOLD_PROGRESS_BAR);
+}
+
+PlayStyleEdit::PlayStyleEdit(QVariantMap map, QQuickItem *item)
+{
+    this->item = item;
+
+    background = item->findChild<QQuickItem*>(STYLE_BACKGROUND);
+
+    comboBox_set = item->findChild<QQuickItem*>(STYLE_PRESET_SET_COMBO_BOX);
+    comboBox_preset= item->findChild<QQuickItem*>(STYLE_PRESET_NAME_COMBO_BOX);
+
+    slider_bassFreq = item->findChild<QQuickItem*>(STYLE_BASS_TOP_SLIDER);
+    slider_highFreq = item->findChild<QQuickItem*>(STYLE_HIGH_BOTTOM_SLIDER);
+
+    slider_bassFactor = item->findChild<QQuickItem*>(STYLE_BASS_FACTOR_SLIDER);
+    slider_highFactor = item->findChild<QQuickItem*>(STYLE_HIGH_FACTOR_SLIDER);
+
+    dial_bassTarget = item->findChild<QQuickItem*>(STYLE_BASS_TARGET_DIAL);
+    dial_highTarget = item->findChild<QQuickItem*>(STYLE_HIGH_TARGET_DIAL);
+
+    slider_threshold = item->findChild<QQuickItem*>(STYLE_THRESHOLD_SLIDER);
+    progressBar_threshold = item->findChild<QQuickItem*>(STYLE_THRESHOLD_PROGRESS_BAR);
+
+    this->name = map["name"].toString();
+    this->currentSetName = map["set"].toString();
+    this->currentPresetName = map["preset"].toString();
+
+    comboBox_set->setProperty(COMBOBOX_VALUE, currentSetName);
+    comboBox_preset->setProperty(COMBOBOX_VALUE, currentPresetName);
+
+
+    slider_bassFreq->setProperty(SLIDER_VALUE, map["slider_bassFreq"].toDouble());
+    slider_highFreq->setProperty(SLIDER_VALUE, map["slider_highFreq"].toDouble());
+
+    slider_bassFactor->setProperty(SLIDER_VALUE, map["slider_bassFactor"].toDouble());
+    slider_highFactor->setProperty(SLIDER_VALUE, map["slider_highFactor"].toDouble());
+
+    dial_bassTarget->setProperty(DIAL_VALUE, map["dial_bassTarget"].toDouble());
+    dial_highTarget->setProperty(DIAL_VALUE, map["dial_highTarget"].toDouble());
+
+    slider_threshold->setProperty(SLIDER_VALUE, map["slider_threshold"].toDouble());
+}
+
+QVariantMap PlayStyleEdit::GenMap()
+{
+    QVariantMap map;
+
+    map.insert("name", name);
+    map.insert("set", currentSetName);
+    map.insert("preset", currentPresetName);
+
+    map.insert("slider_bassFreq", slider_bassFreq->property(SLIDER_VALUE).toDouble());
+    map.insert("slider_highFreq", slider_highFreq->property(SLIDER_VALUE).toDouble());
+
+    map.insert("slider_bassFactor", slider_bassFactor->property(SLIDER_VALUE).toDouble());
+    map.insert("slider_highFactor", slider_highFactor->property(SLIDER_VALUE).toDouble());
+
+    map.insert("dial_bassTarget", dial_bassTarget->property(DIAL_VALUE).toDouble());
+    map.insert("dial_highTarget", dial_highTarget->property(DIAL_VALUE).toDouble());
+
+    map.insert("slider_threshold", slider_threshold->property(SLIDER_VALUE).toDouble());
+
+    return map;
 }
 
 void PlayStyleEdit::UpdatePresets(PresetsWindow *presets)
@@ -41,9 +104,44 @@ void PlayStyleEdit::UpdatePresets(PresetsWindow *presets)
         sets.append(p.first);
     }
 
+    //set name
     comboBox_set->setProperty(COMBOBOX_LIST, sets);
-    comboBox_set->setProperty(COMBOBOX_VALUE, sets[0]);
-    currentSetName = comboBox_set->property(COMBOBOX_VALUE).toString();
+    if(currentSetName == "") {
+        currentSetName = sets[0];
+    }
+    int set_index = 0;
+    for(set_index = 0; set_index < 4; set_index++) {
+        if(sets[set_index] == currentSetName) {
+            break;
+        }
+    }
+    comboBox_set->setProperty(COMBOBOX_INDEX, set_index);
+
+    //preset name
+    std::vector<QString> presetsVec;
+    for(auto s : this->presets) {
+        if(s.first == currentSetName) {
+            presetsVec = s.second;
+        }
+    }
+
+    QStringList presetsList;
+    presetsList.append(presetsVec[0]);
+    presetsList.append(presetsVec[1]);
+    presetsList.append(presetsVec[2]);
+    presetsList.append(presetsVec[3]);
+
+    comboBox_preset->setProperty(COMBOBOX_LIST, presetsList);
+    if(std::find(presetsVec.begin(), presetsVec.end(), currentPresetName) == presetsVec.end()) {
+        currentPresetName = presetsList[0];
+    }
+    int preset_index = 0;
+    for(preset_index = 0; preset_index < 4; preset_index++) {
+        if(presetsVec[preset_index] == currentPresetName) {
+            break;
+        }
+    }
+    comboBox_preset->setProperty(COMBOBOX_INDEX, preset_index);
 }
 
 double PlayStyleEdit::Update(sound_processing::SoundProcessor* soundProcessor)
@@ -52,16 +150,24 @@ double PlayStyleEdit::Update(sound_processing::SoundProcessor* soundProcessor)
     if(setName != currentSetName) {
         currentSetName = setName;
 
+        std::vector<QString> presetsVec;
+        for(auto s : presets) {
+            if(s.first == setName) {
+                presetsVec = s.second;
+            }
+        }
+
         QStringList presets;
-        presets.append(this->presets[setName][0]);
-        presets.append(this->presets[setName][1]);
-        presets.append(this->presets[setName][2]);
-        presets.append(this->presets[setName][3]);
+        presets.append(presetsVec[0]);
+        presets.append(presetsVec[1]);
+        presets.append(presetsVec[2]);
+        presets.append(presetsVec[3]);
 
         comboBox_preset->setProperty(COMBOBOX_LIST, presets);
         currentPresetName = presets[0];
         comboBox_preset->setProperty(COMBOBOX_VALUE, currentPresetName);
     }
+    currentPresetName = comboBox_preset->property(COMBOBOX_VALUE).toString();
 
 
     double match = 0.5;
@@ -159,12 +265,46 @@ AutoSwitchSetWindowEdit::AutoSwitchSetWindowEdit(QString name, QQmlApplicationEn
     window->setParentItem(parent);
     window->setVisible(false);
 
-    playStyleEdit_1 = new PlayStyleEdit("1", window->findChild<QQuickItem*>(STYLE_EDIT_1));
-    playStyleEdit_2 = new PlayStyleEdit("2", window->findChild<QQuickItem*>(STYLE_EDIT_2));
-    playStyleEdit_3 = new PlayStyleEdit("3", window->findChild<QQuickItem*>(STYLE_EDIT_3));
+    playStyleEdit_1 = new PlayStyleEdit("solo", window->findChild<QQuickItem*>(STYLE_EDIT_1));
+    playStyleEdit_2 = new PlayStyleEdit("clean", window->findChild<QQuickItem*>(STYLE_EDIT_2));
+    playStyleEdit_3 = new PlayStyleEdit("dirty", window->findChild<QQuickItem*>(STYLE_EDIT_3));
 
     headline = window->findChild<QQuickItem*>(SONG_HEADLINE);
     headline->setProperty(LABEL_TEXT, name);
+}
+
+AutoSwitchSetWindowEdit::AutoSwitchSetWindowEdit(QVariantMap map, QQmlApplicationEngine *engine, QQuickItem *parent)
+{
+    name = map["name"].toString();
+
+    //create component
+    QQmlComponent comp(engine, parent);
+    comp.loadUrl(SONG_EDIT_URL);
+
+    //add element
+    window = qobject_cast<QQuickItem *>(comp.create());
+    engine->setObjectOwnership(window, QQmlEngine::JavaScriptOwnership);
+    window->setParentItem(parent);
+    window->setVisible(false);
+
+    playStyleEdit_1 = new PlayStyleEdit(map["playStyle_1"].toMap(), window->findChild<QQuickItem*>(STYLE_EDIT_1));
+    playStyleEdit_2 = new PlayStyleEdit(map["playStyle_2"].toMap(), window->findChild<QQuickItem*>(STYLE_EDIT_2));
+    playStyleEdit_3 = new PlayStyleEdit(map["playStyle_3"].toMap(), window->findChild<QQuickItem*>(STYLE_EDIT_3));
+
+    headline = window->findChild<QQuickItem*>(SONG_HEADLINE);
+    headline->setProperty(LABEL_TEXT, name);
+}
+
+QVariantMap AutoSwitchSetWindowEdit::GenMap()
+{
+    QVariantMap map;
+
+    map.insert("name", name);
+    map.insert("playStyle_1", playStyleEdit_1->GenMap());
+    map.insert("playStyle_2", playStyleEdit_2->GenMap());
+    map.insert("playStyle_3", playStyleEdit_3->GenMap());
+
+    return map;
 }
 
 void AutoSwitchSetWindowEdit::Update(hardware_ctrl::EffectController* controller, sound_processing::SoundProcessor* soundProcessor, PresetsWindow* presets)

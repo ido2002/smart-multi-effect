@@ -98,6 +98,7 @@ Item {
         y: 61
         width: 230
         height: 39
+        to: 1
         anchors.left: parent.left
         anchors.leftMargin: 0
         anchors.bottom: parent.bottom
@@ -112,6 +113,7 @@ Item {
         y: 26
         width: 22
         height: 5
+        to: 1
         anchors.horizontalCenterOffset: 1
         anchors.verticalCenterOffset: -43
         anchors.horizontalCenter: sliderThreashold.horizontalCenter

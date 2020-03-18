@@ -20,6 +20,9 @@ public:
     void left();
     void right();
 
+    void SaveAll();
+    bool LoadAll();
+
     void UpdateIndex();
 
     void AddSet(AutoSwitchSetWindowEdit* set);
@@ -27,8 +30,11 @@ public:
     AutoSwitchSetWindowEdit* getCurrentSet();
 
 private:
+    QQmlApplicationEngine* engine = nullptr;
+    QQuickItem* parent = nullptr;
     QQuickItem* window = nullptr;
     std::vector<AutoSwitchSetWindowEdit*> sets;
+    QVariantMap setsPath;
     int index = 0;
 };
 

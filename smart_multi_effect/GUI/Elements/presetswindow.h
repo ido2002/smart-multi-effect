@@ -23,7 +23,7 @@ public:
     void SaveAll();
     bool LoadAll();
 
-    std::map<QString, std::vector<QString>> GenPresetsMap();
+   std::vector<std::pair<QString, std::vector<QString>>> GenPresetsMap();
 
     void AddPresetWindow(PresetWindow* presetWindow);
 
@@ -37,7 +37,7 @@ private:
     QVariantMap presetsPath;
     int index = 0;
 
-    std::map<QString, std::vector<QString>> presetsMap;
+    std::vector<std::pair<QString, std::vector<QString>>> presetsMap;
 
     QQmlApplicationEngine *engine;
     QQuickItem *parent;
